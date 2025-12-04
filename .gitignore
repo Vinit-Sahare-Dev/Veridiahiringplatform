@@ -1,0 +1,33 @@
+# Backend
+backend/target/
+backend/.mvn/
+backend/.settings/
+backend/.project
+backend/.classpath
+backend/.factorypath
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Database
+*.sql
+uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
