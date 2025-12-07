@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Mail, Lock, Shield } from 'lucide-react'
+import { authAPI } from '../../services/api'
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -27,29 +28,34 @@ const AdminLogin = () => {
     setError('')
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        localStorage.setItem('token', data.token)
+      const response = await authAPI.login(formData)
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token)
         localStorage.setItem('user', JSON.stringify({
-          email: data.email,
-          name: data.name,
-          role: data.role
+          email: response.data.email,
+          name: response.data.name,
+          role: response.data.role || 'admin'
         }))
         navigate('/admin/dashboard')
       } else {
-        const errorData = await response.json()
-        setError(errorData.message || 'Login failed')
+        setError('Invalid login response')
       }
     } catch (error) {
-      setError('Network error. Please try again.')
+      console.error('Login error details:', error)
+      console.error('Error response:', error.response)
+      console.error('Error status:', error.response?.status)
+      console.error('Error data:', error.response?.data)
+      
+      if (error.response?.data?.message) {
+        setError(error.response.data.message)
+      } else if (error.response?.data) {
+        setError(typeof error.response.data === 'string' ? error.response.data : 'Login failed')
+      } else if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
+        setError('Backend server not running. Please start the backend server first.')
+      } else {
+        setError(`Login failed: ${error.message || 'Unknown error'}`)
+      }
     } finally {
       setLoading(false)
     }

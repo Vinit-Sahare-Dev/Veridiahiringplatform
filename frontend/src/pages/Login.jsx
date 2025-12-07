@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Eye, EyeOff, Mail, Lock, Briefcase } from 'lucide-react'
+import { healthAPI } from '../services/api'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +12,19 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   const { login } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message)
+      // Clear the message from location state
+      window.history.replaceState({}, document.title)
+    }
+  }, [location.state])
 
   const handleChange = (e) => {
     setFormData({
@@ -27,13 +38,24 @@ const Login = () => {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setSuccessMessage('')
 
-    const result = await login(formData.email, formData.password)
-    
-    if (result.success) {
-      navigate('/candidate/dashboard')
-    } else {
-      setError(result.error)
+    try {
+      // Attempt login directly without testing backend first
+      const result = await login(formData.email, formData.password)
+      
+      if (result.success) {
+        navigate('/candidate/dashboard')
+      } else {
+        setError(result.error)
+      }
+    } catch (error) {
+      console.error('Login submission error:', error)
+      if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
+        setError('Cannot connect to server. Please make sure the backend is running on port 8080.')
+      } else {
+        setError('An unexpected error occurred. Please try again.')
+      }
     }
     
     setLoading(false)
@@ -61,6 +83,12 @@ const Login = () => {
         <div className="card">
           <div className="card-body">
             <form onSubmit={handleSubmit} className="space-y-6">
+              {successMessage && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                  {successMessage}
+                </div>
+              )}
+              
               {error && (
                 <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
                   {error}

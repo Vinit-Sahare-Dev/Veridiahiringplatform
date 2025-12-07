@@ -1,5 +1,6 @@
 package com.veridia.hiring.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.veridia.hiring.dto.ApplicationRequest;
 import com.veridia.hiring.model.Application;
 import com.veridia.hiring.model.ApplicationStatus;
@@ -19,14 +20,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/application")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173,http://localhost:5174")
 public class ApplicationController {
 
     @Autowired
@@ -38,22 +38,37 @@ public class ApplicationController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @PostMapping("/submit")
     public ResponseEntity<?> submitApplication(
-            @Valid @RequestPart("application") ApplicationRequest applicationRequest,
+            @RequestPart("application") String applicationJson,
             @RequestPart(value = "resume", required = false) MultipartFile resume,
             Authentication authentication) {
         try {
+            // Parse JSON string to ApplicationRequest
+            ApplicationRequest applicationRequest = objectMapper.readValue(applicationJson, ApplicationRequest.class);
+            
             User candidate = userService.getUserByEmail(authentication.getName());
             
             Application application = applicationService.submitApplication(
                 candidate,
+                applicationRequest.getFirstName(),
+                applicationRequest.getLastName(),
                 applicationRequest.getPhone(),
+                applicationRequest.getLocation(),
+                applicationRequest.getLinkedinProfile(),
+                applicationRequest.getGithubProfile(),
+                applicationRequest.getPortfolioLink(),
                 applicationRequest.getSkills(),
                 applicationRequest.getEducation(),
                 applicationRequest.getExperience(),
-                resume,
-                applicationRequest.getPortfolioLink()
+                applicationRequest.getAvailability(),
+                applicationRequest.getExpectedSalary(),
+                applicationRequest.getNoticePeriod(),
+                applicationRequest.getWorkMode(),
+                resume
             );
             
             // Send email notification
@@ -65,8 +80,9 @@ public class ApplicationController {
             response.put("status", application.getStatus().name());
             
             return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Failed to submit application: " + e.getMessage());
         }
     }
 
@@ -100,11 +116,20 @@ public class ApplicationController {
             appMap.put("id", app.getId());
             appMap.put("candidateName", app.getCandidate().getName());
             appMap.put("candidateEmail", app.getCandidate().getEmail());
+            appMap.put("firstName", app.getFirstName());
+            appMap.put("lastName", app.getLastName());
             appMap.put("phone", app.getPhone());
+            appMap.put("location", app.getLocation());
+            appMap.put("linkedinProfile", app.getLinkedinProfile());
+            appMap.put("githubProfile", app.getGithubProfile());
+            appMap.put("portfolioLink", app.getPortfolioLink());
             appMap.put("skills", app.getSkills());
             appMap.put("education", app.getEducation());
             appMap.put("experience", app.getExperience());
-            appMap.put("portfolioLink", app.getPortfolioLink());
+            appMap.put("availability", app.getAvailability());
+            appMap.put("expectedSalary", app.getExpectedSalary());
+            appMap.put("noticePeriod", app.getNoticePeriod());
+            appMap.put("workMode", app.getWorkMode());
             appMap.put("resumeUrl", app.getResumeUrl());
             appMap.put("status", app.getStatus().name());
             appMap.put("createdAt", app.getCreatedAt());
@@ -178,6 +203,10 @@ public class ApplicationController {
     public ResponseEntity<Resource> downloadResume(@PathVariable @NonNull String filename) {
         try {
             byte[] resumeContent = applicationService.getResumeFile("uploads/resumes/" + filename);
+            
+            if (resumeContent == null) {
+                return ResponseEntity.notFound().build();
+            }
             
             ByteArrayResource resource = new ByteArrayResource(resumeContent);
             

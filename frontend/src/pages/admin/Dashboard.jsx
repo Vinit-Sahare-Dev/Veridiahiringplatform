@@ -243,6 +243,12 @@ const AdminDashboard = () => {
                   Contact
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
+                  Location
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
+                  Work Mode
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
                   Skills
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
@@ -272,6 +278,20 @@ const AdminDashboard = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-secondary-900">{application.phone}</div>
                     <div className="text-sm text-secondary-500">{application.candidateEmail}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-secondary-900">
+                      {application.location || 'Not specified'}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                      application.workMode === 'remote' ? 'bg-green-100 text-green-800' :
+                      application.workMode === 'hybrid' ? 'bg-blue-100 text-blue-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {application.workMode || 'Not specified'}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
                     <div className="text-sm text-secondary-900 max-w-xs truncate">

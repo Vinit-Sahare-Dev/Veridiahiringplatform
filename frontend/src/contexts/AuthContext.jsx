@@ -37,16 +37,27 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authAPI.login({ email, password })
-      const { token, email: userEmail, name, role } = response.data
+      const { data } = response.data
+      const { token, email: userEmail, name, role } = data
       
       localStorage.setItem('token', token)
       setUser({ email: userEmail, name, role })
       
       return { success: true }
     } catch (error) {
+      console.error('Login error:', error)
+      let errorMessage = 'Login failed'
+      if (error.response?.data) {
+        if (error.response.data.message) {
+          errorMessage = error.response.data.message
+        }
+      } else if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
+        errorMessage = 'Cannot connect to server. Please check if the backend is running.'
+      }
+      
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Login failed' 
+        error: errorMessage
       }
     }
   }
@@ -54,16 +65,27 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     try {
       const response = await authAPI.register({ name, email, password })
-      const { token, email: userEmail, name: userName, role } = response.data
+      const { message } = response.data
       
-      localStorage.setItem('token', token)
-      setUser({ email: userEmail, name: userName, role })
-      
-      return { success: true }
+      // Don't auto-login after registration, just return success
+      return { 
+        success: true, 
+        message: message || 'Registration successful. Please login with your credentials.'
+      }
     } catch (error) {
+      console.error('Registration error:', error)
+      let errorMessage = 'Registration failed'
+      if (error.response?.data) {
+        if (error.response.data.message) {
+          errorMessage = error.response.data.message
+        }
+      } else if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
+        errorMessage = 'Cannot connect to server. Please check if the backend is running.'
+      }
+      
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Registration failed' 
+        error: errorMessage
       }
     }
   }

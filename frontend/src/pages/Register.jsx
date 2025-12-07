@@ -62,11 +62,15 @@ const Register = () => {
     }
     
     setLoading(true)
+    setErrors({})
     
     const result = await register(formData.name, formData.email, formData.password)
     
     if (result.success) {
-      navigate('/candidate/dashboard')
+      // Redirect to login page with success message
+      navigate('/login', { 
+        state: { message: result.message || 'Registration successful! Please login with your credentials.' }
+      })
     } else {
       setErrors({ general: result.error })
     }

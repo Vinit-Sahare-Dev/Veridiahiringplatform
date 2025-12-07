@@ -24,8 +24,11 @@ public class ApplicationService {
 
     private final String UPLOAD_DIR = "uploads/resumes/";
 
-    public Application submitApplication(User candidate, String phone, String skills, String education, 
-                                       String experience, MultipartFile resume, String portfolioLink) {
+    public Application submitApplication(User candidate, String firstName, String lastName, String phone, 
+                                       String location, String linkedinProfile, String githubProfile, 
+                                       String portfolioLink, String skills, String education, String experience,
+                                       String availability, String expectedSalary, String noticePeriod, 
+                                       String workMode, MultipartFile resume) {
         
         // Check if candidate already has an application
         Optional<Application> existingApp = applicationRepository.findByCandidate(candidate);
@@ -39,6 +42,17 @@ public class ApplicationService {
         }
 
         Application application = new Application(candidate, phone, skills, education, experience, resumeUrl, portfolioLink);
+        // Set additional fields
+        application.setFirstName(firstName);
+        application.setLastName(lastName);
+        application.setLocation(location);
+        application.setLinkedinProfile(linkedinProfile);
+        application.setGithubProfile(githubProfile);
+        application.setAvailability(availability);
+        application.setExpectedSalary(expectedSalary);
+        application.setNoticePeriod(noticePeriod);
+        application.setWorkMode(workMode);
+        
         return applicationRepository.save(application);
     }
 

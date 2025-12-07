@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8080/api'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
 
 // Create axios instance with timeout
 const api = axios.create({
@@ -30,6 +30,12 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error('API Error:', error)
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      response: error.response?.data,
+      status: error.response?.status
+    })
     
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
@@ -44,6 +50,12 @@ api.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+
+// Health check API
+export const healthAPI = {
+  check: () => api.get('/health'),
+  test: () => api.get('/test'),
+}
 
 // Auth API
 export const authAPI = {

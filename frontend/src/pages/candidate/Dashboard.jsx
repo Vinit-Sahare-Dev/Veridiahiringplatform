@@ -10,7 +10,16 @@ import {
   Upload,
   User,
   Briefcase,
-  ExternalLink
+  ExternalLink,
+  MapPin,
+  DollarSign,
+  Heart,
+  Zap,
+  Target,
+  Award,
+  TrendingUp,
+  Star,
+  Users
 } from 'lucide-react'
 
 const Dashboard = () => {
@@ -87,29 +96,109 @@ const Dashboard = () => {
     <div className="max-w-6xl mx-auto animate-fade-in">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-secondary-900 mb-2">Candidate Dashboard</h1>
-        <p className="text-secondary-600">Manage your job application and track its progress</p>
+        <div className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-2xl p-8 mb-8">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Welcome to Your Dashboard</h1>
+              <p className="text-primary-100">Manage your job application and track your progress</p>
+            </div>
+            <div className="flex items-center space-x-4 mt-4 md:mt-0">
+              <div className="text-center">
+                <div className="text-2xl font-bold">{application ? '1' : '0'}</div>
+                <div className="text-sm text-primary-100">Applications</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold">{application ? application.status : 'Not Started'}</div>
+                <div className="text-sm text-primary-100">Current Status</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {!application ? (
-        /* No Application Yet */
-        <div className="text-center py-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-secondary-100 rounded-full mb-6">
-            <FileText className="w-10 h-10 text-secondary-400" />
+        /* No Application Yet - Enhanced Design */
+        <div className="space-y-8">
+          {/* Hero Card */}
+          <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-8 text-center">
+            <div className="inline-flex items-center justify-center w-24 h-24 bg-primary-100 rounded-full mb-6">
+              <Briefcase className="w-12 h-12 text-primary-600" />
+            </div>
+            <h2 className="text-3xl font-bold text-secondary-900 mb-4">
+              Start Your Career Journey
+            </h2>
+            <p className="text-lg text-secondary-600 mb-8 max-w-2xl mx-auto">
+              Ready to take the next step? Join our amazing team and build your future at Veridia. 
+              Our streamlined application process makes it easy to get started.
+            </p>
+            
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-3xl mx-auto">
+              <div className="bg-white rounded-lg p-4">
+                <Users className="w-8 h-8 text-primary-600 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-secondary-900">500+</div>
+                <div className="text-sm text-secondary-600">Employees</div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <Star className="w-8 h-8 text-primary-600 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-secondary-900">4.8</div>
+                <div className="text-sm text-secondary-600">Rating</div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <TrendingUp className="w-8 h-8 text-primary-600 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-secondary-900">25%</div>
+                <div className="text-sm text-secondary-600">Growth Rate</div>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <Heart className="w-8 h-8 text-primary-600 mx-auto mb-2" />
+                <div className="text-2xl font-bold text-secondary-900">95%</div>
+                <div className="text-sm text-secondary-600">Satisfaction</div>
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/candidate/apply"
+                className="btn-primary text-lg px-8 py-4 inline-flex items-center group"
+              >
+                <Upload className="w-5 h-5 mr-2" />
+                Start Application
+                <Target className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                to="/careers"
+                className="btn-secondary text-lg px-8 py-4 inline-flex items-center"
+              >
+                <Briefcase className="w-5 h-5 mr-2" />
+                Browse Open Positions
+              </Link>
+            </div>
           </div>
-          <h2 className="text-2xl font-bold text-secondary-900 mb-4">
-            Start Your Application
-          </h2>
-          <p className="text-secondary-600 mb-8 max-w-md mx-auto">
-            You haven't submitted your application yet. Click below to begin the application process.
-          </p>
-          <Link
-            to="/candidate/apply"
-            className="btn-primary text-lg px-8 py-3 inline-flex items-center group"
-          >
-            <Upload className="w-5 h-5 mr-2" />
-            Start Application
-          </Link>
+
+          {/* Benefits Section */}
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="card p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
+                <Clock className="w-8 h-8 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">Quick Process</h3>
+              <p className="text-secondary-600">Complete your application in just 10 minutes</p>
+            </div>
+            <div className="card p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
+                <Zap className="w-8 h-8 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">Real-time Updates</h3>
+              <p className="text-secondary-600">Track your application status instantly</p>
+            </div>
+            <div className="card p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
+                <Award className="w-8 h-8 text-primary-600" />
+              </div>
+              <h3 className="text-lg font-semibold text-secondary-900 mb-2">Professional Review</h3>
+              <p className="text-secondary-600">Expert evaluation by our HR team</p>
+            </div>
+          </div>
         </div>
       ) : (
         /* Application Exists */
