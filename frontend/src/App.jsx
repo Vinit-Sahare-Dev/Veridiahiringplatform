@@ -2,15 +2,17 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
 import ErrorBoundary from './components/ErrorBoundary'
-import { PrivateRoute, AdminRoute } from './components/ProtectedRoute'
+import { PrivateRoute, AdminRoute, CandidateRoute } from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
 import Footer from './components/layout/Footer'
+import ScrollToTop from './components/ScrollToTop'
 
 // Import pages
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Careers from './pages/Careers'
+import TestPage from './pages/TestPage'
 import AdminLogin from './pages/admin/Login'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminApplications from './pages/admin/Applications'
@@ -33,6 +35,7 @@ function App() {
   return (
     <ErrorBoundary>
       <Router>
+        <ScrollToTop />
         <div className="app-layout">
           <AuthProvider>
             <Navbar />
@@ -42,6 +45,7 @@ function App() {
             <Route path="/careers" element={<Careers />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/test" element={<TestPage />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             
             {/* Protected Admin Routes */}
@@ -67,43 +71,43 @@ function App() {
             
             {/* Protected Candidate Routes */}
             <Route path="/candidate/dashboard" element={
-              <PrivateRoute>
+              <CandidateRoute>
                 <div className="app-layout">
                   <main className="app-main">
                     <CandidateDashboard />
                   </main>
                 </div>
-              </PrivateRoute>
+              </CandidateRoute>
             } />
             
             <Route path="/candidate/profile" element={
-              <PrivateRoute>
+              <CandidateRoute>
                 <div className="app-layout">
                   <main className="app-main">
                     <CandidateProfile />
                   </main>
                 </div>
-              </PrivateRoute>
+              </CandidateRoute>
             } />
             
             <Route path="/candidate/apply" element={
-              <PrivateRoute>
+              <CandidateRoute>
                 <div className="app-layout">
                   <main className="app-main">
                     <ApplicationForm />
                   </main>
                 </div>
-              </PrivateRoute>
+              </CandidateRoute>
             } />
             
             <Route path="/candidate/notifications" element={
-              <PrivateRoute>
+              <CandidateRoute>
                 <div className="app-layout">
                   <main className="app-main">
                     <CandidateNotifications />
                   </main>
                 </div>
-              </PrivateRoute>
+              </CandidateRoute>
             } />
             
             {/* Fallback route */}

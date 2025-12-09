@@ -44,3 +44,17 @@ export const AdminRoute = ({ children }) => {
 
   return isAuthenticated && isAdmin ? children : <Navigate to="/admin/login" replace />
 }
+
+export const CandidateRoute = ({ children }) => {
+  const { isAuthenticated, isCandidate, loading } = useAuth()
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-primary-600" />
+      </div>
+    )
+  }
+
+  return isAuthenticated && isCandidate ? children : <Navigate to="/login" replace />
+}

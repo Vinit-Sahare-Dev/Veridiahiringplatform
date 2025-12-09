@@ -36,6 +36,7 @@ const ApplicationForm = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [existingApplication, setExistingApplication] = useState(null)
+  const [applicationHistory, setApplicationHistory] = useState([])
   const [currentStep, setCurrentStep] = useState(1)
   const [formErrors, setFormErrors] = useState({})
 
@@ -47,25 +48,32 @@ const ApplicationForm = () => {
 
   const checkExistingApplication = async () => {
     try {
-      const response = await applicationAPI.getMyApplication()
-      if (response.data) {
-        setExistingApplication(response.data)
+      // Get all applications for the current user
+      const response = await applicationAPI.getMyApplications()
+      if (response.data && response.data.length > 0) {
+        const applications = response.data
+        setApplicationHistory(applications)
+        
+        // Set the most recent application as the existing one
+        const mostRecent = applications[applications.length - 1]
+        setExistingApplication(mostRecent)
+        
         setFormData({
-          firstName: response.data.firstName || '',
-          lastName: response.data.lastName || '',
-          phone: response.data.phone || '',
-          location: response.data.location || '',
-          linkedinProfile: response.data.linkedinProfile || '',
-          githubProfile: response.data.githubProfile || '',
-          portfolioLink: response.data.portfolioLink || '',
-          skills: response.data.skills || [],
-          education: response.data.education || [],
-          experience: response.data.experience || [],
-          certifications: response.data.certifications || [],
-          availability: response.data.availability || '',
-          expectedSalary: response.data.expectedSalary || '',
-          noticePeriod: response.data.noticePeriod || '',
-          workMode: response.data.workMode || 'remote'
+          firstName: mostRecent.firstName || '',
+          lastName: mostRecent.lastName || '',
+          phone: mostRecent.phone || '',
+          location: mostRecent.location || '',
+          linkedinProfile: mostRecent.linkedinProfile || '',
+          githubProfile: mostRecent.githubProfile || '',
+          portfolioLink: mostRecent.portfolioLink || '',
+          skills: mostRecent.skills || [],
+          education: mostRecent.education || [],
+          experience: mostRecent.experience || [],
+          certifications: mostRecent.certifications || [],
+          availability: mostRecent.availability || '',
+          expectedSalary: mostRecent.expectedSalary || '',
+          noticePeriod: mostRecent.noticePeriod || '',
+          workMode: mostRecent.workMode || 'remote'
         })
       }
     } catch (error) {
@@ -287,6 +295,30 @@ const ApplicationForm = () => {
                 <p className="text-blue-100 mt-1">
                   {existingApplication ? 'Update your application' : 'Complete your application in 5 simple steps'}
                 </p>
+                {existingApplication && (
+                  <div className="mt-3 text-sm text-blue-100">
+                    <div className="flex items-center gap-4">
+                      <span className="flex items-center gap-1">
+                        <CheckCircle className="w-4 h-4" />
+                        Application #{existingApplication.id}
+                      </span>
+                      <span>
+                        Submitted: {new Date(existingApplication.submittedAt).toLocaleDateString()} at {new Date(existingApplication.submittedAt).toLocaleTimeString()}
+                      </span>
+                    </div>
+                    <div className="mt-1">
+                      Status: <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        existingApplication.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                        existingApplication.status === 'UNDER_REVIEW' ? 'bg-blue-100 text-blue-800' :
+                        existingApplication.status === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
+                        existingApplication.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {existingApplication.status || 'PENDING'}
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="text-white">
                 Step {currentStep} of {totalSteps}
@@ -325,6 +357,125 @@ const ApplicationForm = () => {
             <div className="mx-8 mt-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-red-800">{error}</p>
+            </div>
+          )}
+
+          {/* Application Summary */}
+          {existingApplication && (
+            <div className="mx-8 mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h3 className="text-sm font-medium text-blue-900 mb-2">Application Summary</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                  <span className="text-blue-600">Application ID:</span>
+                  <span className="ml-2 text-blue-900 font-medium">#{existingApplication.id}</span>
+                </div>
+                <div>
+                  <span className="text-blue-600">Submitted:</span>
+                  <span className="ml-2 text-blue-900">{new Date(existingApplication.submittedAt).toLocaleDateString()}</span>
+                </div>
+                <div>
+                  <span className="text-blue-600">Time:</span>
+                  <span className="ml-2 text-blue-900">{new Date(existingApplication.submittedAt).toLocaleTimeString()}</span>
+                </div>
+                <div>
+                  <span className="text-blue-600">Status:</span>
+                  <span className={`ml-2 px-2 py-1 rounded text-xs font-medium ${
+                    existingApplication.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                    existingApplication.status === 'UNDER_REVIEW' ? 'bg-blue-100 text-blue-800' :
+                    existingApplication.status === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
+                    existingApplication.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {existingApplication.status || 'PENDING'}
+                  </span>
+                </div>
+              </div>
+              {existingApplication.resumeFile && (
+                <div className="mt-3 pt-3 border-t border-blue-200">
+                  <span className="text-blue-600">Resume:</span>
+                  <span className="ml-2 text-blue-900">{existingApplication.resumeFile}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Application History */}
+          {applicationHistory.length > 0 && (
+            <div className="mx-8 mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+              <h3 className="text-sm font-medium text-gray-900 mb-3">
+                Your Applications ({applicationHistory.length})
+              </h3>
+              <div className="space-y-3">
+                {applicationHistory.map((app, index) => (
+                  <div key={app.id || index} className="flex items-center justify-between p-3 bg-white rounded border border-gray-200 hover:shadow-md transition-shadow">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-medium text-gray-900">Application #{app.id}</span>
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${
+                          app.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                          app.status === 'UNDER_REVIEW' ? 'bg-blue-100 text-blue-800' :
+                          app.status === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
+                          app.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {app.status || 'PENDING'}
+                        </span>
+                        {index === applicationHistory.length - 1 && (
+                          <span className="px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800">
+                            Latest
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        Submitted: {new Date(app.submittedAt).toLocaleDateString()} at {new Date(app.submittedAt).toLocaleTimeString()}
+                      </div>
+                      <div className="text-xs text-gray-600 mt-1">
+                        Position: {app.positionTitle || 'Not specified'}
+                      </div>
+                      {app.resumeFile && (
+                        <div className="text-xs text-gray-600 mt-1">
+                          Resume: {app.resumeFile}
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      <div className="text-xs text-gray-500">
+                        {app.firstName} {app.lastName}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {app.email}
+                      </div>
+                      {index === 0 && (
+                        <button
+                          onClick={() => {
+                            setFormData({
+                              firstName: app.firstName || '',
+                              lastName: app.lastName || '',
+                              phone: app.phone || '',
+                              location: app.location || '',
+                              linkedinProfile: app.linkedinProfile || '',
+                              githubProfile: app.githubProfile || '',
+                              portfolioLink: app.portfolioLink || '',
+                              skills: app.skills || [],
+                              education: app.education || [],
+                              experience: app.experience || [],
+                              certifications: app.certifications || [],
+                              availability: app.availability || '',
+                              expectedSalary: app.expectedSalary || '',
+                              noticePeriod: app.noticePeriod || '',
+                              workMode: app.workMode || 'remote'
+                            })
+                            setExistingApplication(app)
+                          }}
+                          className="mt-2 text-xs text-blue-600 hover:text-blue-800"
+                        >
+                          Use this data
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 

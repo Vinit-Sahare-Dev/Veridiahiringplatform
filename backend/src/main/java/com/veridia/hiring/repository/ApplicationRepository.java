@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     Optional<Application> findByCandidate(User candidate);
+    List<Application> findAllByCandidate(User candidate);
     List<Application> findByStatus(ApplicationStatus status);
     List<Application> findByCandidateId(Long candidateId);
     List<Application> findByCandidateNameContainingIgnoreCase(String name);

@@ -74,6 +74,10 @@ public class ApplicationService {
                 .orElseThrow(() -> new RuntimeException("Application not found"));
     }
 
+    public List<Application> getApplicationsByCandidate(User candidate) {
+        return applicationRepository.findAllByCandidate(candidate);
+    }
+
     public List<Application> getAllApplications() {
         return applicationRepository.findAllByOrderByCreatedAtDesc();
     }

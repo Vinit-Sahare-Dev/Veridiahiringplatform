@@ -36,13 +36,13 @@ const Footer = () => {
               meaningful career journeys that drive innovation and growth.
             </p>
             <div className="social-links">
-              <a href="https://linkedin.com/company/veridia" className="social-link" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/company/veridia-io" className="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="https://twitter.com/veridia" className="social-link" aria-label="Twitter">
+              <a href="https://twitter.com/veridia" className="social-link" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="https://github.com/veridia" className="social-link" aria-label="GitHub">
+              <a href="https://github.com/veridia" className="social-link" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
                 <Github className="w-5 h-5" />
               </a>
             </div>

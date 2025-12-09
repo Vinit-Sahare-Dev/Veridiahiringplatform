@@ -29,7 +29,7 @@ import {
   Eye,
   Timer
 } from 'lucide-react'
-import '../styles/Professional.css'
+import '../styles/CareersEnhanced.css'
 
 const Careers = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -343,60 +343,232 @@ const Careers = () => {
   ]
 
   return (
-    <div className="careers-page">
+    <div className="careers-container">
       {/* Hero Section */}
       <section className="careers-hero">
-        <div className="hero-background">
-          <div className="hero-pattern"></div>
-        </div>
-        
-        <div className="section-container">
-          <div className="careers-hero-content">
-            <div className="careers-badge">
-              <Sparkles className="w-4 h-4" />
-              Now Hiring: Join Our Amazing Team
+        <div className="careers-hero-content">
+          <div className="careers-hero-badge">
+            <Sparkles className="w-4 h-4" />
+            Now Hiring: Join Our Amazing Team
+          </div>
+          
+          <h1 className="careers-hero-title">
+            Build Your Career at <span className="text-gradient">Veridia</span>
+          </h1>
+          
+          <p className="careers-hero-description">
+            Join our team of innovators, creators, and problem-solvers. 
+            Together, we're building the future of hiring technology.
+          </p>
+          
+          <div className="careers-hero-stats">
+            <div className="careers-stat">
+              <span className="careers-stat-value">500+</span>
+              <span className="careers-stat-label">Employees</span>
             </div>
-            
-            <h1 className="careers-title">
-              Build Your Career at <span className="text-gradient">Veridia</span>
-            </h1>
-            
-            <p className="careers-subtitle">
-              Join our team of innovators, creators, and problem-solvers. 
-              Together, we're building the future of hiring technology.
-            </p>
-            
-            <div className="careers-stats">
-              <div className="stat-item">
-                <Building className="w-5 h-5" />
-                <span>500+ Employees</span>
-              </div>
-              <div className="stat-item">
-                <Star className="w-5 h-5" />
-                <span>4.8 Rating</span>
-              </div>
-              <div className="stat-item">
-                <MapPin className="w-5 h-5" />
-                <span>Indian Locations</span>
-              </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">4.8★</span>
+              <span className="careers-stat-label">Rating</span>
+            </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">25+</span>
+              <span className="careers-stat-label">Countries</span>
+            </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">92%</span>
+              <span className="careers-stat-label">Retention</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="careers-benefits">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">Why Join Veridia?</h2>
-            <p className="section-subtitle">
-              We offer competitive benefits and a culture that supports your growth and well-being.
+      {/* Filters Section */}
+      <section className="careers-filters">
+        <div className="careers-filters-content">
+          <div className="careers-filters-grid">
+            <div className="careers-search-container">
+              <Search className="careers-search-icon w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search jobs, skills, or keywords..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="careers-search-input"
+              />
+            </div>
+            
+            <div>
+              <label className="careers-filter-label">Category</label>
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="careers-filter-select"
+              >
+                {categories.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name} ({cat.count})
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className="careers-filter-label">Location</label>
+              <select
+                value={selectedLocation}
+                onChange={(e) => setSelectedLocation(e.target.value)}
+                className="careers-filter-select"
+              >
+                {locations.map(loc => (
+                  <option key={loc.id} value={loc.id}>
+                    {loc.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className="careers-filter-label">Type</label>
+              <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="careers-filter-select"
+              >
+                {jobTypes.map(type => (
+                  <option key={type.id} value={type.id}>
+                    {type.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div>
+              <label className="careers-filter-label">Experience</label>
+              <select
+                value={selectedExperience}
+                onChange={(e) => setSelectedExperience(e.target.value)}
+                className="careers-filter-select"
+              >
+                {experienceLevels.map(level => (
+                  <option key={level.id} value={level.id}>
+                    {level.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <button
+              onClick={() => setSortBy(sortBy === 'newest' ? 'salary' : 'newest')}
+              className="careers-sort-btn"
+            >
+              <Filter className="w-4 h-4" />
+              Sort by {sortBy === 'newest' ? 'Salary' : 'Newest'}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Jobs Section */}
+      <section className="careers-jobs-section">
+        <div className="careers-jobs-header">
+          <h2 className="careers-jobs-title">
+            {filteredJobs.length} Open Positions
+          </h2>
+          <div className="careers-jobs-count">
+            {filteredJobs.length} jobs found
+          </div>
+        </div>
+        
+        {filteredJobs.length > 0 ? (
+          <>
+            <div className="careers-jobs-grid">
+              {filteredJobs.slice(0, visibleJobs).map((job) => (
+                <div key={job.id} className="careers-job-card">
+                  <div className="careers-job-header">
+                    <div>
+                      <h3 className="careers-job-title">{job.title}</h3>
+                      <p className="careers-job-department">{job.department}</p>
+                    </div>
+                    <div className="careers-job-actions">
+                      <button
+                        onClick={() => toggleSaveJob(job.id)}
+                        className={`careers-job-action-btn ${savedJobs.has(job.id) ? 'saved' : ''}`}
+                        title="Save job"
+                      >
+                        <Bookmark className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => shareJob(job)}
+                        className="careers-job-action-btn"
+                        title="Share job"
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="careers-job-meta">
+                    <div className="careers-job-meta-item">
+                      <MapPin className="w-4 h-4" />
+                      {job.location}
+                    </div>
+                    <div className="careers-job-meta-item">
+                      <Briefcase className="w-4 h-4" />
+                      {job.type}
+                    </div>
+                    <div className="careers-job-meta-item">
+                      <Clock className="w-4 h-4" />
+                      {job.experience}
+                    </div>
+                  </div>
+                  
+                  <div className="careers-job-badges">
+                    <span className="careers-job-badge type">{job.type}</span>
+                    <span className="careers-job-badge level">{job.level}</span>
+                    <span className="careers-job-badge location">{job.location.includes('Remote') ? 'Remote' : 'On-site'}</span>
+                  </div>
+                  
+                  <p className="careers-job-description">{job.description}</p>
+                  
+                  <div className="careers-job-footer">
+                    <div className="careers-job-salary">{job.salary}</div>
+                    <Link
+                      to={`/candidate/apply?job=${job.id}`}
+                      className="careers-job-apply-btn"
+                    >
+                      Apply Now
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {filteredJobs.length > visibleJobs && (
+              <div className="careers-load-more">
+                <button
+                  onClick={() => setVisibleJobs(prev => prev + 6)}
+                  className="careers-load-more-btn"
+                >
+                  Load More Jobs
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="careers-empty-state">
+            <div className="careers-empty-icon">
+              <Briefcase className="w-8 h-8" />
+            </div>
+            <h3 className="careers-empty-title">No jobs found</h3>
+            <p className="careers-empty-description">
+              Try adjusting your filters or search terms to find more opportunities.
             </p>
           </div>
-          
-          <div className="benefits-grid">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="benefit-card">
+        )}
+      </section>
+    </div>
+  )
                 <div className={`benefit-icon ${benefit.gradient}`}>
                   <benefit.icon className="w-8 h-8" />
                 </div>

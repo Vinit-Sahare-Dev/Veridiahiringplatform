@@ -1,5 +1,5 @@
 import React from 'react'
-import { Briefcase, Calendar, DollarSign } from 'lucide-react'
+import { Briefcase, Calendar, IndianRupee } from 'lucide-react'
 import '../../styles/Applications.css'
 
 const JobPreferencesForm = ({ formData, onChange, errors }) => {
@@ -70,7 +70,7 @@ const JobPreferencesForm = ({ formData, onChange, errors }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            <DollarSign className="w-4 h-4 inline mr-2" />
+            <IndianRupee className="w-4 h-4 inline mr-2" />
             Expected Salary (Annual)
           </label>
           <input
@@ -81,7 +81,7 @@ const JobPreferencesForm = ({ formData, onChange, errors }) => {
             className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
               errors?.expectedSalary ? 'border-red-500' : 'border-gray-300'
             }`}
-            placeholder="e.g., 75000 USD"
+            placeholder="e.g., 60,00,000 INR"
           />
           {errors?.expectedSalary && (
             <p className="mt-2 text-sm text-red-600">{errors.expectedSalary}</p>
@@ -115,8 +115,8 @@ const JobPreferencesForm = ({ formData, onChange, errors }) => {
       <div className="bg-blue-50 p-4 rounded-lg">
         <h4 className="font-medium text-blue-900 mb-2">Salary Information</h4>
         <div className="text-sm text-blue-800 space-y-1">
-          <p>• Enter your expected annual salary in your local currency</p>
-          <p>• Include currency symbol (e.g., 75000 USD, 55000 EUR)</p>
+          <p>• Enter your expected annual salary in Indian Rupees</p>
+          <p>• Include currency symbol (e.g., 60,00,000 INR, 50,00,000 INR)</p>
           <p>• This information helps us match you with suitable positions</p>
           <p>• Salary negotiations will be discussed during the interview process</p>
         </div>

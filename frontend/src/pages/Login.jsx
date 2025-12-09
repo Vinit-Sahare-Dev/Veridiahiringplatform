@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { authAPI } from '../services/api';
-import '../styles/auth.css';
+import '../styles/Login.css';
 import { Eye, EyeOff, Mail, Lock, Briefcase, Shield, AlertCircle, CheckCircle } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -185,10 +185,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Footer Text */}
-        <p className="text-center text-sm text-gray-600 mt-6">
-          Protected by industry-standard encryption
-        </p>
       </div>
     </div>
   )

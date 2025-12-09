@@ -14,9 +14,13 @@ import {
   Calendar,
   TrendingUp,
   UserCheck,
-  Briefcase
+  Briefcase,
+  BarChart3,
+  Activity,
+  Target,
+  Shield
 } from 'lucide-react'
-import '../../styles/Applications.css'
+import '../../styles/AdminDashboard.css'
 
 const AdminDashboard = () => {
   const [applications, setApplications] = useState([])
@@ -143,193 +147,181 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-64">
-        <div className="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+      <div className="loading-state">
+        <div className="loading-spinner"></div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-7xl mx-auto animate-fade-in">
+    <div className="admin-dashboard">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-secondary-900 mb-2">Admin Dashboard</h1>
-        <p className="text-secondary-600">Manage job applications and track candidate progress</p>
+      <div className="admin-header">
+        <h1 className="admin-title">
+          <Shield className="w-8 h-8 text-blue-600" />
+          Admin Dashboard
+        </h1>
+        <p className="admin-subtitle">Manage job applications and track candidate progress</p>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-secondary-900">{stats.total}</div>
-          <div className="text-sm text-secondary-600">Total</div>
+      <div className="stats-grid">
+        <div className="stat-card total">
+          <div className="stat-icon total">
+            <Users className="w-5 h-5" />
+          </div>
+          <div className="stat-value">{stats.total}</div>
+          <div className="stat-label">Total Applications</div>
         </div>
-        <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
-          <div className="text-sm text-secondary-600">Pending</div>
+        <div className="stat-card pending">
+          <div className="stat-icon pending">
+            <Clock className="w-5 h-5" />
+          </div>
+          <div className="stat-value">{stats.pending}</div>
+          <div className="stat-label">Pending</div>
         </div>
-        <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-blue-600">{stats.underReview}</div>
-          <div className="text-sm text-secondary-600">Under Review</div>
+        <div className="stat-card under-review">
+          <div className="stat-icon under-review">
+            <AlertCircle className="w-5 h-5" />
+          </div>
+          <div className="stat-value">{stats.underReview}</div>
+          <div className="stat-label">Under Review</div>
         </div>
-        <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-purple-600">{stats.shortlisted}</div>
-          <div className="text-sm text-secondary-600">Shortlisted</div>
+        <div className="stat-card shortlisted">
+          <div className="stat-icon shortlisted">
+            <Target className="w-5 h-5" />
+          </div>
+          <div className="stat-value">{stats.shortlisted}</div>
+          <div className="stat-label">Shortlisted</div>
         </div>
-        <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-green-600">{stats.accepted}</div>
-          <div className="text-sm text-secondary-600">Accepted</div>
+        <div className="stat-card accepted">
+          <div className="stat-icon accepted">
+            <CheckCircle className="w-5 h-5" />
+          </div>
+          <div className="stat-value">{stats.accepted}</div>
+          <div className="stat-label">Accepted</div>
         </div>
-        <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
-          <div className="text-sm text-secondary-600">Rejected</div>
+        <div className="stat-card rejected">
+          <div className="stat-icon rejected">
+            <AlertCircle className="w-5 h-5" />
+          </div>
+          <div className="stat-value">{stats.rejected}</div>
+          <div className="stat-label">Rejected</div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="card mb-6">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-secondary-900 mb-4">Quick Actions</h3>
-          <div className="flex flex-wrap gap-4">
-            <Link to="/admin/applications" className="btn-primary">
-              View All Applications
-            </Link>
-            <button className="btn-secondary">
-              Export Reports
-            </button>
-            <button className="btn-secondary">
-              Send Bulk Emails
-            </button>
-          </div>
+      <div className="quick-actions">
+        <h3 className="quick-actions-header">
+          <Activity className="w-5 h-5" />
+          Quick Actions
+        </h3>
+        <div className="quick-actions-grid">
+          <Link to="/admin/applications" className="action-btn primary">
+            <FileText className="w-4 h-4" />
+            View All Applications
+          </Link>
+          <button className="action-btn secondary">
+            <BarChart3 className="w-4 h-4" />
+            Export Reports
+          </button>
+          <button className="action-btn secondary">
+            <Users className="w-4 h-4" />
+            Send Bulk Emails
+          </button>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="card mb-6">
-        <div className="p-4">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-secondary-400" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search by name, email, or skills..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="input-field pl-10"
-                />
-              </div>
-            </div>
-            <div className="md:w-48">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="input-field"
-              >
-                <option value="">All Status</option>
-                <option value="PENDING">Pending</option>
-                <option value="UNDER_REVIEW">Under Review</option>
-                <option value="SHORTLISTED">Shortlisted</option>
-                <option value="ACCEPTED">Accepted</option>
-                <option value="REJECTED">Rejected</option>
-              </select>
-            </div>
+      <div className="filters-section">
+        <div className="filters-grid">
+          <div className="search-input">
+            <Search className="search-icon w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search by name, email, or skills..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="filter-select"
+          >
+            <option value="">All Status</option>
+            <option value="PENDING">Pending</option>
+            <option value="UNDER_REVIEW">Under Review</option>
+            <option value="SHORTLISTED">Shortlisted</option>
+            <option value="ACCEPTED">Accepted</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
         </div>
       </div>
 
       {/* Applications Table */}
-      <div className="card overflow-hidden">
-        <div className="card-header">
-          <h3 className="text-lg font-semibold text-secondary-900 flex items-center">
-            <Users className="w-5 h-5 mr-2" />
-            Applications ({filteredApplications.length})
+      <div className="applications-section">
+        <div className="applications-header">
+          <h3 className="applications-title">
+            <Users className="w-5 h-5" />
+            Applications
           </h3>
+          <span className="applications-count">{filteredApplications.length}</span>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-secondary-50 border-b border-secondary-200">
+        <div className="table-container">
+          <table className="applications-table">
+            <thead>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Candidate
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Contact
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Location
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Work Mode
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Skills
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Applied
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                  Actions
-                </th>
+                <th>Candidate</th>
+                <th>Contact</th>
+                <th>Location</th>
+                <th>Work Mode</th>
+                <th>Skills</th>
+                <th>Status</th>
+                <th>Applied</th>
+                <th>Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-secondary-200">
+            <tbody>
               {filteredApplications.map((application) => (
-                <tr key={application.id} className="hover:bg-secondary-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-secondary-900">
-                        {application.candidateName}
-                      </div>
-                      <div className="text-sm text-secondary-500">
-                        ID: #{application.id}
-                      </div>
+                <tr key={application.id}>
+                  <td>
+                    <div className="candidate-info">
+                      <div className="candidate-name">{application.candidateName}</div>
+                      <div className="candidate-id">ID: #{application.id}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-secondary-900">{application.phone}</div>
-                    <div className="text-sm text-secondary-500">{application.candidateEmail}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-secondary-900">
-                      {application.location || 'Not specified'}
+                  <td>
+                    <div className="contact-info">
+                      <div className="contact-primary">{application.phone}</div>
+                      <div className="contact-secondary">{application.candidateEmail}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      application.workMode === 'remote' ? 'bg-green-100 text-green-800' :
-                      application.workMode === 'hybrid' ? 'bg-blue-100 text-blue-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
+                  <td>{application.location || 'Not specified'}</td>
+                  <td>
+                    <span className={`work-mode-badge ${application.workMode}`}>
                       {application.workMode || 'Not specified'}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-secondary-900 max-w-xs truncate">
+                  <td>
+                    <div className="max-w-xs truncate">
                       {application.skills || 'N/A'}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(application.status)}`}>
+                  <td>
+                    <span className={`status-badge ${application.status.toLowerCase().replace('_', '-')}`}>
                       {getStatusIcon(application.status)}
-                      <span className="ml-1">{application.status}</span>
+                      {application.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-500">
-                    {formatDate(application.createdAt)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex items-center space-x-2">
-                      {/* Status Update Dropdown */}
+                  <td>{formatDate(application.createdAt)}</td>
+                  <td>
+                    <div className="actions-cell">
                       <select
                         value={application.status}
                         onChange={(e) => updateApplicationStatus(application.id, e.target.value)}
                         disabled={updatingId === application.id}
-                        className="text-sm border border-secondary-300 rounded px-2 py-1 disabled:opacity-50"
+                        className="status-select"
                       >
                         <option value="PENDING">Pending</option>
                         <option value="UNDER_REVIEW">Under Review</option>
@@ -338,22 +330,17 @@ const AdminDashboard = () => {
                         <option value="REJECTED">Rejected</option>
                       </select>
                       
-                      {/* Download Resume */}
                       {application.resumeUrl && (
                         <button
                           onClick={() => downloadResume(application.resumeUrl, application.candidateName)}
-                          className="text-secondary-600 hover:text-secondary-900"
+                          className="action-btn-small"
                           title="Download Resume"
                         >
                           <Download className="w-4 h-4" />
                         </button>
                       )}
                       
-                      {/* View Details */}
-                      <button
-                        className="text-secondary-600 hover:text-secondary-900"
-                        title="View Details"
-                      >
+                      <button className="action-btn-small" title="View Details">
                         <Eye className="w-4 h-4" />
                       </button>
                     </div>
@@ -364,12 +351,12 @@ const AdminDashboard = () => {
           </table>
           
           {filteredApplications.length === 0 && (
-            <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary-100 rounded-full mb-4">
-                <FileText className="w-8 h-8 text-secondary-400" />
+            <div className="empty-state">
+              <div className="empty-icon">
+                <FileText className="w-8 h-8" />
               </div>
-              <h3 className="text-lg font-medium text-secondary-900 mb-2">No applications found</h3>
-              <p className="text-secondary-600">
+              <h3 className="empty-title">No applications found</h3>
+              <p className="empty-description">
                 {searchTerm || statusFilter ? 'Try adjusting your filters' : 'No applications have been submitted yet'}
               </p>
             </div>

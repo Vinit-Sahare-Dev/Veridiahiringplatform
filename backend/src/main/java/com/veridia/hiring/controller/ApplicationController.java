@@ -92,7 +92,10 @@ public class ApplicationController {
         
         Map<String, Object> response = new HashMap<>();
         response.put("id", application.getId());
+        response.put("firstName", application.getFirstName());
+        response.put("lastName", application.getLastName());
         response.put("phone", application.getPhone());
+        response.put("location", application.getLocation());
         response.put("skills", application.getSkills());
         response.put("education", application.getEducation());
         response.put("experience", application.getExperience());
@@ -103,6 +106,39 @@ public class ApplicationController {
         response.put("updatedAt", application.getUpdatedAt());
         
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/my-applications")
+    public ResponseEntity<?> getMyApplications(Authentication authentication) {
+        User candidate = userService.getUserByEmail(authentication.getName());
+        List<Application> applications = applicationService.getApplicationsByCandidate(candidate);
+        
+        return ResponseEntity.ok(applications.stream().map(app -> {
+            Map<String, Object> appMap = new HashMap<>();
+            appMap.put("id", app.getId());
+            appMap.put("firstName", app.getFirstName());
+            appMap.put("lastName", app.getLastName());
+            appMap.put("email", candidate.getEmail());
+            appMap.put("phone", app.getPhone());
+            appMap.put("location", app.getLocation());
+            appMap.put("linkedinProfile", app.getLinkedinProfile());
+            appMap.put("githubProfile", app.getGithubProfile());
+            appMap.put("portfolioLink", app.getPortfolioLink());
+            appMap.put("skills", app.getSkills());
+            appMap.put("education", app.getEducation());
+            appMap.put("experience", app.getExperience());
+            appMap.put("availability", app.getAvailability());
+            appMap.put("expectedSalary", app.getExpectedSalary());
+            appMap.put("noticePeriod", app.getNoticePeriod());
+            appMap.put("workMode", app.getWorkMode());
+            appMap.put("resumeFile", app.getResumeUrl() != null ? 
+                app.getResumeUrl().substring(app.getResumeUrl().lastIndexOf("/") + 1) : null);
+            appMap.put("resumeUrl", app.getResumeUrl());
+            appMap.put("status", app.getStatus().name());
+            appMap.put("submittedAt", app.getCreatedAt());
+            appMap.put("updatedAt", app.getUpdatedAt());
+            return appMap;
+        }).toList());
     }
 
     @GetMapping("/admin/all")

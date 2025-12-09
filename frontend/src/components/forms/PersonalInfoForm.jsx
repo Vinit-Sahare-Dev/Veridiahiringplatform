@@ -1,5 +1,5 @@
 import React from 'react'
-import { User, Phone, MapPin, Globe, Link as LinkIcon } from 'lucide-react'
+import { User, Phone, MapPin, Globe, Link as LinkIcon, Code } from 'lucide-react'
 import '../../styles/Applications.css'
 
 const PersonalInfoForm = ({ formData, onChange, errors }) => {

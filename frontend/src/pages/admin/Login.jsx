@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff, Mail, Lock, Shield } from 'lucide-react'
-import { authAPI } from '../../services/api'
+import { useAuth } from '../../contexts/AuthContext'
 import '../../styles/auth.css'
+
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -10,9 +11,9 @@ const AdminLogin = () => {
     password: 'admin123'
   })
   const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-
+  
+  const { login, loading } = useAuth()
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -25,40 +26,23 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
     setError('')
 
     try {
-      const response = await authAPI.login(formData)
+      const result = await login(formData.email, formData.password)
       
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user', JSON.stringify({
-          email: response.data.email,
-          name: response.data.name,
-          role: response.data.role || 'admin'
-        }))
-        navigate('/admin/dashboard')
+      if (result.success) {
+        // Check if user is admin
+        if (result.user.role === 'ADMIN') {
+          navigate('/admin/dashboard')
+        } else {
+          setError('Access denied. Admin credentials required.')
+        }
       } else {
-        setError('Invalid login response')
+        setError(result.error)
       }
     } catch (error) {
-      console.error('Login error details:', error)
-      console.error('Error response:', error.response)
-      console.error('Error status:', error.response?.status)
-      console.error('Error data:', error.response?.data)
-      
-      if (error.response?.data?.message) {
-        setError(error.response.data.message)
-      } else if (error.response?.data) {
-        setError(typeof error.response.data === 'string' ? error.response.data : 'Login failed')
-      } else if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-        setError('Backend server not running. Please start the backend server first.')
-      } else {
-        setError(`Login failed: ${error.message || 'Unknown error'}`)
-      }
-    } finally {
-      setLoading(false)
+      setError('Login failed. Please try again.')
     }
   }
 

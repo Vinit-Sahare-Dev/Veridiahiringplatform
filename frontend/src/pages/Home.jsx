@@ -24,7 +24,9 @@ import {
   MessageSquare,
   Code,
   Palette,
-  BarChart3
+  BarChart3,
+  Play,
+  ChevronDown
 } from 'lucide-react'
 import '../styles/HomeEnhanced.css'
 
@@ -149,6 +151,101 @@ const Home = () => {
           </div>
         </div>
         
+        <div className="hero-content">
+          <div className="section-container">
+            <div className="hero-grid">
+              <div className="hero-text">
+                <div className="hero-badge">
+                  <Sparkles className="w-4 h-4" />
+                  <span>Building the Future of Work</span>
+                </div>
+                
+                <h1 className="hero-title">
+                  Join the Team That's 
+                  <span className="hero-highlight">Changing Everything</span>
+                </h1>
+                
+                <p className="hero-description">
+                  At Veridia, we're not just building products—we're creating the future of how people work, connect, and grow. Join our global team of innovators, creators, and problem-solvers.
+                </p>
+                
+                <div className="hero-actions">
+                  {isAuthenticated && isCandidate ? (
+                    <Link to="/candidate/apply" className="btn-primary btn-large">
+                      Apply Now
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Link>
+                  ) : (
+                    <>
+                      <Link to="/careers" className="btn-primary btn-large">
+                        Explore Opportunities
+                        <ArrowRight className="w-5 h-5 ml-2" />
+                      </Link>
+                      <Link to="/register" className="btn-secondary btn-large">
+                        Join Our Talent Pool
+                      </Link>
+                    </>
+                  )}
+                </div>
+                
+                <div className="hero-stats">
+                  <div className="stat-item">
+                    <span className="stat-value">500+</span>
+                    <span className="stat-label">Team Members</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-value">25+</span>
+                    <span className="stat-label">Countries</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-value">4.8★</span>
+                    <span className="stat-label">Satisfaction</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="hero-visual">
+                <div className="hero-card">
+                  <div className="card-header">
+                    <div className="card-avatar">
+                      <Users className="w-8 h-8" />
+                    </div>
+                    <div className="card-info">
+                      <h3>Join Our Team</h3>
+                      <p>Discover amazing opportunities</p>
+                    </div>
+                  </div>
+                  <div className="card-content">
+                    <div className="feature-item">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span>Competitive compensation</span>
+                    </div>
+                    <div className="feature-item">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span>Flexible work arrangements</span>
+                    </div>
+                    <div className="feature-item">
+                      <CheckCircle className="w-5 h-5 text-green-500" />
+                      <span>Global impact opportunities</span>
+                    </div>
+                  </div>
+                  <div className="card-footer">
+                    <button className="btn-learn-more">
+                      <Play className="w-4 h-4" />
+                      Learn More
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="scroll-indicator">
+          <ChevronDown className="w-6 h-6 animate-bounce" />
+        </div>
+      </section>
+        
         <div className="hero-container">
           <div className="hero-content">
             <div className="hero-badge">
@@ -170,7 +267,7 @@ const Home = () => {
                 onClick={() => navigate('/careers')}
                 className="btn-primary"
               >
-                <Zap className="btn-icon" />
+              
                 Explore Opportunities
                 <ArrowRight className="btn-arrow" />
               </button>
@@ -196,12 +293,12 @@ const Home = () => {
 
       {/* Open Positions Preview */}
       <section id="positions" className="positions-section">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">
+        <div className="positions-container">
+          <div className="positions-header">
+            <h2 className="positions-title">
               Current <span className="highlight-text">Opportunities</span>
             </h2>
-            <p className="section-subtitle">
+            <p className="positions-subtitle">
               We're looking for talented individuals to join our growing team
             </p>
           </div>
@@ -247,12 +344,12 @@ const Home = () => {
 
       {/* Company Values */}
       <section id="values" className="values-section">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">
+        <div className="values-container">
+          <div className="values-header">
+            <h2 className="values-title">
               Why <span className="highlight-text">Veridia</span>
             </h2>
-            <p className="section-subtitle">
+            <p className="values-subtitle">
               Discover what makes us different and why our team loves working here
             </p>
           </div>
@@ -273,13 +370,13 @@ const Home = () => {
 
       {/* Team Testimonials */}
       <section id="testimonials" className="testimonials-section">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">
+        <div className="testimonials-container">
+          <div className="testimonials-header">
+            <h2 className="testimonials-title">
               Life at <span className="highlight-text">Veridia</span>
             </h2>
-            <p className="section-subtitle">
-              Hear directly from our team members about their experiences
+            <p className="testimonials-subtitle">
+              Hear directly from our team members about their experience
             </p>
           </div>
           
