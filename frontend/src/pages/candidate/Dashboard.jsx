@@ -36,8 +36,24 @@ const Dashboard = () => {
       const response = await applicationAPI.getMyApplication()
       setApplication(response.data)
     } catch (error) {
-      // User hasn't submitted application yet
-      console.log('No application found')
+      // Check if there's a locally stored application as backup
+      const localApplication = localStorage.getItem('applicationSubmitted')
+      const localData = localStorage.getItem('applicationData')
+      
+      if (localApplication === 'true' && localData) {
+        console.log('Backend not available, showing locally stored application')
+        const parsedData = JSON.parse(localData)
+        setApplication({
+          ...parsedData,
+          status: 'PENDING',
+          candidateEmail: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'candidate@example.com',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          resumeUrl: 'Resume uploaded locally'
+        })
+      } else {
+        console.log('No application found')
+      }
     } finally {
       setLoading(false)
     }

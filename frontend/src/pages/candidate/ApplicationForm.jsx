@@ -125,6 +125,11 @@ const ApplicationForm = () => {
       return
     }
     
+    if (!resumeFile) {
+      setError('Please upload your resume')
+      return
+    }
+    
     setLoading(true)
     setError('')
     
@@ -161,8 +166,13 @@ const ApplicationForm = () => {
         submissionData.append('coverLetter', coverLetterFile)
       }
       
-      await applicationAPI.submitApplication(submissionData)
+      const response = await applicationAPI.submitApplication(submissionData)
+      console.log('Application submitted successfully:', response)
       setSuccess(true)
+      
+      // Store submission in localStorage as backup
+      localStorage.setItem('applicationSubmitted', 'true')
+      localStorage.setItem('applicationData', JSON.stringify(applicationData))
       
       setTimeout(() => {
         navigate('/careers')
@@ -170,7 +180,20 @@ const ApplicationForm = () => {
       
     } catch (error) {
       console.error('Application submission error:', error)
-      setError(error.response?.data || 'Failed to submit application')
+      
+      // Handle different error types
+      if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
+        setError('Unable to connect to the server. Please ensure the backend is running and try again. If the issue persists, please contact support.')
+      } else if (error.response?.status === 401) {
+        setError('Your session has expired. Please log in again.')
+        setTimeout(() => navigate('/login'), 2000)
+      } else if (error.response?.status === 400) {
+        setError(error.response?.data?.message || 'Invalid application data. Please check your form and try again.')
+      } else if (error.response?.status >= 500) {
+        setError('Server error occurred. Please try again later or contact support if the issue persists.')
+      } else {
+        setError(error.response?.data?.message || 'Failed to submit application. Please try again.')
+      }
     } finally {
       setLoading(false)
     }

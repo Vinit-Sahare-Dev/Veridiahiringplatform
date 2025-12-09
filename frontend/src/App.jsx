@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './contexts/AuthContext'
 import { PublicRoute, PrivateRoute, AdminRoute } from './components/ProtectedRoute'
 import ErrorBoundary from './components/ErrorBoundary'
-import Navbar from './components/layout/Navbar'
+import Navbar from './components/Navbar'
+import Footer from './components/layout/Footer'
 
 // Public Pages
 import Login from './pages/Login'
@@ -28,29 +29,34 @@ function App() {
     <ErrorBoundary>
       <AuthProvider>
         <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <Navbar />
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-            <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
-            
-            {/* Candidate Routes */}
-            <Route path="/candidate/dashboard" element={<PrivateRoute><CandidateDashboard /></PrivateRoute>} />
-            <Route path="/candidate/profile" element={<PrivateRoute><CandidateProfile /></PrivateRoute>} />
-            <Route path="/candidate/apply" element={<PrivateRoute><ApplicationForm /></PrivateRoute>} />
-            <Route path="/candidate/notifications" element={<PrivateRoute><CandidateNotifications /></PrivateRoute>} />
-            
-            {/* Admin Routes */}
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/login-debug" element={<AdminLoginDebug />} />
-            <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-            <Route path="/admin/applications" element={<AdminRoute><AdminApplications /></AdminRoute>} />
-            
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+                <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+                
+                {/* Candidate Routes */}
+                <Route path="/candidate/dashboard" element={<PrivateRoute><CandidateDashboard /></PrivateRoute>} />
+                <Route path="/candidate/profile" element={<PrivateRoute><CandidateProfile /></PrivateRoute>} />
+                <Route path="/candidate/apply" element={<PrivateRoute><ApplicationForm /></PrivateRoute>} />
+                <Route path="/candidate/notifications" element={<PrivateRoute><CandidateNotifications /></PrivateRoute>} />
+                
+                {/* Admin Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/login-debug" element={<AdminLoginDebug />} />
+                <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+                <Route path="/admin/applications" element={<AdminRoute><AdminApplications /></AdminRoute>} />
+                
+                {/* Fallback */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
         </Router>
       </AuthProvider>
     </ErrorBoundary>

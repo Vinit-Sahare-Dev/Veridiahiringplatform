@@ -28,10 +28,10 @@ const Navbar = () => {
 
   return (
     <nav className="glass-effect shadow-lg border-b border-white/20 sticky top-0 z-50 backdrop-blur-md">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-3 group pl-4">
             <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center transform transition-transform group-hover:scale-105 shadow-md">
               <Briefcase className="w-6 h-6 text-white" />
             </div>
@@ -115,7 +115,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop User Actions */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-4 pr-4">
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-3 px-3 py-2 bg-secondary-50 rounded-lg">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { 
@@ -14,76 +14,132 @@ import {
   Shield,
   Globe,
   Upload,
-  User
+  User,
+  Rocket,
+  Sparkles,
+  Code2,
+  Heart,
+  MessageCircle,
+  Clock,
+  MapPin
 } from 'lucide-react'
-import '../styles/Home.css'
+import '../styles/HomeEnhanced.css'
 
 const Home = () => {
   const { isAuthenticated, isCandidate } = useAuth()
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    const handleScroll = () => setScrollY(window.scrollY)
+    
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('scroll', handleScroll)
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const features = [
     {
-      icon: <Briefcase className="icon-md" />,
-      title: "Easy Application Process",
-      description: "Submit your application with just a few clicks. Upload your resume and fill out the form seamlessly."
+      icon: <Rocket className="icon-md" />,
+      title: "Lightning Fast Application",
+      description: "Complete your entire application in under 10 minutes with our streamlined, AI-powered form assistant."
     },
     {
-      icon: <Users className="icon-md" />,
-      title: "Real-time Status Tracking",
-      description: "Track your application status in real-time. Get notified instantly when your status changes."
+      icon: <MessageCircle className="icon-md" />,
+      title: "Real-time Communication",
+      description: "Get instant updates on your application status and communicate directly with our hiring team."
     },
     {
-      icon: <CheckCircle className="icon-md" />,
-      title: "Professional Review",
-      description: "Your applications are reviewed by our professional HR team with years of experience."
+      icon: <Shield className="icon-md" />,
+      title: "Secure & Professional",
+      description: "Your data is protected with enterprise-grade security. Every application gets professional review."
     }
   ]
 
   const stats = [
-    { number: "500+", label: "Applications Processed", icon: <TrendingUp className="icon-sm" /> },
-    { number: "50+", label: "Candidates Hired", icon: <Users className="icon-sm" /> },
-    { number: "95%", label: "Satisfaction Rate", icon: <Star className="icon-sm" /> },
-    { number: "24h", label: "Average Response Time", icon: <Target className="icon-sm" /> }
+    { number: "10,000+", label: "Applications Processed", icon: <TrendingUp className="icon-sm" /> },
+    { number: "500+", label: "Candidates Hired", icon: <Users className="icon-sm" /> },
+    { number: "98%", label: "Satisfaction Rate", icon: <Star className="icon-sm" /> },
+    { number: "2h", label: "Average Response Time", icon: <Clock className="icon-sm" /> }
   ]
 
   return (
     <div style={{ minHeight: '100vh', paddingTop: '80px', backgroundColor: '#f9fafb' }}>
       {/* Hero Section */}
-      <section style={{ padding: '80px 20px', textAlign: 'center', background: 'linear-gradient(135deg, #dbeafe, #fef3c7)' }}>
-        <h1 style={{ fontSize: '48px', fontWeight: 'bold', color: '#111827', marginBottom: '20px' }}>
-          Welcome to Veridia
-        </h1>
-        <p style={{ fontSize: '20px', color: '#6b7280', marginBottom: '30px', maxWidth: '600px', margin: '0 auto 30px' }}>
-          Transform your career journey with our AI-powered hiring platform
-        </p>
-        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center' }}>
-          <Link 
-            to="/register" 
-            style={{ 
-              padding: '12px 24px', 
-              background: 'linear-gradient(to right, #2563eb, #1d4ed8)', 
-              color: 'white', 
-              textDecoration: 'none', 
-              borderRadius: '8px',
-              fontWeight: '600'
-            }}
-          >
-            Get Started
-          </Link>
-          <Link 
-            to="/careers" 
-            style={{ 
-              padding: '12px 24px', 
-              backgroundColor: 'white', 
-              color: '#374151', 
-              textDecoration: 'none', 
-              borderRadius: '8px',
-              border: '1px solid #d1d5db',
-              fontWeight: '600'
-            }}
-          >
-            Browse Jobs
-          </Link>
+      <section className="hero-section" style={{
+        background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(99, 102, 241, 0.15) 0%, transparent 50%)`,
+        transform: `translateY(${scrollY * 0.5}px)`
+      }}>
+        <div className="hero-background">
+          <div className="floating-shapes">
+            <div className="shape shape-1"></div>
+            <div className="shape shape-2"></div>
+            <div className="shape shape-3"></div>
+          </div>
+        </div>
+        
+        <div className="hero-container">
+          <div className="hero-content">
+            <div className="hero-badge">
+              <Sparkles className="badge-icon" />
+              <span>AI-Powered Hiring Platform</span>
+            </div>
+            
+            <h1 className="hero-title">
+              Transform Your Career at <span className="gradient-text">Veridia</span>
+            </h1>
+            
+            <p className="hero-subtitle">
+              Join thousands of professionals who've discovered their dream jobs through our intelligent, 
+              streamlined hiring process. Your next career adventure starts here.
+            </p>
+            
+            <div className="hero-stats">
+              {stats.map((stat, index) => (
+                <div key={index} className="hero-stat">
+                  <div className="stat-icon">{stat.icon}</div>
+                  <div className="stat-content">
+                    <div className="stat-number">{stat.number}</div>
+                    <div className="stat-label">{stat.label}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="hero-buttons">
+              <Link to="/register" className="hero-primary-btn">
+                <Zap className="btn-icon" />
+                Start Your Journey
+                <ArrowRight className="btn-arrow" />
+              </Link>
+              <Link to="/careers" className="hero-secondary-btn">
+                <Briefcase className="btn-icon" />
+                Explore Opportunities
+              </Link>
+            </div>
+          </div>
+          
+          <div className="hero-visual">
+            <div className="floating-card card-1">
+              <Code2 className="card-icon" />
+              <span>Developer Roles</span>
+            </div>
+            <div className="floating-card card-2">
+              <Heart className="card-icon" />
+              <span>Great Culture</span>
+            </div>
+            <div className="floating-card card-3">
+              <MapPin className="card-icon" />
+              <span>Remote First</span>
+            </div>
+          </div>
         </div>
       </section>
 
