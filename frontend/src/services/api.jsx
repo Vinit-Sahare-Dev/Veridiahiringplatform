@@ -5,9 +5,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
 // Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   timeout: 15000, // 15 second timeout
   withCredentials: true, // Important for CORS with credentials
 })
@@ -126,14 +123,21 @@ export const authAPI = {
 export const candidateAPI = {
   getProfile: () => api.get('/candidate/me'),
   updateProfile: (data) => api.put('/candidate/update', data),
+  uploadProfilePhoto: (formData) => api.post('/candidate/upload-photo', formData, {
+    headers: {
+      // Don't set Content-Type - let browser set it with boundary
+    },
+    timeout: 30000, // 30 seconds for file uploads
+  }),
 }
 
 // Application API
 export const applicationAPI = {
   submitApplication: (formData) => {
+    // FormData automatically sets Content-Type with boundary
     return api.post('/application/submit', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        // Don't set Content-Type - let browser set it with boundary
       },
       timeout: 30000, // 30 seconds for file uploads
     })

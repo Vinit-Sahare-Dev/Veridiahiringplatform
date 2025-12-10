@@ -1,7 +1,6 @@
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\model\ApplicationStatus.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\HiringPlatformApplication.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\model\Role.java
-C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\config\CorsConfig.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\dto\AuthRequest.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\security\SecurityConfig.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\service\ApplicationService.java

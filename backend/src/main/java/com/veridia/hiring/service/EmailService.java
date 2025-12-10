@@ -15,7 +15,7 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String fromEmail;
 
-    public void sendApplicationSubmissionEmail(String toEmail, String candidateName) {
+    public void sendApplicationSubmissionEmail(String toEmail, String candidateName, String jobTitle) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);
         message.setTo(toEmail);
@@ -23,16 +23,21 @@ public class EmailService {
         
         String emailBody = String.format(
             "Dear %s,\n\n" +
-            "Thank you for your interest in joining Veridia! We have successfully received your application.\n\n" +
+            "Thank you for applying to the %s position at Veridia! We have successfully received your application.\n\n" +
             "Your application is currently under review. You will receive email notifications about any status updates.\n\n" +
             "You can check your application status by logging into your dashboard.\n\n" +
             "Best regards,\n" +
             "Veridia Hiring Team",
-            candidateName
+            candidateName, jobTitle
         );
         
         message.setText(emailBody);
         mailSender.send(message);
+    }
+
+    // Overload for backward compatibility
+    public void sendApplicationSubmissionEmail(String toEmail, String candidateName) {
+        sendApplicationSubmissionEmail(toEmail, candidateName, "your desired position");
     }
 
     public void sendStatusUpdateEmail(String toEmail, String candidateName, String newStatus) {

@@ -14,7 +14,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,38 +34,61 @@ public class ApplicationService {
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     );
 
-    public Application submitApplication(User candidate, String firstName, String lastName, String phone, 
-                                       String location, String linkedinProfile, String githubProfile, 
-                                       String portfolioLink, String skills, String education, String experience,
-                                       String availability, String expectedSalary, String noticePeriod, 
-                                       String workMode, MultipartFile resume) {
+    public Application submitApplication(
+            User candidate, 
+            String firstName, 
+            String lastName, 
+            String phone, 
+            String location, 
+            String linkedinProfile, 
+            String githubProfile, 
+            String portfolioLink, 
+            String skills, 
+            String education, 
+            String experience,
+            String availability, 
+            String expectedSalary, 
+            String noticePeriod, 
+            String workMode, 
+            Long jobId,
+            MultipartFile resume) {
         
-        // Check if candidate already has an application
-        Optional<Application> existingApp = applicationRepository.findByCandidate(candidate);
-        if (existingApp.isPresent()) {
-            throw new RuntimeException("You have already submitted an application");
+        try {
+            // Check if candidate already has applications
+            List<Application> existingApps = applicationRepository.findAllByCandidate(candidate);
+            
+            // Create new application
+            Application application = new Application(candidate, firstName, lastName, phone);
+            
+            // Set all fields
+            application.setJobId(jobId);
+            application.setLocation(location);
+            application.setLinkedinProfile(linkedinProfile);
+            application.setGithubProfile(githubProfile);
+            application.setPortfolioLink(portfolioLink);
+            application.setSkills(skills);
+            application.setEducation(education);
+            application.setExperience(experience);
+            application.setAvailability(availability);
+            application.setExpectedSalary(expectedSalary);
+            application.setNoticePeriod(noticePeriod);
+            application.setWorkMode(workMode != null ? workMode : "remote");
+            application.setStatus(ApplicationStatus.PENDING);
+            
+            // Handle resume upload
+            if (resume != null && !resume.isEmpty()) {
+                validateResumeFile(resume);
+                String resumeUrl = saveResume(resume, candidate.getEmail());
+                application.setResumeUrl(resumeUrl);
+            }
+            
+            return applicationRepository.save(application);
+            
+        } catch (Exception e) {
+            System.err.println("Error submitting application: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to submit application: " + e.getMessage());
         }
-
-        String resumeUrl = null;
-        if (resume != null && !resume.isEmpty()) {
-            // Validate file before saving
-            validateResumeFile(resume);
-            resumeUrl = saveResume(resume, candidate.getEmail());
-        }
-
-        Application application = new Application(candidate, phone, skills, education, experience, resumeUrl, portfolioLink);
-        // Set additional fields
-        application.setFirstName(firstName);
-        application.setLastName(lastName);
-        application.setLocation(location);
-        application.setLinkedinProfile(linkedinProfile);
-        application.setGithubProfile(githubProfile);
-        application.setAvailability(availability);
-        application.setExpectedSalary(expectedSalary);
-        application.setNoticePeriod(noticePeriod);
-        application.setWorkMode(workMode);
-        
-        return applicationRepository.save(application);
     }
 
     public Application getApplicationByCandidate(User candidate) {
@@ -76,6 +98,10 @@ public class ApplicationService {
 
     public List<Application> getApplicationsByCandidate(User candidate) {
         return applicationRepository.findAllByCandidate(candidate);
+    }
+
+    public boolean hasCandidateAppliedToJob(User candidate, Long jobId) {
+        return applicationRepository.findByCandidateAndJobId(candidate, jobId).isPresent();
     }
 
     public List<Application> getAllApplications() {
@@ -115,21 +141,25 @@ public class ApplicationService {
                 Files.createDirectories(uploadPath);
             }
 
-            // Generate unique filename with UUID for better security
+            // Generate unique filename
             String originalFilename = file.getOriginalFilename();
             if (originalFilename == null || originalFilename.trim().isEmpty()) {
                 throw new RuntimeException("Invalid filename");
             }
             
             String fileExtension = getFileExtension(originalFilename);
-            String filename = sanitizeFilename(userEmail) + "_" + UUID.randomUUID().toString().substring(0, 8) + "_resume" + fileExtension;
+            String filename = sanitizeFilename(userEmail) + "_" + 
+                             UUID.randomUUID().toString().substring(0, 8) + 
+                             "_resume" + fileExtension;
             
             Path filePath = uploadPath.resolve(filename);
             Files.copy(file.getInputStream(), filePath);
             
             return UPLOAD_DIR + filename;
         } catch (IOException e) {
-            throw new RuntimeException("Failed to save resume file", e);
+            System.err.println("Failed to save resume: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save resume file: " + e.getMessage());
         }
     }
     

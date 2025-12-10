@@ -30,6 +30,7 @@ import {
   Timer
 } from 'lucide-react'
 import '../styles/CareersEnhanced.css'
+import '../styles/AppliedBadge.css'
 
 const Careers = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -39,8 +40,10 @@ const Careers = () => {
   const [selectedExperience, setSelectedExperience] = useState('all')
   const [hoveredJob, setHoveredJob] = useState(null)
   const [savedJobs, setSavedJobs] = useState(new Set())
+  const [appliedJobs, setAppliedJobs] = useState(new Set())
   const [sortBy, setSortBy] = useState('newest')
   const [visibleJobs, setVisibleJobs] = useState(9)
+  const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
   const jobs = useMemo(() => [
@@ -234,6 +237,78 @@ const Careers = () => {
       matchScore: 87
     }
   ], [])
+
+  // Check authentication and fetch applied jobs
+  useEffect(() => {
+    const checkAuthAndFetchApplications = async () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        try {
+          // Get user info
+          const userResponse = await fetch('/api/candidate/me', {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          })
+          
+          if (userResponse.ok) {
+            const userData = await userResponse.json()
+            setUser(userData)
+            
+            // Fetch all applications to check which jobs user has applied to
+            const appsResponse = await fetch('/api/application/my-applications', {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            })
+            
+            if (appsResponse.ok) {
+              const applications = await appsResponse.json()
+              console.log('Applications received:', applications)
+              console.log('Applications length:', applications.length)
+              if (applications.length > 0) {
+                console.log('First application:', applications[0])
+                console.log('First application jobId:', applications[0].jobId)
+              }
+              const appliedJobIds = new Set(applications.map(app => String(app.jobId)).filter(id => id))
+              console.log('Applied job IDs:', appliedJobIds)
+              console.log('Applied job IDs size:', appliedJobIds.size)
+              setAppliedJobs(appliedJobIds)
+            } else {
+              console.log('Failed to fetch applications:', appsResponse.status)
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error)
+        }
+      }
+    }
+    
+    checkAuthAndFetchApplications()
+  }, [])
+
+  // Check if user has applied to a specific job
+  const checkJobApplication = async (jobId) => {
+    const token = localStorage.getItem('token')
+    if (!token) return false
+    
+    try {
+      const response = await fetch(`/api/application/check-job-application/${jobId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        return data.hasApplied
+      }
+      return false
+    } catch (error) {
+      console.error('Error checking job application:', error)
+      return false
+    }
+  }
 
   const categories = useMemo(() => [
     { id: 'all', name: 'All Positions', count: jobs.length, icon: Briefcase },
@@ -532,13 +607,22 @@ const Careers = () => {
                   
                   <div className="careers-job-footer">
                     <div className="careers-job-salary">{job.salary}</div>
-                    <Link
-                      to={`/candidate/apply?job=${job.id}`}
-                      className="careers-job-apply-btn"
-                    >
-                      Apply Now
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
+                    {(() => {
+                      console.log(`Checking job ${job.id}, appliedJobs contains:`, appliedJobs.has(String(job.id)))
+                      return appliedJobs.has(String(job.id)) ? (
+                      <div className="careers-job-applied-badge">
+                        <span className="applied-text">Applied</span>
+                      </div>
+                    ) : (
+                      <Link
+                        to={`/candidate/apply?job=${job.id}`}
+                        className="careers-job-apply-btn"
+                      >
+                        Apply Now
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    )
+                    })()}
                   </div>
                 </div>
               ))}

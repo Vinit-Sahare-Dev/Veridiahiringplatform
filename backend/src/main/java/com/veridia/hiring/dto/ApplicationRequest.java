@@ -23,6 +23,7 @@ public class ApplicationRequest {
     private String expectedSalary;
     private String noticePeriod;
     private String workMode;
+    private Long jobId;
 
     public ApplicationRequest() {}
 
@@ -68,4 +69,7 @@ public class ApplicationRequest {
 
     public String getWorkMode() { return workMode; }
     public void setWorkMode(String workMode) { this.workMode = workMode; }
+
+    public Long getJobId() { return jobId; }
+    public void setJobId(Long jobId) { this.jobId = jobId; }
 }

@@ -199,3 +199,6 @@ SELECT
     COUNT(*) as count
 FROM applications
 WHERE status = 'SELECTED';
+
+USE veridia_hiring;
+ALTER TABLE applications MODIFY COLUMN status VARCHAR(20) NOT NULL;

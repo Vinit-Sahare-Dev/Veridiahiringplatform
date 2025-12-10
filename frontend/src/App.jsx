@@ -6,6 +6,7 @@ import { PrivateRoute, AdminRoute, CandidateRoute } from './components/Protected
 import Navbar from './components/Navbar'
 import Footer from './components/layout/Footer'
 import ScrollToTop from './components/ScrollToTop'
+import NotificationSystem from './components/NotificationSystem'
 
 // Import pages
 import Home from './pages/Home'
@@ -34,11 +35,12 @@ import './styles/auth.css'
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ScrollToTop />
         <div className="app-layout">
           <AuthProvider>
             <Navbar />
+            <NotificationSystem />
             <Routes>
             {/* Public Routes */}
             <Route path="/" element={<Home />} />

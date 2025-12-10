@@ -4,6 +4,7 @@ import com.veridia.hiring.model.Role;
 import com.veridia.hiring.model.User;
 import com.veridia.hiring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -65,5 +66,13 @@ public class UserService implements UserDetailsService {
         user.setEmail(email);
         
         return userRepository.save(user);
+    }
+
+    public void updateProfilePhoto(@NonNull Long userId, String profilePhotoUrl) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        user.setProfilePhoto(profilePhotoUrl);
+        userRepository.save(user);
     }
 }

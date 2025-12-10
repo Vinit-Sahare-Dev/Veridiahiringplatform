@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { applicationAPI } from '../../services/api'
 import { Send, AlertCircle, CheckCircle, Briefcase, X, Sparkles, Trophy, Mail, Phone } from 'lucide-react'
 import '../../styles/Applications.css'
@@ -13,6 +13,8 @@ import JobPreferencesForm from '../../components/forms/JobPreferencesForm'
 
 const ApplicationForm = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const jobId = searchParams.get('job') ? parseInt(searchParams.get('job')) : null
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -45,7 +47,7 @@ const ApplicationForm = () => {
 
   useEffect(() => {
     checkExistingApplication()
-  }, [])
+  }, [jobId])
 
   const checkExistingApplication = async () => {
     try {
@@ -55,27 +57,36 @@ const ApplicationForm = () => {
         const applications = response.data
         setApplicationHistory(applications)
         
-        // Set the most recent application as the existing one
-        const mostRecent = applications[applications.length - 1]
-        setExistingApplication(mostRecent)
+        // Find application for the current job
+        const applicationForCurrentJob = applications.find(app => 
+          app.jobId && String(app.jobId) === String(jobId)
+        )
         
-        setFormData({
-          firstName: mostRecent.firstName || '',
-          lastName: mostRecent.lastName || '',
-          phone: mostRecent.phone || '',
-          location: mostRecent.location || '',
-          linkedinProfile: mostRecent.linkedinProfile || '',
-          githubProfile: mostRecent.githubProfile || '',
-          portfolioLink: mostRecent.portfolioLink || '',
-          skills: mostRecent.skills || [],
-          education: mostRecent.education || [],
-          experience: mostRecent.experience || [],
-          certifications: mostRecent.certifications || [],
-          availability: mostRecent.availability || '',
-          expectedSalary: mostRecent.expectedSalary || '',
-          noticePeriod: mostRecent.noticePeriod || '',
-          workMode: mostRecent.workMode || 'remote'
-        })
+        if (applicationForCurrentJob) {
+          // Only set existing application if it's for the current job
+          setExistingApplication(applicationForCurrentJob)
+          
+          setFormData({
+            firstName: applicationForCurrentJob.firstName || '',
+            lastName: applicationForCurrentJob.lastName || '',
+            phone: applicationForCurrentJob.phone || '',
+            location: applicationForCurrentJob.location || '',
+            linkedinProfile: applicationForCurrentJob.linkedinProfile || '',
+            githubProfile: applicationForCurrentJob.githubProfile || '',
+            portfolioLink: applicationForCurrentJob.portfolioLink || '',
+            skills: applicationForCurrentJob.skills || [],
+            education: applicationForCurrentJob.education || [],
+            experience: applicationForCurrentJob.experience || [],
+            certifications: applicationForCurrentJob.certifications || [],
+            availability: applicationForCurrentJob.availability || '',
+            expectedSalary: applicationForCurrentJob.expectedSalary || '',
+            noticePeriod: applicationForCurrentJob.noticePeriod || '',
+            workMode: applicationForCurrentJob.workMode || 'remote'
+          })
+        } else {
+          // No application found for this job
+          setExistingApplication(null)
+        }
       }
     } catch (error) {
       if (error.response?.status !== 404) {
@@ -167,6 +178,7 @@ const ApplicationForm = () => {
     e.preventDefault()
     
     if (!validateForm()) {
+      setError('Please fill all required fields')
       return
     }
 
@@ -174,32 +186,38 @@ const ApplicationForm = () => {
     setError('')
 
     try {
-      // Test backend connection first
-      console.log('Testing backend connection...')
-      try {
-        const healthCheck = await fetch('http://localhost:8080/api/health')
-        if (!healthCheck.ok) {
-          throw new Error('Backend health check failed')
-        }
-        console.log('Backend connection OK')
-      } catch (healthError) {
-        console.error('Backend health check failed:', healthError)
-        setError('Backend server is not running. Please start the backend server on port 8080.')
-        return
-      }
-      
+      // Create FormData
       const formDataToSend = new FormData()
       
-      console.log('Form data being submitted:', formData)
-      console.log('Resume file:', resumeFile)
-      console.log('Cover letter file:', coverLetterFile)
+      // Create clean application object with all required fields
+      const applicationData = {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        phone: formData.phone.trim(),
+        location: formData.location.trim(),
+        linkedinProfile: formData.linkedinProfile || '',
+        githubProfile: formData.githubProfile || '',
+        portfolioLink: formData.portfolioLink || '',
+        skills: Array.isArray(formData.skills) ? formData.skills.join(', ') : formData.skills,
+        education: Array.isArray(formData.education) 
+          ? formData.education.map(edu => `${edu.degree} from ${edu.institution}`).join('\n')
+          : formData.education,
+        experience: Array.isArray(formData.experience)
+          ? formData.experience.map(exp => `${exp.position} at ${exp.company}`).join('\n')
+          : formData.experience,
+        availability: formData.availability,
+        expectedSalary: formData.expectedSalary,
+        noticePeriod: formData.noticePeriod,
+        workMode: formData.workMode,
+        jobId: jobId
+      }
       
-      // Create application JSON string as expected by backend
-      const applicationJson = JSON.stringify(formData)
-      formDataToSend.append('application', applicationJson)
-      console.log('Application JSON:', applicationJson)
-
-      // Add files
+      console.log('Submitting application:', applicationData)
+      
+      // Append as JSON string
+      formDataToSend.append('application', JSON.stringify(applicationData))
+      
+      // Append files
       if (resumeFile) {
         formDataToSend.append('resume', resumeFile)
       }
@@ -207,34 +225,33 @@ const ApplicationForm = () => {
         formDataToSend.append('coverLetter', coverLetterFile)
       }
       
-      console.log('FormData entries:')
+      // Log FormData contents
       for (let pair of formDataToSend.entries()) {
         console.log(pair[0], pair[1])
       }
-
+      
       const response = await applicationAPI.submitApplication(formDataToSend)
+      console.log('Success:', response.data)
       
       setSuccess(true)
       setShowSuccessModal(true)
       
-      // Auto-redirect after 5 seconds
       setTimeout(() => {
-        setShowSuccessModal(false)
-        navigate('/careers', { 
-          state: { 
-            message: 'Application submitted successfully! We will review your application and contact you soon.' 
-          }
-        })
-      }, 5000)
+        navigate('/careers')
+      }, 3000)
       
     } catch (error) {
-      console.error('Application submission error:', error)
-      console.error('Error response:', error.response)
-      console.error('Error status:', error.response?.status)
-      console.error('Error data:', error.response?.data)
-      console.error('Error message:', error.response?.data?.message)
-      console.error('Full error:', JSON.stringify(error.response?.data, null, 2))
-      setError(error.response?.data?.message || error.message || 'Failed to submit application. Please try again.')
+      console.error('Submission error:', error)
+      console.error('Error response:', error.response?.data)
+      
+      if (error.response?.status === 401) {
+        setError('Session expired. Please login again.')
+        setTimeout(() => navigate('/login'), 2000)
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message)
+      } else {
+        setError('Failed to submit application. Please check your connection and try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -426,86 +443,6 @@ const ApplicationForm = () => {
                   <span className="ml-2 text-blue-900">{existingApplication.resumeFile}</span>
                 </div>
               )}
-            </div>
-          )}
-
-          {/* Application History */}
-          {applicationHistory.length > 0 && (
-            <div className="mx-8 mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-              <h3 className="text-sm font-medium text-gray-900 mb-3">
-                Your Applications ({applicationHistory.length})
-              </h3>
-              <div className="space-y-3">
-                {applicationHistory.map((app, index) => (
-                  <div key={app.id || index} className="flex items-center justify-between p-3 bg-white rounded border border-gray-200 hover:shadow-md transition-shadow">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-medium text-gray-900">Application #{app.id}</span>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          app.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                          app.status === 'UNDER_REVIEW' ? 'bg-blue-100 text-blue-800' :
-                          app.status === 'ACCEPTED' ? 'bg-green-100 text-green-800' :
-                          app.status === 'REJECTED' ? 'bg-red-100 text-red-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {app.status || 'PENDING'}
-                        </span>
-                        {index === applicationHistory.length - 1 && (
-                          <span className="px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800">
-                            Latest
-                          </span>
-                        )}
-                      </div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        Submitted: {new Date(app.submittedAt).toLocaleDateString()} at {new Date(app.submittedAt).toLocaleTimeString()}
-                      </div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        Position: {app.positionTitle || 'Not specified'}
-                      </div>
-                      {app.resumeFile && (
-                        <div className="text-xs text-gray-600 mt-1">
-                          Resume: {app.resumeFile}
-                        </div>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs text-gray-500">
-                        {app.firstName} {app.lastName}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {app.email}
-                      </div>
-                      {index === 0 && (
-                        <button
-                          onClick={() => {
-                            setFormData({
-                              firstName: app.firstName || '',
-                              lastName: app.lastName || '',
-                              phone: app.phone || '',
-                              location: app.location || '',
-                              linkedinProfile: app.linkedinProfile || '',
-                              githubProfile: app.githubProfile || '',
-                              portfolioLink: app.portfolioLink || '',
-                              skills: app.skills || [],
-                              education: app.education || [],
-                              experience: app.experience || [],
-                              certifications: app.certifications || [],
-                              availability: app.availability || '',
-                              expectedSalary: app.expectedSalary || '',
-                              noticePeriod: app.noticePeriod || '',
-                              workMode: app.workMode || 'remote'
-                            })
-                            setExistingApplication(app)
-                          }}
-                          className="mt-2 text-xs text-blue-600 hover:text-blue-800"
-                        >
-                          Use this data
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
             </div>
           )}
 

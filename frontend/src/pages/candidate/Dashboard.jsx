@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { applicationAPI } from '../../services/api'
+import Confetti from '../../components/Confetti'
 import { 
   FileText, 
   Calendar, 
@@ -27,10 +28,23 @@ import '../../styles/Applications.css'
 const Dashboard = () => {
   const [application, setApplication] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
     fetchApplication()
   }, [])
+
+  // Trigger confetti when application is accepted
+  useEffect(() => {
+    if (application && application.status === 'ACCEPTED') {
+      setShowConfetti(true)
+      // Hide confetti after 3 seconds
+      const timer = setTimeout(() => {
+        setShowConfetti(false)
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [application])
 
   const fetchApplication = async () => {
     try {
@@ -112,6 +126,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-blue-50 mt-0 pt-0">
+      <Confetti trigger={showConfetti} duration={3000} />
       <div className="w-full px-4 py-4">
         {/* Header */}
         <div className="mb-8">
@@ -265,7 +280,7 @@ const Dashboard = () => {
               <div className="card-header">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-secondary-900">Application Details</h3>
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(application.status)}`}>
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(application.status)} ${application.status === 'ACCEPTED' ? 'celebration-text success-pulse' : ''}`}>
                     {getStatusIcon(application.status)}
                     <span className="ml-1">{application.status}</span>
                   </span>
@@ -281,12 +296,24 @@ const Dashboard = () => {
                     </h4>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm text-secondary-600">Phone</p>
-                        <p className="font-medium">{application.phone}</p>
+                        <label className="block text-sm font-medium text-secondary-600 mb-1">Phone</label>
+                        <input
+                          type="tel"
+                          value={application.phone}
+                          disabled
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 cursor-not-allowed"
+                          readOnly
+                        />
                       </div>
                       <div>
-                        <p className="text-sm text-secondary-600">Email</p>
-                        <p className="font-medium">{application.candidateEmail}</p>
+                        <label className="block text-sm font-medium text-secondary-600 mb-1">Email</label>
+                        <input
+                          type="email"
+                          value={application.candidateEmail}
+                          disabled
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 cursor-not-allowed"
+                          readOnly
+                        />
                       </div>
                     </div>
                   </div>
@@ -315,7 +342,13 @@ const Dashboard = () => {
                   {application.education && (
                     <div>
                       <h4 className="font-medium text-secondary-900 mb-3">Education</h4>
-                      <p className="text-secondary-700 whitespace-pre-wrap">{application.education}</p>
+                      <textarea
+                        value={application.education}
+                        disabled
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 cursor-not-allowed resize-none"
+                        rows={4}
+                        readOnly
+                      />
                     </div>
                   )}
 
@@ -323,7 +356,13 @@ const Dashboard = () => {
                   {application.experience && (
                     <div>
                       <h4 className="font-medium text-secondary-900 mb-3">Experience</h4>
-                      <p className="text-secondary-700 whitespace-pre-wrap">{application.experience}</p>
+                      <textarea
+                        value={application.experience}
+                        disabled
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 cursor-not-allowed resize-none"
+                        rows={4}
+                        readOnly
+                      />
                     </div>
                   )}
 
@@ -331,15 +370,24 @@ const Dashboard = () => {
                   {application.portfolioLink && (
                     <div>
                       <h4 className="font-medium text-secondary-900 mb-3">Portfolio</h4>
-                      <a
-                        href={application.portfolioLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-primary-600 hover:text-primary-700"
-                      >
-                        <ExternalLink className="w-4 h-4 mr-1" />
-                        View Portfolio
-                      </a>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="url"
+                          value={application.portfolioLink}
+                          disabled
+                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700 cursor-not-allowed"
+                          readOnly
+                        />
+                        <a
+                          href={application.portfolioLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center px-3 py-2 text-primary-600 hover:text-primary-700 border border-primary-300 rounded-md hover:bg-primary-50"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-1" />
+                          Visit
+                        </a>
+                      </div>
                     </div>
                   )}
 

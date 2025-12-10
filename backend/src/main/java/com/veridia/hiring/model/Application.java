@@ -15,34 +15,52 @@ public class Application {
     @JoinColumn(name = "candidateId", nullable = false)
     private User candidate;
 
+    @NotBlank(message = "First name is required")
+    @Column(nullable = false)
+    private String firstName;
+
+    @NotBlank(message = "Last name is required")
+    @Column(nullable = false)
+    private String lastName;
+
     @NotBlank(message = "Phone is required")
     @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
-    private String firstName;
-
-    @Column(nullable = false)
-    private String lastName;
-
+    @Column(nullable = true)
     private String location;
+    
+    @Column(nullable = true)
     private String linkedinProfile;
+    
+    @Column(nullable = true)
     private String githubProfile;
+    
+    @Column(nullable = true)
     private String portfolioLink;
+    
+    @Column(nullable = true)
     private String availability;
+    
+    @Column(nullable = true)
     private String expectedSalary;
+    
+    @Column(nullable = true)
     private String noticePeriod;
+    
+    @Column(nullable = true)
     private String workMode;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = true)
     private String skills;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = true)
     private String education;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = true)
     private String experience;
 
+    @Column(nullable = true)
     private String resumeUrl;
 
     @Enumerated(EnumType.STRING)
@@ -52,33 +70,27 @@ public class Application {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private Long jobId;
+
+    // Default constructor
     public Application() {
         this.status = ApplicationStatus.PENDING;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        this.workMode = "remote";
     }
 
-    public Application(User candidate, String phone, String skills, String education, String experience, String resumeUrl, String portfolioLink) {
+    // Constructor with required fields only
+    public Application(User candidate, String firstName, String lastName, String phone) {
         this();
         this.candidate = candidate;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.phone = phone;
-        this.skills = skills;
-        this.education = education;
-        this.experience = experience;
-        this.resumeUrl = resumeUrl;
-        this.portfolioLink = portfolioLink;
-        // Initialize new fields with empty values for backward compatibility
-        this.firstName = "";
-        this.lastName = "";
-        this.location = "";
-        this.linkedinProfile = "";
-        this.githubProfile = "";
-        this.availability = "";
-        this.expectedSalary = "";
-        this.noticePeriod = "";
-        this.workMode = "remote";
     }
 
     // Getters and Setters
@@ -88,14 +100,14 @@ public class Application {
     public User getCandidate() { return candidate; }
     public void setCandidate(User candidate) { this.candidate = candidate; }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
-
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
 
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
@@ -144,4 +156,12 @@ public class Application {
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+
+    public Long getJobId() { return jobId; }
+    public void setJobId(Long jobId) { this.jobId = jobId; }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

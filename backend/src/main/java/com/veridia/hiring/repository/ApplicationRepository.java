@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     Optional<Application> findByCandidate(User candidate);
     List<Application> findAllByCandidate(User candidate);
+    Optional<Application> findByCandidateAndJobId(User candidate, Long jobId);
     List<Application> findByStatus(ApplicationStatus status);
     List<Application> findByCandidateId(Long candidateId);
     List<Application> findByCandidateNameContainingIgnoreCase(String name);
