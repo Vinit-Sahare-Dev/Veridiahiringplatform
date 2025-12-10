@@ -2,6 +2,29 @@ import axios from 'axios'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
 
+// Retry configuration
+const MAX_RETRIES = 3
+const RETRY_DELAY_MS = 1000
+
+// Retry helper function
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+const fetchWithRetry = async (apiCall, retries = MAX_RETRIES) => {
+  try {
+    return await apiCall()
+  } catch (error) {
+    if (retries > 0 && 
+        (error.code === 'ECONNREFUSED' || 
+         error.code === 'ERR_NETWORK' || 
+         error.code === 'ECONNABORTED' ||
+         (error.response && error.response.status >= 500))) {
+      await sleep(RETRY_DELAY_MS * (MAX_RETRIES - retries + 1))
+      return fetchWithRetry(apiCall, retries - 1)
+    }
+    throw error
+  }
+}
+
 // Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -19,13 +42,9 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
-    console.log(`[API] ${config.method.toUpperCase()} ${config.url}`)
-    console.log('[API] Headers:', config.headers)
-    console.log('[API] Token exists:', !!token)
     return config
   },
   (error) => {
-    console.error('[API] Request error:', error)
     return Promise.reject(error)
   }
 )
@@ -33,15 +52,11 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
-    console.log(`[API] Response from ${response.config.url}:`, response.status)
     return response
   },
   (error) => {
-    console.error('[API] Response error:', error)
-    
     // Handle different error types
     if (error.code === 'ECONNREFUSED' || error.code === 'ERR_NETWORK') {
-      console.error('❌ Backend server not running on port 8080')
       return Promise.reject({
         code: error.code,
         message: 'Cannot connect to server. Please ensure the backend is running on port 8080.'
@@ -53,7 +68,6 @@ api.interceptors.response.use(
       
       // Handle 401 Unauthorized
       if (status === 401) {
-        console.warn('⚠️ Unauthorized access - clearing session')
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         
@@ -89,34 +103,27 @@ export const healthAPI = {
 export const authAPI = {
   login: async (credentials) => {
     try {
-      console.log('[AUTH] Attempting login for:', credentials.email)
-      const response = await api.post('/auth/login', credentials)
-      console.log('[AUTH] Login successful')
+      const response = await fetchWithRetry(() => api.post('/auth/login', credentials))
       return response
     } catch (error) {
-      console.error('[AUTH] Login failed:', error)
       throw error
     }
   },
   
   register: async (userData) => {
     try {
-      console.log('[AUTH] Attempting registration for:', userData.email)
-      const response = await api.post('/auth/register', userData)
-      console.log('[AUTH] Registration successful')
+      const response = await fetchWithRetry(() => api.post('/auth/register', userData))
       return response
     } catch (error) {
-      console.error('[AUTH] Registration failed:', error)
       throw error
     }
   },
   
   getCurrentUser: async () => {
     try {
-      const response = await api.get('/candidate/me')
+      const response = await fetchWithRetry(() => api.get('/candidate/me'))
       return response
     } catch (error) {
-      console.error('[AUTH] Get current user failed:', error)
       throw error
     }
   },
@@ -131,51 +138,48 @@ export const candidateAPI = {
 // Application API
 export const applicationAPI = {
   submitApplication: (formData) => {
-    return api.post('/application/submit', formData, {
+    return fetchWithRetry(() => api.post('/application/submit', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
       timeout: 30000, // 30 seconds for file uploads
-    })
+    }))
   },
   
-  getMyApplication: () => api.get('/application/me'),
+  getMyApplication: () => fetchWithRetry(() => api.get('/application/me')),
   
-  getMyApplications: () => api.get('/application/my-applications'),
+  getMyApplications: () => fetchWithRetry(() => api.get('/application/my-applications')),
   
-  getAllApplications: () => api.get('/application/admin/all'),
+  getAllApplications: () => fetchWithRetry(() => api.get('/application/admin/all')),
   
   updateApplicationStatus: (id, status) => 
-    api.put(`/application/admin/update-status/${id}`, { status }),
+    fetchWithRetry(() => api.put(`/application/admin/update-status/${id}`, { status })),
   
   searchApplications: (params) => 
-    api.get('/application/admin/search', { params }),
+    fetchWithRetry(() => api.get('/application/admin/search', { params })),
   
   downloadResume: (filename) => 
-    api.get(`/application/admin/resume/${filename}`, { 
+    fetchWithRetry(() => api.get(`/application/admin/resume/${filename}`, { 
       responseType: 'blob',
       timeout: 30000 
-    }),
+    })),
 }
 
 // Job API
 export const jobAPI = {
-  getAllJobs: () => api.get('/jobs'),
-  getFeaturedJobs: () => api.get('/jobs/featured'),
-  getJobById: (id) => api.get(`/jobs/${id}`),
-  searchJobs: (params) => api.get('/jobs/search', { params }),
-  getJobFilters: () => api.get('/jobs/filters'),
+  getAllJobs: () => fetchWithRetry(() => api.get('/jobs')),
+  getFeaturedJobs: () => fetchWithRetry(() => api.get('/jobs/featured')),
+  getJobById: (id) => fetchWithRetry(() => api.get(`/jobs/${id}`)),
+  searchJobs: (params) => fetchWithRetry(() => api.get('/jobs/search', { params })),
+  getJobFilters: () => fetchWithRetry(() => api.get('/jobs/filters')),
 }
 
 // Test backend connection
 export const testBackendConnection = async () => {
   try {
-    console.log('🔍 Testing backend connection...')
-    const response = await healthAPI.check()
-    console.log('✅ Backend is running:', response.data)
+    const response = await fetchWithRetry(() => healthAPI.check())
     return { success: true, data: response.data }
   } catch (error) {
-    console.error('❌ Backend connection failed:', error)
     return { 
       success: false, 
       error: error.message || 'Backend connection failed' 

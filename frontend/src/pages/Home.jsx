@@ -35,7 +35,6 @@ const Home = () => {
   const navigate = useNavigate()
   const [scrollY, setScrollY] = useState(0)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
-  const [isLoaded, setIsLoaded] = useState(false)
   const sectionRefs = useRef({})
 
   // Smooth scroll effect
@@ -46,19 +45,7 @@ const Home = () => {
     
     window.addEventListener('scroll', handleScroll, { passive: true })
     
-    // Trigger load animation
-    setTimeout(() => setIsLoaded(true), 100)
-    
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    
-    return () => clearInterval(interval)
   }, [])
 
   const scrollToSection = useCallback((sectionId) => {
@@ -138,105 +125,57 @@ const Home = () => {
     }
   ]
 
+  // Auto-rotate testimonials
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
+    }, 5000)
+    
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <div className={`home-container ${isLoaded ? 'loaded' : ''}`}>
+    <div className="home-container">
       {/* Hero Section */}
-      <section id="hero" className="hero-section" style={{ transform: `translateY(${scrollY * 0.3}px)` }}>
-        <div className="hero-background">
-          <div className="hero-gradient"></div>
-          <div className="hero-particles">
-            {[...Array(20)].map((_, i) => (
-              <div key={i} className={`particle particle-${i + 1}`}></div>
-            ))}
-          </div>
+      <section id="hero" className="hero-section">
+        <div className="hero-visuals">
+          <div className="professional-orb professional-orb-1"></div>
+          <div className="professional-orb professional-orb-2"></div>
+          <div className="professional-orb professional-orb-3"></div>
         </div>
-        
-        <div className="hero-content">
-          <div className="section-container">
-            <div className="hero-grid">
-              <div className="hero-text">
-                <div className="hero-badge">
-                  <Sparkles className="w-4 h-4" />
-                  <span>Building the Future of Work</span>
-                </div>
-                
-                <h1 className="hero-title">
-                  Join the Team That's 
-                  <span className="hero-highlight">Changing Everything</span>
-                </h1>
-                
-                <p className="hero-description">
-                  At Veridia, we're not just building products—we're creating the future of how people work, connect, and grow. Join our global team of innovators, creators, and problem-solvers.
-                </p>
-                
-                <div className="hero-actions">
-                  {isAuthenticated && isCandidate ? (
-                    <Link to="/candidate/apply" className="btn-primary btn-large">
-                      Apply Now
-                      <ArrowRight className="w-5 h-5 ml-2" />
-                    </Link>
-                  ) : (
-                    <>
-                      <Link to="/careers" className="btn-primary btn-large">
-                        Explore Opportunities
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Link>
-                      <Link to="/register" className="btn-secondary btn-large">
-                        Join Our Talent Pool
-                      </Link>
-                    </>
-                  )}
-                </div>
-                
-                <div className="hero-stats">
-                  <div className="stat-item">
-                    <span className="stat-value">500+</span>
-                    <span className="stat-label">Team Members</span>
-                  </div>
-                  <div className="stat-item">
-                    <span className="stat-value">25+</span>
-                    <span className="stat-label">Countries</span>
-                  </div>
-                  <div className="stat-item">
-                    <span className="stat-value">4.8★</span>
-                    <span className="stat-label">Satisfaction</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="hero-visual">
-                <div className="hero-card">
-                  <div className="card-header">
-                    <div className="card-avatar">
-                      <Users className="w-8 h-8" />
-                    </div>
-                    <div className="card-info">
-                      <h3>Join Our Team</h3>
-                      <p>Discover amazing opportunities</p>
-                    </div>
-                  </div>
-                  <div className="card-content">
-                    <div className="feature-item">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                      <span>Competitive compensation</span>
-                    </div>
-                    <div className="feature-item">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                      <span>Flexible work arrangements</span>
-                    </div>
-                    <div className="feature-item">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                      <span>Global impact opportunities</span>
-                    </div>
-                  </div>
-                  <div className="card-footer">
-                    <button className="btn-learn-more">
-                      <Play className="w-4 h-4" />
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
+        <div className="hero-container">
+          <div className="hero-content">
+            <div className="hero-badge">
+              <Sparkles className="w-4 h-4" />
+              <span>Now Hiring: Join Our Mission</span>
+            </div>
+            
+            <h1 className="hero-title">
+              Build the Future at <span className="hero-highlight">Veridia</span>
+            </h1>
+            
+            <p className="hero-description">
+              Join a team of brilliant minds solving meaningful challenges. 
+              We're looking for passionate individuals who want to make an impact.
+            </p>
+            
+            <div className="hero-actions">
+              {isAuthenticated && isCandidate ? (
+                <Link to="/candidate/apply" className="btn-primary">
+                  Apply Now
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              ) : (
+                <>
+                  <Link to="/careers" className="btn-primary">
+                    Explore Opportunities
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                  <Link to="/register" className="btn-secondary">
+                    Join Talent Pool
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -245,48 +184,31 @@ const Home = () => {
           <ChevronDown className="w-6 h-6 animate-bounce" />
         </div>
       </section>
-        
-        <div className="hero-container">
-          <div className="hero-content">
-            <div className="hero-badge">
-              <Sparkles className="badge-icon" />
-              <span>Now Hiring: Join Our Mission</span>
-            </div>
-            
-            <h1 className="hero-title">
-              Build the Future at <span className="brand-text">Veridia</span>
-            </h1>
-            
-            <p className="hero-subtitle">
-              Join a team of brilliant minds solving meaningful challenges. 
-              We're looking for passionate individuals who want to make an impact.
+
+      {/* Stats Section */}
+      <section id="stats" className="stats-section">
+        <div className="stats-container">
+          <div className="stats-header">
+            <h2 className="stats-title">
+              Our <span className="highlight-text">Impact</span> by Numbers
+            </h2>
+            <p className="stats-subtitle">
+              Join a growing team making a global difference
             </p>
-            
-            <div className="hero-actions">
-              <button 
-                onClick={() => navigate('/careers')}
-                className="btn-primary"
-              >
-              
-                Explore Opportunities
-                <ArrowRight className="btn-arrow" />
-              </button>
-              <button 
-                onClick={() => scrollToSection('values')}
-                className="btn-secondary"
-              >
-                Learn About Veridia
-              </button>
-            </div>
-            
-            <div className="hero-stats">
-              {teamStats.map((stat, index) => (
-                <div key={index} className="stat-card">
-                  <div className="stat-value">{stat.value}</div>
-                  <div className="stat-label">{stat.label}</div>
+          </div>
+          <div className="stats-grid">
+            {teamStats.map((stat, index) => (
+              <div key={index} className="stat-card">
+                <div className="stat-icon">
+                  {index === 0 && <Users className="w-8 h-8" />}
+                  {index === 1 && <Globe className="w-8 h-8" />}
+                  {index === 2 && <Star className="w-8 h-8" />}
+                  {index === 3 && <TrendingUp className="w-8 h-8" />}
                 </div>
-              ))}
-            </div>
+                <div className="stat-value">{stat.value}</div>
+                <div className="stat-label">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -372,12 +294,7 @@ const Home = () => {
       <section id="testimonials" className="testimonials-section">
         <div className="testimonials-container">
           <div className="testimonials-header">
-            <h2 className="testimonials-title">
-              Life at <span className="highlight-text">Veridia</span>
-            </h2>
-            <p className="testimonials-subtitle">
-              Hear directly from our team members about their experience
-            </p>
+           
           </div>
           
           <div className="testimonials-container">

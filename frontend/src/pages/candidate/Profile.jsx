@@ -141,102 +141,106 @@ const Profile = () => {
       </div>
 
       <div className="space-y-8">
-        {/* Profile Photo Section */}
-        <div className="card">
-          <div className="card-header">
-            <h3 className="text-lg font-semibold text-secondary-900 flex items-center">
-              <Camera className="w-5 h-5 mr-2" />
-              Profile Photo
-            </h3>
-          </div>
-          <div className="card-body">
-            <div className="flex items-center space-x-6">
-              {/* Profile Photo Preview */}
-              <div className="relative">
-                {profilePhotoPreview ? (
-                  <div className="relative">
-                    <img
-                      src={profilePhotoPreview}
-                      alt="Profile"
-                      className="w-24 h-24 rounded-full object-cover border-4 border-primary-100"
-                    />
-                    <button
-                      onClick={removePhoto}
-                      className="absolute -top-2 -right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="w-24 h-24 bg-secondary-100 rounded-full flex items-center justify-center border-4 border-secondary-200">
-                    <User className="w-12 h-12 text-secondary-400" />
-                  </div>
-                )}
+            {/* Profile Photo Section */}
+            <div className="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-6">
+                <h3 className="text-xl font-semibold flex items-center">
+                  <Camera className="w-6 h-6 mr-3" />
+                  Profile Photo
+                </h3>
               </div>
+              <div className="p-8">
+                <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+                  {/* Profile Photo Preview */}
+                  <div className="relative group">
+                    {profilePhotoPreview ? (
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
+                        <img
+                          src={profilePhotoPreview}
+                          alt="Profile"
+                          className="relative w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <button
+                          onClick={removePhoto}
+                          className="absolute -top-3 -right-3 w-10 h-10 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition-all duration-300 shadow-lg hover:shadow-xl group-hover:scale-110"
+                        >
+                          <X className="w-5 h-5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-200 to-indigo-200 rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-300"></div>
+                        <div className="relative w-32 h-32 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-full flex items-center justify-center border-4 border-white shadow-xl group-hover:scale-105 transition-transform duration-300">
+                          <User className="w-16 h-16 text-blue-500" />
+                        </div>
+                      </div>
+                    )}
+                  </div>
 
-              {/* Upload Controls */}
-              <div className="flex-1">
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-secondary-900 mb-1">Profile Picture</h4>
-                  <p className="text-xs text-secondary-600">
-                    Upload a professional photo. JPG, PNG formats only. Max size: 5MB.
-                  </p>
-                </div>
-                
-                <div className="flex space-x-3">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handlePhotoChange}
-                    className="hidden"
-                    id="profile-photo-input"
-                  />
-                  
-                  <label
-                    htmlFor="profile-photo-input"
-                    className="btn-secondary cursor-pointer inline-flex items-center"
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    {profilePhotoPreview ? 'Change Photo' : 'Upload Photo'}
-                  </label>
-                  
-                  {photoUploading && (
-                    <div className="flex items-center text-sm text-primary-600">
-                      <div className="w-4 h-4 border-2 border-primary-600 border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Uploading...
+                  {/* Upload Controls */}
+                  <div className="flex-1 text-center md:text-left">
+                    <div className="mb-6">
+                      <h4 className="text-lg font-semibold mb-2 text-gray-800">Professional Profile Picture</h4>
+                      <p className="text-gray-600">
+                        Upload a professional photo that represents you well. JPG, PNG formats only. Max size: 5MB.
+                      </p>
                     </div>
-                  )}
+                    
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoChange}
+                        className="hidden"
+                        id="profile-photo-input"
+                      />
+                      
+                      <label
+                        htmlFor="profile-photo-input"
+                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer inline-flex items-center"
+                      >
+                        <Upload className="w-5 h-5 mr-2" />
+                        {profilePhotoPreview ? 'Change Photo' : 'Upload Photo'}
+                      </label>
+                      
+                      {photoUploading && (
+                        <div className="flex items-center text-blue-600 font-medium">
+                          <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mr-3"></div>
+                          Uploading...
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Profile Information */}
-        <div className="card">
-          <div className="card-header">
-            <h3 className="text-lg font-semibold text-secondary-900 flex items-center">
-              <User className="w-5 h-5 mr-2" />
+        {/* Enhanced Profile Information */}
+        <div className="bg-white rounded-2xl shadow-lg border border-blue-100 overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-6">
+            <h3 className="text-xl font-semibold flex items-center">
+              <User className="w-6 h-6 mr-3" />
               Personal Information
             </h3>
           </div>
-          <div className="card-body">
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
               {success && (
-                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg text-sm">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 text-green-700 px-6 py-4 rounded-xl text-sm font-medium shadow-md animate-pulse">
                   Profile updated successfully!
                 </div>
               )}
 
-              {/* Name Field */}
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-secondary-700 mb-2">
+              {/* Enhanced Name Field */}
+              <div className="space-y-2">
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
                   Full Name
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-secondary-400" />
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-blue-400 group-hover:text-blue-600 transition-colors" />
                   </div>
                   <input
                     id="name"
@@ -245,20 +249,20 @@ const Profile = () => {
                     required
                     value={formData.name}
                     onChange={handleChange}
-                    className="input-field pl-10"
+                    className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-800 placeholder-gray-400 hover:border-gray-300"
                     placeholder="Enter your full name"
                   />
                 </div>
               </div>
 
-              {/* Email Field */}
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-secondary-700 mb-2">
+              {/* Enhanced Email Field */}
+              <div className="space-y-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
                   Email Address
                 </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-secondary-400" />
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-blue-400 group-hover:text-blue-600 transition-colors" />
                   </div>
                   <input
                     id="email"
@@ -267,26 +271,26 @@ const Profile = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="input-field pl-10"
+                    className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 text-gray-800 placeholder-gray-400 hover:border-gray-300"
                     placeholder="Enter your email"
                   />
                 </div>
               </div>
 
-              {/* Submit Button */}
+              {/* Enhanced Submit Button */}
               <button
                 type="submit"
                 disabled={loading || photoUploading}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none inline-flex items-center justify-center"
               >
                 {loading ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
                     Saving...
                   </>
                 ) : (
                   <>
-                    <Save className="w-5 h-5 mr-2" />
+                    <Save className="w-6 h-6 mr-3" />
                     Save Changes
                   </>
                 )}

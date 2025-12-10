@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { applicationAPI } from '../../services/api'
-import { Send, AlertCircle, CheckCircle, Briefcase } from 'lucide-react'
+import { Send, AlertCircle, CheckCircle, Briefcase, X, Sparkles, Trophy, Mail, Phone } from 'lucide-react'
 import '../../styles/Applications.css'
 
 // Import form components
@@ -35,6 +35,7 @@ const ApplicationForm = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
   const [existingApplication, setExistingApplication] = useState(null)
   const [applicationHistory, setApplicationHistory] = useState([])
   const [currentStep, setCurrentStep] = useState(1)
@@ -173,16 +174,30 @@ const ApplicationForm = () => {
     setError('')
 
     try {
+      // Test backend connection first
+      console.log('Testing backend connection...')
+      try {
+        const healthCheck = await fetch('http://localhost:8080/api/health')
+        if (!healthCheck.ok) {
+          throw new Error('Backend health check failed')
+        }
+        console.log('Backend connection OK')
+      } catch (healthError) {
+        console.error('Backend health check failed:', healthError)
+        setError('Backend server is not running. Please start the backend server on port 8080.')
+        return
+      }
+      
       const formDataToSend = new FormData()
       
-      // Add form fields
-      Object.keys(formData).forEach(key => {
-        if (Array.isArray(formData[key])) {
-          formDataToSend.append(key, JSON.stringify(formData[key]))
-        } else {
-          formDataToSend.append(key, formData[key])
-        }
-      })
+      console.log('Form data being submitted:', formData)
+      console.log('Resume file:', resumeFile)
+      console.log('Cover letter file:', coverLetterFile)
+      
+      // Create application JSON string as expected by backend
+      const applicationJson = JSON.stringify(formData)
+      formDataToSend.append('application', applicationJson)
+      console.log('Application JSON:', applicationJson)
 
       // Add files
       if (resumeFile) {
@@ -191,20 +206,35 @@ const ApplicationForm = () => {
       if (coverLetterFile) {
         formDataToSend.append('coverLetter', coverLetterFile)
       }
+      
+      console.log('FormData entries:')
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0], pair[1])
+      }
 
       const response = await applicationAPI.submitApplication(formDataToSend)
       
       setSuccess(true)
+      setShowSuccessModal(true)
+      
+      // Auto-redirect after 5 seconds
       setTimeout(() => {
+        setShowSuccessModal(false)
         navigate('/careers', { 
           state: { 
             message: 'Application submitted successfully! We will review your application and contact you soon.' 
           }
         })
-      }, 3000)
+      }, 5000)
       
     } catch (error) {
-      setError(error.response?.data?.message || 'Failed to submit application. Please try again.')
+      console.error('Application submission error:', error)
+      console.error('Error response:', error.response)
+      console.error('Error status:', error.response?.status)
+      console.error('Error data:', error.response?.data)
+      console.error('Error message:', error.response?.data?.message)
+      console.error('Full error:', JSON.stringify(error.response?.data, null, 2))
+      setError(error.response?.data?.message || error.message || 'Failed to submit application. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -281,18 +311,18 @@ const ApplicationForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="min-h-screen bg-blue-50 py-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-6">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                  <Briefcase className="w-6 h-6" />
+                <h1 className="text-3xl font-bold text-white flex items-center gap-3">
+                  <Briefcase className="w-8 h-8" />
                   Job Application
                 </h1>
-                <p className="text-blue-100 mt-1">
+                <p className="text-blue-100 mt-2 text-lg">
                   {existingApplication ? 'Update your application' : 'Complete your application in 5 simple steps'}
                 </p>
                 {existingApplication && (
@@ -327,23 +357,23 @@ const ApplicationForm = () => {
           </div>
 
           {/* Progress Bar */}
-          <div className="px-8 py-4 bg-gray-50 border-b">
-            <div className="flex items-center justify-between">
+          <div className="px-8 py-6 bg-blue-50 border-b">
+            <div className="flex items-center justify-between max-w-4xl mx-auto">
               {[1, 2, 3, 4, 5].map((step) => (
-                <div key={step} className="flex items-center">
+                <div key={step} className="flex items-center flex-1">
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
                       step <= currentStep
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-300 text-gray-600'
+                        ? 'bg-blue-600 text-white shadow-lg scale-110'
+                        : 'bg-blue-200 text-blue-800'
                     }`}
                   >
                     {step}
                   </div>
                   {step < totalSteps && (
                     <div
-                      className={`w-full h-1 mx-2 ${
-                        step < currentStep ? 'bg-blue-600' : 'bg-gray-300'
+                      className={`flex-1 h-2 mx-2 rounded-full transition-all duration-300 ${
+                        step < currentStep ? 'bg-blue-600' : 'bg-blue-200'
                       }`}
                     />
                   )}
@@ -525,6 +555,79 @@ const ApplicationForm = () => {
           </form>
         </div>
       </div>
+      
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+          <div className="relative bg-white rounded-3xl shadow-2xl max-w-md mx-4 overflow-hidden transform transition-all duration-500 scale-100 animate-pulse">
+            {/* Close Button */}
+            <button
+              onClick={() => {
+                setShowSuccessModal(false)
+                navigate('/careers')
+              }}
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+            
+            {/* Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-50 opacity-90"></div>
+            
+            {/* Content */}
+            <div className="relative z-10 p-8 text-center">
+              {/* Success Icon with Animation */}
+              <div className="mx-auto w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mb-6 shadow-lg transform transition-all duration-500 hover:scale-110">
+                <CheckCircle className="w-10 h-10 text-white" />
+              </div>
+              
+              {/* Sparkles */}
+              <div className="absolute top-8 left-8">
+                <Sparkles className="w-6 h-6 text-yellow-400 animate-pulse" />
+              </div>
+              <div className="absolute top-8 right-8">
+                <Sparkles className="w-6 h-6 text-yellow-400 animate-pulse" />
+              </div>
+              <div className="absolute bottom-8 left-12">
+                <Sparkles className="w-4 h-4 text-yellow-400 animate-pulse" />
+              </div>
+              
+              {/* Trophy Icon */}
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mb-4 shadow-md transform transition-all duration-500 hover:rotate-12">
+                <Trophy className="w-8 h-8 text-white" />
+              </div>
+              
+              {/* Success Message */}
+              <h2 className="text-2xl font-bold text-gray-800 mb-3">
+                Application Submitted!
+              </h2>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Thank you for your interest in joining Veridia. Your application has been successfully submitted and is now under review.
+              </p>
+              
+              {/* Contact Info */}
+              <div className="bg-blue-50 rounded-xl p-4 mb-6">
+                <p className="text-sm text-blue-800 font-medium mb-2">What happens next?</p>
+                <div className="flex items-center justify-center space-x-4 text-xs text-blue-600">
+                  <div className="flex items-center">
+                    <Mail className="w-3 h-3 mr-1" />
+                    Email updates
+                  </div>
+                  <div className="flex items-center">
+                    <Phone className="w-3 h-3 mr-1" />
+                    Call within 3-5 days
+                  </div>
+                </div>
+              </div>
+              
+              {/* Redirect Timer */}
+              <div className="text-xs text-gray-500">
+                Redirecting to careers page in <span className="font-medium text-blue-600">5 seconds</span>...
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

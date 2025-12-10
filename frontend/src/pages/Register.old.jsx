@@ -22,7 +22,6 @@ const Register = () => {
   const navigate = useNavigate()
 
   const handleChange = (e) => {
-    console.log('Field changed:', e.target.name, e.target.value)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -220,23 +219,21 @@ const Register = () => {
                 </div>
               )}
               
-              {/* Password Requirements - Only show on error */}
-              {errors.password && (
-                <div className="auth-password-requirements">
-                  <div className={`auth-requirement ${formData.password.length >= 6 ? 'auth-requirement-met' : ''}`}>
-                    <Check className="w-3 h-3" />
-                    At least 6 characters
-                  </div>
-                  <div className={`auth-requirement ${/[a-z]/.test(formData.password) && /[A-Z]/.test(formData.password) ? 'auth-requirement-met' : ''}`}>
-                    <Check className="w-3 h-3" />
-                    Uppercase and lowercase letters
-                  </div>
-                  <div className={`auth-requirement ${/\d/.test(formData.password) ? 'auth-requirement-met' : ''}`}>
-                    <Check className="w-3 h-3" />
-                    At least one number
-                  </div>
+              {/* Password Requirements */}
+              <div className="auth-password-requirements">
+                <div className={`auth-requirement ${formData.password.length >= 6 ? 'auth-requirement-met' : ''}`}>
+                  <Check className="w-3 h-3" />
+                  At least 6 characters
                 </div>
-              )}
+                <div className={`auth-requirement ${/[a-z]/.test(formData.password) && /[A-Z]/.test(formData.password) ? 'auth-requirement-met' : ''}`}>
+                  <Check className="w-3 h-3" />
+                  Uppercase and lowercase letters
+                </div>
+                <div className={`auth-requirement ${/\d/.test(formData.password) ? 'auth-requirement-met' : ''}`}>
+                  <Check className="w-3 h-3" />
+                  At least one number
+                </div>
+              </div>
               
               {errors.password && (
                 <p className="auth-error-text">{errors.password}</p>
@@ -256,9 +253,6 @@ const Register = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   className={`auth-input ${errors.confirmPassword ? 'error' : ''}`}
-                  style={{ pointerEvents: 'auto', userSelect: 'auto' }}
-                  onFocus={() => console.log('Confirm password field focused')}
-                  onBlur={() => console.log('Confirm password field blurred')}
                 />
                 <button
                   type="button"
@@ -332,6 +326,10 @@ const Register = () => {
           </div>
         </div>
 
+        {/* Footer Text */}
+        <p className="text-center text-sm text-gray-600 mt-6">
+          By registering, you're joining 10,000+ professionals
+        </p>
       </div>
     </div>
   )

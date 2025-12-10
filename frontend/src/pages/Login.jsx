@@ -62,7 +62,7 @@ const Login = () => {
           {/* Header Section */}
           <div className="auth-header">
             <div className="auth-logo">
-              <Briefcase className="w-8 h-8" />
+              <Briefcase className="w-12 h-12" />
             </div>
             <h1 className="auth-title">Welcome Back</h1>
             <p className="auth-subtitle">Sign in to continue your journey</p>
@@ -107,17 +107,14 @@ const Login = () => {
             <div className="auth-form-group">
               <div className="auth-label-row">
                 <label className="auth-label">Password</label>
-                <Link 
-                  to="/forgot-password" 
-                  className="auth-link"
-                >
-                  Forgot Password?
+                <Link to="/forgot-password" className="auth-link">
+                  Forgot password?
                 </Link>
               </div>
               <div className="auth-input-wrapper">
                 <Lock className="auth-input-icon" />
                 <input
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   name="password"
                   placeholder="Enter your password"
                   required
@@ -156,35 +153,21 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="auth-divider">
-            <div className="auth-divider-line"></div>
-            <span className="auth-divider-text">or</span>
-            <div className="auth-divider-line"></div>
-          </div>
-
-          {/* Additional Links */}
-          <div className="auth-footer">
-            <div className="auth-footer-section">
-              <p className="auth-footer-text">
-                Don't have an account?{' '}
-                <Link to="/register" className="auth-footer-link">
-                  Create an account
-                </Link>
-              </p>
+          {/* Quick Links */}
+          <div className="auth-quick-links">
+            <div className="auth-link-item">
+              <Link to="/register" className="auth-link-primary">
+                Create Account
+              </Link>
             </div>
-            <div className="auth-footer-section">
-              <p className="auth-footer-text">
-                Are you an admin?{' '}
-                <Link to="/admin/login" className="auth-footer-link inline-flex items-center gap-1">
-                  <Shield className="w-4 h-4" />
-                  Admin Login
-                </Link>
-              </p>
+            <div className="auth-link-item">
+              <Link to="/admin/login" className="auth-link-secondary">
+                <Shield className="w-4 h-4" />
+                Admin Portal
+              </Link>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   )

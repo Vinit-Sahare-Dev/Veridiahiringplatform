@@ -53,7 +53,7 @@ const Navbar = () => {
               Home
             </Link>
             
-            {/* Show Careers and Apply Now only for non-admin users */}
+            {/* Show Careers only for non-admin users */}
             {!isAdmin && (
               <>
                 <Link
@@ -66,17 +66,6 @@ const Navbar = () => {
                 >
                   <Briefcase className="w-4 h-4 mr-2" />
                   Careers
-                </Link>
-
-                <Link
-                  to="/careers"
-                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive('/careers') 
-                      ? 'text-primary-600 bg-primary-50 shadow-sm' 
-                      : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
-                  }`}
-                >
-                  Apply Now
                 </Link>
               </>
             )}
@@ -92,16 +81,6 @@ const Navbar = () => {
                   }`}
                 >
                   Dashboard
-                </Link>
-                <Link
-                  to="/candidate/apply"
-                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive('/candidate/apply') 
-                      ? 'text-primary-600 bg-primary-50 shadow-sm' 
-                      : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
-                  }`}
-                >
-                  Application Form
                 </Link>
                 <Link
                   to="/candidate/profile"
@@ -202,7 +181,7 @@ const Navbar = () => {
                   Home
                 </Link>
                 
-                {/* Show Careers and Apply Now only for non-admin users */}
+                {/* Show Careers only for non-admin users */}
                 {!isAdmin && (
                   <>
                     <Link
@@ -216,18 +195,6 @@ const Navbar = () => {
                     >
                       <Briefcase className="w-4 h-4 mr-3" />
                       Careers
-                    </Link>
-
-                    <Link
-                      to="/careers"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive('/careers') 
-                          ? 'text-primary-600 bg-primary-50' 
-                          : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
-                      }`}
-                    >
-                      Apply Now
                     </Link>
                   </>
                 )}
@@ -243,18 +210,8 @@ const Navbar = () => {
                           : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
                       }`}
                     >
+                      <Shield className="w-4 h-4 mr-3" />
                       Dashboard
-                    </Link>
-                    <Link
-                      to="/candidate/apply"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive('/candidate/apply') 
-                          ? 'text-primary-600 bg-primary-50' 
-                          : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
-                      }`}
-                    >
-                      Application Form
                     </Link>
                     <Link
                       to="/candidate/profile"
@@ -265,6 +222,7 @@ const Navbar = () => {
                           : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
                       }`}
                     >
+                      <User className="w-4 h-4 mr-3" />
                       Profile
                     </Link>
                   </>

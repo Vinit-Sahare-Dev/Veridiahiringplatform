@@ -74,10 +74,15 @@ const Applications = () => {
   const fetchApplications = async () => {
     try {
       setLoading(true)
+      console.log('Fetching applications from API...')
       const response = await applicationAPI.getAllApplications()
+      console.log('API Response:', response)
+      console.log('Applications data:', response.data)
       setApplications(response.data)
     } catch (error) {
       console.error('Error fetching applications:', error)
+      console.error('Error response:', error.response)
+      console.error('Error status:', error.response?.status)
     } finally {
       setLoading(false)
     }

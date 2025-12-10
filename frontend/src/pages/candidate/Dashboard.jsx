@@ -111,110 +111,148 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto animate-fade-in">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-2xl p-8 mb-8">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Welcome to Your Dashboard</h1>
-              <p className="text-primary-100">Manage your job application and track your progress</p>
-            </div>
-            <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <div className="text-center">
-                <div className="text-2xl font-bold">{application ? '1' : '0'}</div>
-                <div className="text-sm text-primary-100">Applications</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold">{application ? application.status : 'Not Started'}</div>
-                <div className="text-sm text-primary-100">Current Status</div>
+    <div className="min-h-screen bg-blue-50 mt-0 pt-0">
+      <div className="w-full px-4 py-4">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="w-full bg-white rounded-lg shadow-md p-6">
+            <div className="w-full bg-blue-600 text-white rounded-lg p-6">
+              <div className="flex flex-col lg:flex-row items-center justify-between">
+                <div className="text-center lg:text-left mb-4 lg:mb-0">
+                  <h1 className="text-3xl font-bold text-white mb-2">
+                    Welcome to Your Dashboard
+                  </h1>
+                  <p className="text-blue-100">
+                    Manage your job application and track your career journey
+                  </p>
+                </div>
+                <div className="flex space-x-4">
+                  <div className="text-center bg-blue-700 rounded-lg p-3">
+                    <div className="text-2xl font-bold text-white">{application ? '1' : '0'}</div>
+                    <div className="text-sm text-blue-100">Applications</div>
+                  </div>
+                  <div className="text-center bg-blue-700 rounded-lg p-3">
+                    <div className="text-2xl font-bold text-white">{application ? application.status : 'Not Started'}</div>
+                    <div className="text-sm text-blue-100">Current Status</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
       {!application ? (
         /* No Application Yet - Enhanced Design */
         <div className="space-y-8">
-          {/* Hero Card */}
-          <div className="bg-gradient-to-br from-primary-50 to-secondary-50 rounded-2xl p-8 text-center">
-            <div className="inline-flex items-center justify-center w-24 h-24 bg-primary-100 rounded-full mb-6">
-              <Briefcase className="w-12 h-12 text-primary-600" />
-            </div>
-            <h2 className="text-3xl font-bold text-secondary-900 mb-4">
-              Start Your Career Journey
-            </h2>
-            <p className="text-lg text-secondary-600 mb-8 max-w-2xl mx-auto">
-              Ready to take the next step? Join our amazing team and build your future at Veridia. 
-              Our streamlined application process makes it easy to get started.
-            </p>
-            
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-3xl mx-auto">
-              <div className="bg-white rounded-lg p-4">
-                <Users className="w-8 h-8 text-primary-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-secondary-900">500+</div>
-                <div className="text-sm text-secondary-600">Employees</div>
+          {/* Hero Section */}
+          <div className="w-full bg-white rounded-lg shadow-md p-8">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-24 h-24 bg-blue-100 rounded-full mb-6">
+                <Briefcase className="w-12 h-12 text-blue-600" />
               </div>
-              <div className="bg-white rounded-lg p-4">
-                <Star className="w-8 h-8 text-primary-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-secondary-900">4.8</div>
-                <div className="text-sm text-secondary-600">Rating</div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                Start Your Career Journey
+              </h2>
+              <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Ready to take the next step? Join our amazing team and build your future at Veridia.
+              </p>
+              
+              {/* Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <Users className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-800">1000+</div>
+                  <div className="text-sm text-gray-600">Employees</div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <Star className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-800">4.9</div>
+                  <div className="text-sm text-gray-600">Rating</div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <TrendingUp className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-800">35%</div>
+                  <div className="text-sm text-gray-600">Growth Rate</div>
+                </div>
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <Heart className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-gray-800">98%</div>
+                  <div className="text-sm text-gray-600">Satisfaction</div>
+                </div>
               </div>
-              <div className="bg-white rounded-lg p-4">
-                <TrendingUp className="w-8 h-8 text-primary-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-secondary-900">25%</div>
-                <div className="text-sm text-secondary-600">Growth Rate</div>
-              </div>
-              <div className="bg-white rounded-lg p-4">
-                <Heart className="w-8 h-8 text-primary-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-secondary-900">95%</div>
-                <div className="text-sm text-secondary-600">Satisfaction</div>
-              </div>
-            </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/candidate/apply"
-                className="btn-primary text-lg px-8 py-4 inline-flex items-center group"
-              >
-                <Upload className="w-5 h-5 mr-2" />
-                Start Application
-                <Target className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                to="/careers"
-                className="btn-secondary text-lg px-8 py-4 inline-flex items-center"
-              >
-                <Briefcase className="w-5 h-5 mr-2" />
-                Browse Open Positions
-              </Link>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  to="/candidate/apply"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors inline-flex items-center"
+                >
+                  <Upload className="w-5 h-5 mr-2" />
+                  Start Application
+                </Link>
+                <Link
+                  to="/careers"
+                  className="bg-white text-blue-600 border border-blue-600 px-6 py-3 rounded-lg font-medium hover:bg-blue-50 transition-colors inline-flex items-center"
+                >
+                  <Briefcase className="w-5 h-5 mr-2" />
+                  Browse Positions
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* Benefits Section */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="card p-6 text-center hover:shadow-lg transition-shadow">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-                <Clock className="w-8 h-8 text-primary-600" />
+          <div className="w-full bg-white rounded-lg shadow-md p-8">
+            <h3 className="text-2xl font-bold text-center mb-6 text-gray-800">Why Join Veridia?</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center p-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Clock className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Quick Process</h3>
+                <p className="text-gray-600">Streamlined application process with quick response times.</p>
               </div>
-              <h3 className="text-lg font-semibold text-secondary-900 mb-2">Quick Process</h3>
-              <p className="text-secondary-600">Complete your application in just 10 minutes</p>
+              <div className="text-center p-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Award className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Growth Opportunities</h3>
+                <p className="text-gray-600">Continuous learning and clear career advancement paths.</p>
+              </div>
+              <div className="text-center p-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <Heart className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Great Culture</h3>
+                <p className="text-gray-600">Inclusive environment and work-life balance.</p>
+              </div>
             </div>
-            <div className="card p-6 text-center hover:shadow-lg transition-shadow">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-                <Zap className="w-8 h-8 text-primary-600" />
+          </div>
+
+          {/* Simple Features */}
+          <div className="w-full bg-white rounded-lg shadow-md p-8">
+            <h3 className="text-2xl font-bold text-center mb-6 text-gray-800">Career Tools</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-blue-50 rounded-lg p-6">
+                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mb-3">
+                  <Target className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-semibold mb-2">Career Path Finder</h4>
+                <p className="text-gray-600 text-sm">Discover your ideal career path</p>
               </div>
-              <h3 className="text-lg font-semibold text-secondary-900 mb-2">Real-time Updates</h3>
-              <p className="text-secondary-600">Track your application status instantly</p>
-            </div>
-            <div className="card p-6 text-center hover:shadow-lg transition-shadow">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-                <Award className="w-8 h-8 text-primary-600" />
+              <div className="bg-blue-50 rounded-lg p-6">
+                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mb-3">
+                  <TrendingUp className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-semibold mb-2">Salary Calculator</h4>
+                <p className="text-gray-600 text-sm">Estimate your potential earnings</p>
               </div>
-              <h3 className="text-lg font-semibold text-secondary-900 mb-2">Professional Review</h3>
-              <p className="text-secondary-600">Expert evaluation by our HR team</p>
+              <div className="bg-blue-50 rounded-lg p-6">
+                <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center mb-3">
+                  <Award className="w-5 h-5 text-white" />
+                </div>
+                <h4 className="font-semibold mb-2">Skill Assessment</h4>
+                <p className="text-gray-600 text-sm">Test your skills and improve</p>
+              </div>
             </div>
           </div>
         </div>
@@ -397,6 +435,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   )
 }

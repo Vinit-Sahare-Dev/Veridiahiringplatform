@@ -51,7 +51,7 @@ const Careers = () => {
       location: 'Bangalore / Remote',
       type: 'Full-time',
       experience: '5+ years',
-      salary: '$120k - $180k',
+      salary: '8 LPA - 12 LPA',
       category: 'engineering',
       level: 'Senior',
       description: 'Build amazing user interfaces and help shape the future of our platform. Work with cutting-edge technologies and collaborate with world-class engineers.',
@@ -72,7 +72,7 @@ const Careers = () => {
       location: 'Hyderabad / Hybrid',
       type: 'Full-time',
       experience: '3-5 years',
-      salary: '$100k - $150k',
+      salary: '6 LPA - 9 LPA',
       category: 'product',
       level: 'Mid-level',
       description: 'Drive product strategy and work with cross-functional teams to deliver exceptional products that users love.',
@@ -93,7 +93,7 @@ const Careers = () => {
       location: 'Pune',
       type: 'Full-time',
       experience: '3-5 years',
-      salary: '$100k - $160k',
+      salary: '7 LPA - 10 LPA',
       category: 'engineering',
       level: 'Mid-level',
       description: 'Design and implement scalable backend systems and APIs that power our platform.',
@@ -114,7 +114,7 @@ const Careers = () => {
       location: 'Bangalore',
       type: 'Full-time',
       experience: '2-4 years',
-      salary: '$80k - $120k',
+      salary: '5 LPA - 7 LPA',
       category: 'design',
       level: 'Mid-level',
       description: 'Create beautiful and intuitive user experiences that delight our users.',
@@ -135,7 +135,7 @@ const Careers = () => {
       location: 'Remote / Pune',
       type: 'Full-time',
       experience: '4-6 years',
-      salary: '$110k - $170k',
+      salary: '6 LPA - 8 LPA',
       category: 'data',
       level: 'Senior',
       description: 'Apply machine learning and statistical analysis to solve complex business problems.',
@@ -156,7 +156,7 @@ const Careers = () => {
       location: 'Hyderabad',
       type: 'Full-time',
       experience: '3-5 years',
-      salary: '$70k - $100k',
+      salary: '4 LPA - 6 LPA',
       category: 'marketing',
       level: 'Mid-level',
       description: 'Lead marketing campaigns and drive brand growth in the competitive tech landscape.',
@@ -177,7 +177,7 @@ const Careers = () => {
       location: 'Bangalore',
       type: 'Full-time',
       experience: '4-6 years',
-      salary: '$110k - $160k',
+      salary: '6 LPA - 8 LPA',
       category: 'engineering',
       level: 'Senior',
       description: 'Build and maintain CI/CD pipelines and infrastructure for scalable applications.',
@@ -198,7 +198,7 @@ const Careers = () => {
       location: 'Remote',
       type: 'Full-time',
       experience: '2-4 years',
-      salary: '$60k - $90k',
+      salary: '3 LPA - 4 LPA',
       category: 'marketing',
       level: 'Mid-level',
       description: 'Create compelling content strategies that engage and convert our target audience.',
@@ -219,7 +219,7 @@ const Careers = () => {
       location: 'Bangalore / Hybrid',
       type: 'Full-time',
       experience: '3-5 years',
-      salary: '$90k - $140k',
+      salary: '6 LPA - 9 LPA',
       category: 'engineering',
       level: 'Mid-level',
       description: 'Work across the full stack to build features from database to user interface.',
@@ -295,8 +295,8 @@ const Careers = () => {
         case 'newest':
           return b.postedDate - a.postedDate
         case 'salary':
-          const aSalary = parseInt(a.salary.split('-')[1].replace(/[^0-9]/g, ''))
-          const bSalary = parseInt(b.salary.split('-')[1].replace(/[^0-9]/g, ''))
+          const aSalary = parseFloat(a.salary.split('LPA')[1].split('-')[1].trim())
+          const bSalary = parseFloat(b.salary.split('LPA')[1].split('-')[1].trim())
           return bSalary - aSalary
         case 'applicants':
           return b.applicants - a.applicants
@@ -566,299 +566,6 @@ const Careers = () => {
             </p>
           </div>
         )}
-      </section>
-    </div>
-  )
-                <div className={`benefit-icon ${benefit.gradient}`}>
-                  <benefit.icon className="w-8 h-8" />
-                </div>
-                <h3 className="benefit-title">{benefit.title}</h3>
-                <p className="benefit-description">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Job Listings Section */}
-      <section className="careers-listings">
-        <div className="section-container">
-          <div className="section-header">
-            <h2 className="section-title">Open Positions</h2>
-            <p className="section-subtitle">
-              Find your perfect role and help us shape the future of hiring.
-            </p>
-          </div>
-
-          {/* Filters */}
-          <div className="careers-filters">
-            <div className="filters-header">
-              <Filter className="w-5 h-5" />
-              <span>Filter Jobs</span>
-            </div>
-            
-            <div className="filters-grid">
-              {/* Search */}
-              <div className="filter-group">
-                <div className="filter-input-wrapper">
-                  <Search className="w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Search jobs, skills, or keywords..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="filter-input"
-                  />
-                </div>
-              </div>
-
-              {/* Category Filter */}
-              <div className="filter-group">
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="filter-select"
-                >
-                  {categories.map(category => (
-                    <option key={category.id} value={category.id}>
-                      {category.name} ({category.count})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Location Filter */}
-              <div className="filter-group">
-                <select
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="filter-select"
-                >
-                  {locations.map(location => (
-                    <option key={location.id} value={location.id}>
-                      {location.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Type Filter */}
-              <div className="filter-group">
-                <select
-                  value={selectedType}
-                  onChange={(e) => setSelectedType(e.target.value)}
-                  className="filter-select"
-                >
-                  {jobTypes.map(type => (
-                    <option key={type.id} value={type.id}>
-                      {type.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Experience Filter */}
-              <div className="filter-group">
-                <select
-                  value={selectedExperience}
-                  onChange={(e) => setSelectedExperience(e.target.value)}
-                  className="filter-select"
-                >
-                  {experienceLevels.map(level => (
-                    <option key={level.id} value={level.id}>
-                      {level.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Sort */}
-              <div className="filter-group">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="filter-select"
-                >
-                  <option value="newest">Newest First</option>
-                  <option value="salary">Highest Salary</option>
-                  <option value="applicants">Most Applicants</option>
-                  <option value="match">Best Match</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          {/* Results Summary */}
-          <div className="careers-results">
-            <p className="results-count">
-              Showing <span>{filteredJobs.length}</span> positions
-              {filteredJobs.length !== jobs.length && ` of ${jobs.length}`}
-            </p>
-            <div className="results-actions">
-              <button className="results-action-btn">
-                <Bookmark className="w-4 h-4" />
-                Saved Jobs ({savedJobs.size})
-              </button>
-            </div>
-          </div>
-
-          {/* Job Cards */}
-          <div className="careers-grid">
-            {filteredJobs.slice(0, visibleJobs).map((job) => (
-              <div 
-                key={job.id} 
-                className={`job-card ${job.featured ? 'job-card-featured' : ''}`}
-                onMouseEnter={() => setHoveredJob(job.id)}
-                onMouseLeave={() => setHoveredJob(null)}
-              >
-                {job.featured && (
-                  <div className="job-featured-badge">
-                    <Star className="w-3 h-3" />
-                    Featured
-                  </div>
-                )}
-                
-                <div className="job-header">
-                  <div className="job-title-section">
-                    <h3 className="job-title">{job.title}</h3>
-                    <div className="job-meta">
-                      <span className="job-department">{job.department}</span>
-                      <span className="job-level">{job.level}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="job-actions">
-                    <button 
-                      onClick={() => toggleSaveJob(job.id)}
-                      className={`job-action-btn ${savedJobs.has(job.id) ? 'job-action-saved' : ''}`}
-                      title={savedJobs.has(job.id) ? 'Remove from saved' : 'Save job'}
-                    >
-                      <Bookmark className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => shareJob(job)}
-                      className="job-action-btn"
-                      title="Share job"
-                    >
-                      <Share2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-                
-                <p className="job-description">{job.description}</p>
-                
-                <div className="job-details">
-                  <div className="job-detail">
-                    <MapPin className="w-4 h-4" />
-                    <span>{job.location}</span>
-                  </div>
-                  <div className="job-detail">
-                    <Clock className="w-4 h-4" />
-                    <span>{job.type}</span>
-                  </div>
-                  <div className="job-detail">
-                    <Timer className="w-4 h-4" />
-                    <span>{job.experience}</span>
-                  </div>
-                </div>
-
-                <div className="job-salary">
-                  <span className="salary-amount">{job.salary}</span>
-                  <div className="job-stats">
-                    <div className="job-stat">
-                      <Users className="w-3 h-3" />
-                      <span>{job.applicants} applied</span>
-                    </div>
-                    <div className="job-stat">
-                      <Eye className="w-3 h-3" />
-                      <span>{job.views} views</span>
-                    </div>
-                  </div>
-                </div>
-
-                {job.matchScore && (
-                  <div className="job-match">
-                    <div className="match-bar">
-                      <div 
-                        className="match-fill" 
-                        style={{ width: `${job.matchScore}%` }}
-                      ></div>
-                    </div>
-                    <span className="match-text">{job.matchScore}% match</span>
-                  </div>
-                )}
-
-                <div className="job-footer">
-                  <button 
-                    onClick={() => navigate('/candidate/apply')}
-                    className="job-apply-btn"
-                  >
-                    Apply Now
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {filteredJobs.length === 0 && (
-            <div className="careers-empty">
-              <div className="empty-icon">
-                <Search className="w-12 h-12" />
-              </div>
-              <h3 className="empty-title">No positions found</h3>
-              <p className="empty-description">
-                Try adjusting your search criteria or check back later for new opportunities.
-              </p>
-              <button 
-                onClick={() => {
-                  setSearchTerm('')
-                  setSelectedCategory('all')
-                  setSelectedLocation('all')
-                  setSelectedType('all')
-                  setSelectedExperience('all')
-                }}
-                className="empty-reset-btn"
-              >
-                Clear Filters
-              </button>
-            </div>
-          )}
-
-          {/* Load More Button */}
-          {filteredJobs.length > visibleJobs && (
-            <div className="careers-load-more">
-              <button
-                onClick={() => setVisibleJobs(prev => prev + 6)}
-                className="load-more-btn"
-              >
-                Load More Positions
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="careers-cta">
-        <div className="section-container">
-          <div className="cta-content">
-            <h2 className="cta-title">Ready to Join Our Team?</h2>
-            <p className="cta-subtitle">
-              Take the first step towards an exciting career at Veridia. 
-              Browse our open positions and find your perfect match.
-            </p>
-            <div className="cta-actions">
-              <Link to="/register" className="cta-primary-btn">
-                Start Your Application
-              </Link>
-              <button className="cta-secondary-btn">
-                Learn About Veridia
-              </button>
-            </div>
-          </div>
-        </div>
       </section>
     </div>
   )
