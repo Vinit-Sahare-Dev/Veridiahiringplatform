@@ -9,7 +9,7 @@
 
 .app-main {
   flex: 1;
-  padding-top: 80px; /* Account for fixed navbar */
+  padding-top: 0; /* Remove top padding to touch navbar */
 }
 
 .admin-layout {
@@ -424,7 +424,7 @@
   }
   
   .app-main {
-    padding-top: 70px;
+    padding-top: 0;
   }
   
   .navbar-mobile-menu {

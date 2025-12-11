@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { applicationAPI } from '../../services/api'
 import { 
   Bell, 
@@ -8,7 +9,8 @@ import {
   Mail, 
   X,
   Info,
-  AlertCircle
+  AlertCircle,
+  Sparkles
 } from 'lucide-react'
 import '../../styles/Applications.css'
 
@@ -157,100 +159,123 @@ const Notifications = () => {
   const unreadCount = notifications.filter(n => !n.read).length
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-secondary-900 mb-2">Notifications</h1>
-            <p className="text-secondary-600">
-              Stay updated on your application status and important announcements
-            </p>
+    <div className="careers-container" style={{marginTop: 0, paddingTop: 0}}>
+      {/* Hero Section */}
+      <section className="careers-hero">
+        <div className="careers-hero-content">
+          <div className="careers-hero-badge">
+            <Sparkles className="w-4 h-4" />
+            Your Notifications
           </div>
-          {unreadCount > 0 && (
-            <button
-              onClick={markAllAsRead}
-              className="btn-secondary"
-            >
-              Mark all as read
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Unread Count */}
-      {unreadCount > 0 && (
-        <div className="card bg-primary-50 border-primary-200 mb-6">
-          <div className="p-4 flex items-center">
-            <Bell className="w-5 h-5 text-primary-600 mr-3" />
-            <span className="text-primary-800 font-medium">
-              You have {unreadCount} unread notification{unreadCount > 1 ? 's' : ''}
-            </span>
+          
+          <h1 className="careers-hero-title">
+            Stay <span className="text-gradient">Updated</span>
+          </h1>
+          
+          <p className="careers-hero-description">
+            Track your application status and receive important updates.
+            Never miss an opportunity with real-time notifications.
+          </p>
+          
+          <div className="careers-hero-stats">
+            <div className="careers-stat">
+              <span className="careers-stat-value">{notifications.length}</span>
+              <span className="careers-stat-label">Total</span>
+            </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">{unreadCount}</span>
+              <span className="careers-stat-label">Unread</span>
+            </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">{notifications.filter(n => n.read).length}</span>
+              <span className="careers-stat-label">Read</span>
+            </div>
           </div>
         </div>
-      )}
+      </section>
 
-      {/* Notifications List */}
-      <div className="space-y-4">
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
         {notifications.length === 0 ? (
           <div className="text-center py-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-secondary-100 rounded-full mb-4">
-              <Bell className="w-8 h-8 text-secondary-400" />
+            <div className="inline-flex items-center justify-center w-24 h-24 bg-blue-100 rounded-full mb-6">
+              <Bell className="w-12 h-12 text-blue-600" />
             </div>
-            <h3 className="text-lg font-medium text-secondary-900 mb-2">No notifications</h3>
-            <p className="text-secondary-600">
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">No Notifications Yet</h3>
+            <p className="text-lg text-gray-600 max-w-md mx-auto">
               You don't have any notifications yet. We'll notify you when there are updates to your application.
             </p>
+            <Link
+              to="/careers"
+              className="inline-flex items-center bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors mt-6"
+            >
+              Browse Jobs
+              <AlertCircle className="w-4 h-4 ml-2" />
+            </Link>
           </div>
         ) : (
-          notifications.map((notification) => (
-            <div
-              key={notification.id}
-              className={`card border-l-4 transition-all duration-200 ${
-                notification.read ? 'opacity-75' : 'shadow-md'
-              } ${getNotificationColor(notification.type)}`}
-            >
-              <div className="p-6">
-                <div className="flex items-start">
-                  <div className={`flex-shrink-0 ${getIconColor(notification.type)}`}>
-                    {notification.icon}
-                  </div>
-                  <div className="ml-4 flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-lg font-medium text-secondary-900">
-                        {notification.title}
-                      </h3>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-secondary-500">
-                          {formatDate(notification.timestamp)}
-                        </span>
-                        {!notification.read && (
-                          <button
-                            onClick={() => markAsRead(notification.id)}
-                            className="text-secondary-400 hover:text-secondary-600"
-                            title="Mark as read"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        )}
+          <div className="space-y-4">
+            {notifications.map((notification) => (
+              <div
+                key={notification.id}
+                className={`bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden ${
+                  notification.read ? 'opacity-75' : 'border-l-4 border-l-blue-500'
+                }`}
+              >
+                <div className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${
+                      notification.type === 'success' ? 'bg-green-100' :
+                      notification.type === 'error' ? 'bg-red-100' :
+                      notification.type === 'warning' ? 'bg-yellow-100' :
+                      'bg-blue-100'
+                    }`}>
+                      <div className={`w-5 h-5 ${
+                        notification.type === 'success' ? 'text-green-600' :
+                        notification.type === 'error' ? 'text-red-600' :
+                        notification.type === 'warning' ? 'text-yellow-600' :
+                        'text-blue-600'
+                      }`}>
+                        {notification.icon}
                       </div>
                     </div>
-                    <p className="text-secondary-700">
-                      {notification.message}
-                    </p>
-                    {!notification.read && (
-                      <div className="mt-3">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-white bg-opacity-60">
-                          <span className="w-2 h-2 bg-current rounded-full mr-2"></span>
-                          New
-                        </span>
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-semibold text-gray-800">
+                          {notification.title}
+                        </h3>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm text-gray-500">
+                            {formatDate(notification.timestamp)}
+                          </span>
+                          {!notification.read && (
+                            <button
+                              onClick={() => markAsRead(notification.id)}
+                              className="text-gray-400 hover:text-gray-600 transition-colors"
+                              title="Mark as read"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
                       </div>
-                    )}
+                      <p className="text-gray-600 leading-relaxed">
+                        {notification.message}
+                      </p>
+                      {!notification.read && (
+                        <div className="mt-3">
+                          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">
+                            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                            New
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         )}
       </div>
 

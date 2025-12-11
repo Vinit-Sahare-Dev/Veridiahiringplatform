@@ -22,15 +22,80 @@ import {
   Star,
   Users,
   Bell,
-  ArrowRight
+  ArrowRight,
+  Sparkles
 } from 'lucide-react'
 import '../../styles/Applications.css'
+
+// Import jobs data from careers page
+const jobs = [
+  {
+    id: 1,
+    title: 'Senior Frontend Developer',
+    department: 'Engineering',
+    location: 'Bangalore / Remote',
+    type: 'Full-time',
+    experience: '5+ years',
+    salary: '8 LPA - 12 LPA',
+    category: 'engineering',
+    level: 'Senior'
+  },
+  {
+    id: 2,
+    title: 'Product Manager',
+    department: 'Product',
+    location: 'Hyderabad / Hybrid',
+    type: 'Full-time',
+    experience: '3-5 years',
+    salary: '6 LPA - 9 LPA',
+    category: 'product',
+    level: 'Mid-level'
+  },
+  {
+    id: 3,
+    title: 'Backend Engineer',
+    department: 'Engineering',
+    location: 'Pune',
+    type: 'Full-time',
+    experience: '3-5 years',
+    salary: '6 LPA - 10 LPA',
+    category: 'engineering',
+    level: 'Mid-level'
+  },
+  {
+    id: 4,
+    title: 'UX Designer',
+    department: 'Design',
+    location: 'Remote',
+    type: 'Full-time',
+    experience: '2-4 years',
+    salary: '5 LPA - 8 LPA',
+    category: 'design',
+    level: 'Mid-level'
+  },
+  {
+    id: 5,
+    title: 'Data Scientist',
+    department: 'Data',
+    location: 'Bangalore',
+    type: 'Full-time',
+    experience: '3-5 years',
+    salary: '7 LPA - 11 LPA',
+    category: 'data',
+    level: 'Mid-level'
+  }
+]
 
 const Dashboard = () => {
   const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
   const [showConfetti, setShowConfetti] = useState(false)
   const [selectedApplication, setSelectedApplication] = useState(null)
+
+  // Function to get job details by ID
+  const getJobById = (jobId) => {
+    return jobs.find(job => job.id === parseInt(jobId))
+  }
 
   useEffect(() => {
     fetchApplications()
@@ -126,48 +191,101 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
+    <div className="careers-container" style={{marginTop: 0, paddingTop: 0}}>
       <Confetti trigger={showConfetti} duration={3000} />
       
-      {/* Full Width Header */}
-      <div className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 shadow-2xl">
-        <div className="w-full px-6 py-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between w-full">
-            <div className="text-center lg:text-left mb-6 lg:mb-0">
-              <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">
-                Welcome to Your Dashboard
-              </h1>
-              <p className="text-blue-100 text-xl">
-                Manage your job applications and track your career journey
-              </p>
+      {/* Hero Section */}
+      <section className="careers-hero">
+        <div className="careers-hero-content">
+          <div className="careers-hero-badge">
+            <Sparkles className="w-4 h-4" />
+            Your Application Dashboard
+          </div>
+          
+          <h1 className="careers-hero-title">
+            Welcome to Your <span className="text-gradient">Dashboard</span>
+          </h1>
+          
+          <p className="careers-hero-description">
+            Manage your job applications and track your career journey.
+            Stay updated on your application status and next steps.
+          </p>
+          
+          <div className="careers-hero-stats">
+            <div className="careers-stat">
+              <span className="careers-stat-value">{applications.length}</span>
+              <span className="careers-stat-label">Applications</span>
             </div>
-            <div className="flex space-x-6">
-              <div className="text-center bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/40 shadow-xl">
-                <div className="text-4xl font-bold text-white mb-2">{applications.length}</div>
-                <div className="text-base text-blue-100 font-semibold">Applications</div>
-              </div>
-              <div className="text-center bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/40 shadow-xl">
-                <div className="text-4xl font-bold text-white mb-2">{applications.filter(app => app.status === 'ACCEPTED').length}</div>
-                <div className="text-base text-blue-100 font-semibold">Accepted</div>
-              </div>
-              <div className="text-center bg-white/20 backdrop-blur-md rounded-2xl p-6 border border-white/40 shadow-xl">
-                <div className="text-4xl font-bold text-white mb-2">{applications.filter(app => app.status === 'SHORTLISTED').length}</div>
-                <div className="text-base text-blue-100 font-semibold">Shortlisted</div>
-              </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">{applications.filter(app => app.status === 'ACCEPTED').length}</span>
+              <span className="careers-stat-label">Accepted</span>
+            </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">{applications.filter(app => app.status === 'SHORTLISTED').length}</span>
+              <span className="careers-stat-label">Shortlisted</span>
+            </div>
+            <div className="careers-stat">
+              <span className="careers-stat-value">{applications.filter(app => app.status === 'UNDER_REVIEW').length}</span>
+              <span className="careers-stat-label">In Review</span>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Main Content - Full Width */}
-      <div className="w-full px-6 py-8">
-
+      <div className="max-w-7xl mx-auto px-0 py-8">
       {applications.length === 0 ? (
         /* No Application Yet - Enhanced Design */
         <div className="space-y-8">
+          {/* Quick Actions */}
+          <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-6 px-6">
+            <Link
+              to="/careers"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <Briefcase className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800 mb-1">Browse Jobs</h3>
+                  <p className="text-sm text-gray-600">Explore available opportunities</p>
+                </div>
+              </div>
+            </Link>
+            
+            <Link
+              to="/candidate/profile"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                  <User className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800 mb-1">Update Profile</h3>
+                  <p className="text-sm text-gray-600">Keep your information current</p>
+                </div>
+              </div>
+            </Link>
+            
+            <Link
+              to="/candidate/notifications"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <Bell className="w-6 h-6 text-purple-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800 mb-1">Notifications</h3>
+                  <p className="text-sm text-gray-600">Stay updated on your applications</p>
+                </div>
+              </div>
+            </Link>
+          </div>
           {/* Hero Section */}
-          <div className="w-full bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8">
-          <div className="w-full bg-white rounded-lg shadow-md p-8">
+          <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-24 h-24 bg-blue-100 rounded-full mb-6">
                 <Briefcase className="w-12 h-12 text-blue-600" />
@@ -223,7 +341,7 @@ const Dashboard = () => {
           </div>
 
           {/* Benefits Section */}
-          <div className="w-full bg-white rounded-lg shadow-md p-8">
+          <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
             <h3 className="text-2xl font-bold text-center mb-6 text-gray-800">Why Join Veridia?</h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center p-6">
@@ -251,7 +369,7 @@ const Dashboard = () => {
           </div>
 
           {/* Simple Features */}
-          <div className="w-full bg-white rounded-lg shadow-md p-8">
+          <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
             <h3 className="text-2xl font-bold text-center mb-6 text-gray-800">Career Tools</h3>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-blue-50 rounded-lg p-6">
@@ -282,14 +400,15 @@ const Dashboard = () => {
         /* Multiple Applications - Full Width Cards View */
         <div className="space-y-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
-            <h2 className="text-4xl font-bold text-white mb-4 lg:mb-0">Your Applications</h2>
+            <h2 className="text-4xl font-bold text-gray-800 mb-4 lg:mb-0">Your Applications</h2>
             <div className="flex items-center space-x-4">
-              <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-xl border border-white Chelsea/30">
-                <span classNameedImage text-blue-200">Total: </span>
-                <span className="font-bold text-white text-lg">{applications.length} application{applications.length !== 1 ? 's' : ''}</span>
+              <div className="bg-blue-50 px-6 py-3 rounded-xl border border-blue-200">
+                <span className="text-blue-600">Total: </span>
+                <span className="font-bold text-blue-800 text-lg">{applications.length} application{applications.length !== 1 ? 's' : ''}</span>
               </div>
               <Link
-                to="/                className emotional: "bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-xl hover:ching-blue-700 transition-all transform hover:scale-105 shadow-lg inline-flex items-center"
+                to="/careers"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg inline-flex items-center"
               >
                 <Briefcase className="w-5 h-5 mr-2" />
                 Browse More Jobs
@@ -297,98 +416,132 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+          <div className="grid sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {applications.map((app) => (
-              <div key={app.id} className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 cursor-pointer border border-white/20 overflow-hidden group hover:bg-white/15 hover:scale-105" 
+              <div key={app.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 overflow-hidden group hover:shadow-blue-200 hover:scale-105" 
                    onClick={() => setSelectedApplication(selectedApplication?.id === app.id ? null : app)}>
                 {/* Card Header */}
-                <div className="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 p-4 border-b border-white/10">
-                  <div className="flex items-center justify-between mb-3">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 border-b border-blue-100">
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl ${getStatusColor(app.status).replace('text-', 'bg-').replace('-800', '-900')} shadow-lg border border-white/20`}>
+                      <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg ${getStatusColor(app.status).replace('text-', 'bg-').replace('-800', '-100')} shadow-lg border border-white/50`}>
                         {getStatusIcon(app.status)}
                       </div>
                       <div className="flex-1">
                         <h3 className="font-bold text-white text-lg leading-tight">
-                          {app.jobTitle || 'General Application'}
+                          {app.jobId ? getJobById(app.jobId)?.title || 'Position Not Found' : app.jobTitle || 'General Application'}
                         </h3>
-                        <p className="text-sm text-blue-200 font-medium">
-                          {app.firstName} {app.lastName}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Status Badge */}
-                  <div className="flex items-center justify-between">
-                    <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold border ${getStatusColor(app.status)} shadow-lg bg-white/10`}>
-                      {getStatusIcon(app.status)}
-                      <span className="ml-1.5">{app.status}</span>
-                    </span>
-                    {app.jobDepartment && (
-                      <span className="text-xs text-blue-200 bg-white/10 px-2 py-1 rounded-full border border-white/20">
-                        {app.jobDepartment}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Card Body */}
-                <div className="p-4 space-y-3">
-                  {/* Job Details */}
-                  {app.jobLocation && (
-                    <div className="flex items-center text-sm text-blue-200">
-                      <MapPin className="w-4 h-4 mr-2 text-blue-300" />
-                      <span>{app.jobLocation}</span>
-                    </div>
-                  )}
-                  
-                  {app.jobType && (
-                    <div className="flex items-center text-sm text-blue-200">
-                      <Clock className="w-4 h-4 mr-2 text-blue-300" />
-                      <span>{app.jobType}</span>
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center text-sm text-blue-200">
-                    <Calendar className="w-4 h-4 mr-2 text-blue-300" />
-                    <span>Applied: {formatDate(app.submittedAt || app.createdAt)}</span>
-                  </div>
-
-                  {/* Skills Preview */}
-                  {app.skills && (
-                    <div className="pt-3 border-t border-white/10">
-                      <div className="flex items-start">
-                        <Briefcase className="w-4 h-4 mr-2 mt-0.5 text-blue-300" />
-                        <div className="flex flex-wrap gap-1">
-                          {app.skills.split(',').slice(0, 2).map((skill, index) => (
-                            <span key={index} className="px-2 py-1 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 text-blue-100 rounded text-xs font-medium border border-blue-400/30">
-                              {skill.trim()}
+                        <div className="flex items-center space-x-3">
+                          <span className="text-sm text-blue-100 font-medium">
+                            {app.firstName} {app.lastName}
+                          </span>
+                          {app.jobId && getJobById(app.jobId) ? (
+                            <span className="text-xs text-blue-100 bg-white/20 px-2 py-1 rounded-full border border-white/30">
+                              {getJobById(app.jobId).department}
                             </span>
-                          ))}
-                          {app.skills.split(',').length > 2 && (
-                            <span className="px-2 py-1 bg-white/10 text-blue-200 rounded text-xs font-medium border border-white/20">
-                              +{app.skills.split(',').length - 2} more
+                          ) : app.jobDepartment && (
+                            <span className="text-xs text-blue-100 bg-white/20 px-2 py-1 rounded-full border border-white/30">
+                              {app.jobDepartment}
                             </span>
                           )}
                         </div>
                       </div>
                     </div>
+                  </div>
+                  
+                  {/* Status Badge */}
+                  <div className="flex items-center justify-between mt-3">
+                    <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-sm font-semibold border ${getStatusColor(app.status)} shadow-lg bg-white/90`}>
+                      {getStatusIcon(app.status)}
+                      <span className="ml-1.5">{app.status}</span>
+                    </span>
+                    <span className="text-xs text-blue-100 font-medium">
+                      Applied: {formatDate(app.submittedAt || app.createdAt)}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Card Body */}
+                <div className="p-4 space-y-3 bg-white">
+                  {/* Position Applied For - Compact */}
+                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
+                    <div className="flex items-center space-x-2">
+                      <Briefcase className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-xs text-gray-600 font-medium">Position Applied</p>
+                        <p className="text-sm font-bold text-gray-800 truncate">
+                          {app.jobId ? getJobById(app.jobId)?.title || 'Position Not Found' : app.jobTitle || 'General Application'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Job Details - Horizontal Layout */}
+                  <div className="flex items-center space-x-4 text-sm text-gray-600">
+                    {app.jobId && getJobById(app.jobId) ? (
+                      <>
+                        <div className="flex items-center">
+                          <MapPin className="w-3 h-3 mr-1 text-gray-400" />
+                          <span>{getJobById(app.jobId).location}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <Clock className="w-3 h-3 mr-1 text-gray-400" />
+                          <span>{getJobById(app.jobId).type}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {app.jobLocation && (
+                          <div className="flex items-center">
+                            <MapPin className="w-3 h-3 mr-1 text-gray-400" />
+                            <span>{app.jobLocation}</span>
+                          </div>
+                        )}
+                        {app.jobType && (
+                          <div className="flex items-center">
+                            <Clock className="w-3 h-3 mr-1 text-gray-400" />
+                            <span>{app.jobType}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
+                  </div>
+
+                  {/* Skills Preview - Compact */}
+                  {app.skills && (
+                    <div className="pt-3 border-t border-gray-100">
+                      <div className="flex items-start mb-2">
+                        <Briefcase className="w-3 h-3 mr-1 mt-0.5 text-gray-400" />
+                        <span className="text-xs font-semibold text-gray-700">Skills</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {app.skills.split(',').slice(0, 2).map((skill, index) => (
+                          <span key={index} className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium border border-blue-200">
+                            {skill.trim()}
+                          </span>
+                        ))}
+                        {app.skills.split(',').length > 2 && (
+                          <span className="px-2 py-1 bg-gray-50 text-gray-600 rounded text-xs font-medium border border-gray-200">
+                            +{app.skills.split(',').length - 2}
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   )}
 
-                  {/* Resume Indicator */}
+                  {/* Resume Indicator - Compact */}
                   {app.resumeUrl && (
-                    <div className="pt-3 border-t border-white/10">
-                      <div className="flex items-center text-sm text-green-400 bg-green-500/10 px-3 py-2 rounded-lg border border-green-400/30">
-                        <FileText className="w-4 h-4 mr-2" />
+                    <div className="pt-3 border-t border-gray-100">
+                      <div className="flex items-center text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg border border-green-200">
+                        <FileText className="w-3 h-3 mr-1" />
                         <span className="font-medium">Resume attached</span>
                       </div>
                     </div>
                   )}
                   
-                  {/* Click to view hint */}
-                  <div className="pt-3 border-t border-white/10">
-                    <div className="flex items-center justify-center text-xs text-blue-300 group-hover:text-white transition-colors">
+                  {/* Click to view hint - Compact */}
+                  <div className="pt-3 border-t border-gray-100">
+                    <div className="flex items-center justify-center text-xs text-gray-500 group-hover:text-blue-600 transition-colors">
                       <span>Click to view details</span>
                       <ArrowRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -400,13 +553,13 @@ const Dashboard = () => {
 
           {/* Detailed View Modal - Full Screen */}
           {selectedApplication && (
-            <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 z-50">
-              <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl w-full max-w-6xl max-h-[95vh] overflow-hidden shadow-2xl border border-white/20">
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 z-50">
+              <div className="bg-white rounded-2xl w-full max-w-6xl max-h-[95vh] overflow-hidden shadow-2xl border border-gray-200">
                 {/* Modal Header */}
-                <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800 text-white p-8 border-b border-white/10">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-8 border-b border-blue-100">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-6">
-                      <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-md border border-white/40 shadow-2xl`}>
+                      <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/40 shadow-2xl`}>
                         {getStatusIcon(selectedApplication.status)}
                       </div>
                       <div>
@@ -433,71 +586,71 @@ const Dashboard = () => {
                 </div>
 
                 {/* Modal Body */}
-                <div className="p-8 max-h-[70vh] overflow-y-auto">
+                <div className="p-8 max-h-[70vh] overflow-y-auto bg-gray-50">
                   <div className="grid lg:grid-cols-2 gap-8">
                     {/* Left Column */}
                     <div className="space-y-6">
                       {/* Status */}
-                      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                        <h4 className="font-bold text-white text-xl mb-4">Application Status</h4>
+                      <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                        <h4 className="font-bold text-gray-800 text-xl mb-4">Application Status</h4>
                         <div className="flex items-center justify-between">
-                          <span className={`inline-flex items-center px-6 py-3 rounded-full text-lg font-bold border ${getStatusColor(selectedApplication.status)} bg-white/10 shadow-lg`}>
+                          <span className={`inline-flex items-center px-6 py-3 rounded-full text-lg font-bold border ${getStatusColor(selectedApplication.status)} bg-white shadow-sm`}>
                             {getStatusIcon(selectedApplication.status)}
                             <span className="ml-3">{selectedApplication.status}</span>
                           </span>
-                          <span className="text-blue-200 text-lg">
+                          <span className="text-gray-600 text-lg">
                             Updated: {formatDate(selectedApplication.updatedAt)}
                           </span>
                         </div>
                       </div>
 
                       {/* Personal Info */}
-                      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                        <h4 className="font-bold text-white text-xl mb-4">Personal Information</h4>
+                      <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                        <h4 className="font-bold text-gray-800 text-xl mb-4">Personal Information</h4>
                         <div className="space-y-4 text-lg">
                           <div className="flex justify-between">
-                            <span className="text-blue-200">Name:</span>
-                            <span className="font-medium text-white">{selectedApplication.firstName} {selectedApplication.lastName}</span>
+                            <span className="text-gray-600">Name:</span>
+                            <span className="font-medium text-gray-800">{selectedApplication.firstName} {selectedApplication.lastName}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-blue-200">Email:</span>
-                            <span className="font-medium text-white">{selectedApplication.email}</span>
+                            <span className="text-gray-600">Email:</span>
+                            <span className="font-medium text-gray-800">{selectedApplication.email}</span>
                           </div>
                           {selectedApplication.phone && (
                             <div className="flex justify-between">
-                              <span className="text-blue-200">Phone:</span>
-                              <span className="font-medium text-white">{selectedApplication.phone}</span>
+                              <span className="text-gray-600">Phone:</span>
+                              <span className="font-medium text-gray-800">{selectedApplication.phone}</span>
                             </div>
                           )}
                           {selectedApplication.location && (
                             <div className="flex justify-between">
-                              <span className="text-blue-200">Location:</span>
-                              <span className="font-medium text-white">{selectedApplication.location}</span>
+                              <span className="text-gray-600">Location:</span>
+                              <span className="font-medium text-gray-800">{selectedApplication.location}</span>
                             </div>
                           )}
                         </div>
                       </div>
 
                       {/* Job Details */}
-                      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                        <h4 className="font-bold text-white text-xl mb-4">Job Details</h4>
+                      <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                        <h4 className="font-bold text-gray-800 text-xl mb-4">Job Details</h4>
                         <div className="space-y-4 text-lg">
                           {selectedApplication.jobDepartment && (
                             <div className="flex justify-between">
-                              <span className="text-blue-200">Department:</span>
-                              <span className="font-medium text-white">{selectedApplication.jobDepartment}</span>
+                              <span className="text-gray-600">Department:</span>
+                              <span className="font-medium text-gray-800">{selectedApplication.jobDepartment}</span>
                             </div>
                           )}
                           {selectedApplication.jobLocation && (
                             <div className="flex justify-between">
-                              <span className="text-blue-200">Location:</span>
-                              <span className="font-medium text-white">{selectedApplication.jobLocation}</span>
+                              <span className="text-gray-600">Location:</span>
+                              <span className="font-medium text-gray-800">{selectedApplication.jobLocation}</span>
                             </div>
                           )}
                           {selectedApplication.jobType && (
                             <div className="flex justify-between">
-                              <span className="text-blue-200">Type:</span>
-                              <span className="font-medium text-white">{selectedApplication.jobType}</span>
+                              <span className="text-gray-600">Type:</span>
+                              <span className="font-medium text-gray-800">{selectedApplication.jobType}</span>
                             </div>
                           )}
                         </div>
@@ -508,11 +661,11 @@ const Dashboard = () => {
                     <div className="space-y-6">
                       {/* Skills */}
                       {selectedApplication.skills && (
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                          <h4 className="font-bold text-white text-xl mb-4">Skills</h4>
+                        <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                          <h4 className="font-bold text-gray-800 text-xl mb-4">Skills</h4>
                           <div className="flex flex-wrap gap-3">
                             {selectedApplication.skills.split(',').map((skill, index) => (
-                              <span key={index} className="px-4 py-2 bg-gradient-to-r from-blue-500/30 to-indigo-500/30 text-white rounded-full text-sm font-bold border border-blue-400/50 shadow-lg">
+                              <span key={index} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-bold border border-blue-200 shadow-sm">
                                 {skill.trim()}
                               </span>
                             ))}
@@ -522,17 +675,17 @@ const Dashboard = () => {
 
                       {/* Experience */}
                       {selectedApplication.experience && (
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                          <h4 className="font-bold text-white text-xl mb-4">Experience</h4>
-                          <p className="text-white whitespace-pre-wrap leading-relaxed text-lg">{selectedApplication.experience}</p>
+                        <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                          <h4 className="font-bold text-gray-800 text-xl mb-4">Experience</h4>
+                          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-lg">{selectedApplication.experience}</p>
                         </div>
                       )}
 
                       {/* Education */}
                       {selectedApplication.education && (
-                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                          <h4 className="font-bold text-white text-xl mb-4">Education</h4>
-                          <p className="text-white whitespace-pre-wrap leading-relaxed text-lg">{selectedApplication.education}</p>
+                        <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                          <h4 className="font-bold text-gray-800 text-xl mb-4">Education</h4>
+                          <p className="text-gray-700 whitespace-pre-wrap leading-relaxed text-lg">{selectedApplication.education}</p>
                         </div>
                       )}
 
@@ -543,7 +696,7 @@ const Dashboard = () => {
                             href={selectedApplication.portfolioLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-4 rounded-2xl hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-2xl text-lg font-bold"
+                            className="flex items-center justify-center w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 rounded-2xl hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-2xl text-lg font-bold"
                           >
                             <ExternalLink className="w-5 h-5 mr-3" />
                             View Portfolio
@@ -551,7 +704,7 @@ const Dashboard = () => {
                         )}
                         
                         {selectedApplication.resumeUrl && (
-                          <div className="flex items-center justify-center w-full bg-green-500/20 text-green-400 px-6 py-4 rounded-2xl border border-green-400/30 backdrop-blur-md">
+                          <div className="flex items-center justify-center w-full bg-green-50 text-green-600 px-6 py-4 rounded-2xl border border-green-200">
                             <FileText className="w-5 h-5 mr-3" />
                             <span className="font-bold text-lg">Resume attached</span>
                           </div>

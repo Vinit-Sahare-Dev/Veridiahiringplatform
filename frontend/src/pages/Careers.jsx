@@ -1,33 +1,32 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { 
-  MapPin, 
-  DollarSign, 
-  Clock, 
   Briefcase, 
+  MapPin, 
   Users, 
-  Heart,
-  Zap,
-  Target,
-  Award,
+  Clock, 
+  DollarSign,
   Building,
   Calendar,
-  Search,
-  Filter,
   ChevronRight,
   Star,
   TrendingUp,
-  ArrowRight,
   Sparkles,
   Rocket,
   Shield,
-  Globe2,
+  Search,
+  Filter,
+  X,
+  CheckCircle,
   Brain,
+  Target,
   Lightbulb,
+  Globe2,
+  Heart,
+  Award,
+  Zap,
   Bookmark,
-  Share2,
-  Eye,
-  Timer
+  Share2
 } from 'lucide-react'
 import '../styles/CareersEnhanced.css'
 import '../styles/AppliedBadge.css'
@@ -438,7 +437,7 @@ const Careers = () => {
           
           <div className="careers-hero-stats">
             <div className="careers-stat">
-              <span className="careers-stat-value">500+</span>
+              <span className="careers-stat-value">200+</span>
               <span className="careers-stat-label">Employees</span>
             </div>
             <div className="careers-stat">
@@ -446,11 +445,11 @@ const Careers = () => {
               <span className="careers-stat-label">Rating</span>
             </div>
             <div className="careers-stat">
-              <span className="careers-stat-value">25+</span>
+              <span className="careers-stat-value">10+</span>
               <span className="careers-stat-label">Countries</span>
             </div>
             <div className="careers-stat">
-              <span className="careers-stat-value">92%</span>
+              <span className="careers-stat-value">95%</span>
               <span className="careers-stat-label">Retention</span>
             </div>
           </div>
@@ -619,7 +618,6 @@ const Careers = () => {
                         className="careers-job-apply-btn"
                       >
                         Apply Now
-                        <ArrowRight className="w-4 h-4" />
                       </Link>
                     )
                     })()}

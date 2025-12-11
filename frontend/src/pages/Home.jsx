@@ -97,13 +97,6 @@ const Home = () => {
     }
   ]
 
-  const teamStats = [
-    { value: "500+", label: "Team Members Worldwide" },
-    { value: "25+", label: "Countries Represented" },
-    { value: "4.8★", label: "Employee Satisfaction" },
-    { value: "92%", label: "Retention Rate" }
-  ]
-
   const testimonials = [
     {
       name: "Sarah Chen",
@@ -160,56 +153,19 @@ const Home = () => {
             </p>
             
             <div className="hero-actions">
-              {isAuthenticated && isCandidate ? (
-                <Link to="/careers" className="btn-primary">
-                  Apply Now
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              ) : (
-                <>
-                  <Link to="/careers" className="btn-primary">
-                    Explore Opportunities
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
-                  <Link to="/register" className="btn-secondary">
-                    Join Talent Pool
-                  </Link>
-                </>
-              )}
-            </div>
+  <Link to="/careers" className="btn-primary">
+    Explore Opportunities
+    
+  </Link>
+  <Link to="/register" className="btn-secondary">
+    Join Talent Pool
+  </Link>
+</div>
           </div>
         </div>
         
         <div className="scroll-indicator">
           <ChevronDown className="w-6 h-6 animate-bounce" />
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section id="stats" className="stats-section">
-        <div className="stats-container">
-          <div className="stats-header">
-            <h2 className="stats-title">
-              Our <span className="highlight-text">Impact</span> by Numbers
-            </h2>
-            <p className="stats-subtitle">
-              Join a growing team making a global difference
-            </p>
-          </div>
-          <div className="stats-grid">
-            {teamStats.map((stat, index) => (
-              <div key={index} className="stat-card">
-                <div className="stat-icon">
-                  {index === 0 && <Users className="w-8 h-8" />}
-                  {index === 1 && <Globe className="w-8 h-8" />}
-                  {index === 2 && <Star className="w-8 h-8" />}
-                  {index === 3 && <TrendingUp className="w-8 h-8" />}
-                </div>
-                <div className="stat-value">{stat.value}</div>
-                <div className="stat-label">{stat.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

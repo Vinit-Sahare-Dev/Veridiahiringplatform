@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { applicationAPI } from '../../services/api'
-import { Send, AlertCircle, CheckCircle, Briefcase, X, Sparkles, Trophy, Mail, Phone } from 'lucide-react'
+import { Send, AlertCircle, CheckCircle, Briefcase, X, Sparkles, Trophy, Mail, Phone, MapPin } from 'lucide-react'
 import '../../styles/Applications.css'
 
 // Import form components
 import PersonalInfoForm from '../../components/forms/PersonalInfoForm'
 import SkillsForm from '../../components/forms/SkillsForm'
 import EducationForm from '../../components/forms/EducationForm'
+import ProjectsForm from '../../components/forms/ProjectsForm'
+import ExperienceForm from '../../components/forms/ExperienceForm'
 import FileUploadForm from '../../components/forms/FileUploadForm'
 import JobPreferencesForm from '../../components/forms/JobPreferencesForm'
 
@@ -25,6 +27,8 @@ const ApplicationForm = () => {
     portfolioLink: '',
     skills: [],
     education: [],
+    projects: [],
+    hasExperience: false,
     experience: [],
     certifications: [],
     availability: '',
@@ -42,12 +46,50 @@ const ApplicationForm = () => {
   const [applicationHistory, setApplicationHistory] = useState([])
   const [currentStep, setCurrentStep] = useState(1)
   const [formErrors, setFormErrors] = useState({})
+  const [jobInfo, setJobInfo] = useState(null)
 
-  const totalSteps = 5
+  const totalSteps = 6
 
   useEffect(() => {
     checkExistingApplication()
+    fetchJobInfo()
   }, [jobId])
+
+  const fetchJobInfo = async () => {
+    if (!jobId) return
+    
+    try {
+      // Mock job data for now - in real app, fetch from API
+      const mockJobs = [
+        {
+          id: "1",
+          title: "Senior Frontend Developer",
+          department: "Engineering",
+          location: "San Francisco, CA",
+          type: "Full-time"
+        },
+        {
+          id: "2",
+          title: "Product Designer",
+          department: "Design",
+          location: "New York, NY",
+          type: "Full-time"
+        },
+        {
+          id: "3",
+          title: "Data Analyst",
+          department: "Analytics",
+          location: "Remote",
+          type: "Full-time"
+        }
+      ]
+      
+      const job = mockJobs.find(j => String(j.id) === String(jobId))
+      setJobInfo(job || null)
+    } catch (error) {
+      console.error('Failed to fetch job info:', error)
+    }
+  }
 
   const checkExistingApplication = async () => {
     try {
@@ -76,6 +118,8 @@ const ApplicationForm = () => {
             portfolioLink: applicationForCurrentJob.portfolioLink || '',
             skills: applicationForCurrentJob.skills || [],
             education: applicationForCurrentJob.education || [],
+            projects: applicationForCurrentJob.projects || [],
+            hasExperience: applicationForCurrentJob.hasExperience || false,
             experience: applicationForCurrentJob.experience || [],
             certifications: applicationForCurrentJob.certifications || [],
             availability: applicationForCurrentJob.availability || '',
@@ -125,12 +169,14 @@ const ApplicationForm = () => {
       case 3: // Education
         if (formData.education.length === 0) errors.education = 'At least one education entry is required'
         break
-      case 4: // Files
-        if (!resumeFile) errors.resume = 'Resume is required'
+      case 4: // Projects
+        if (formData.projects.length === 0) errors.projects = 'At least one project is required'
         break
-      case 5: // Job Preferences
-        if (!formData.availability) errors.availability = 'Availability is required'
-        if (!formData.workMode) errors.workMode = 'Work mode is required'
+      case 5: // Experience
+        if (formData.hasExperience && formData.experience.length === 0) errors.experience = 'At least one experience entry is required'
+        break
+      case 6: // Files
+        if (!resumeFile) errors.resume = 'Resume is required'
         break
     }
 
@@ -163,12 +209,14 @@ const ApplicationForm = () => {
     // Education
     if (formData.education.length === 0) errors.education = 'At least one education entry is required'
 
+    // Projects
+    if (formData.projects.length === 0) errors.projects = 'At least one project is required'
+
+    // Experience (only if has experience)
+    if (formData.hasExperience && formData.experience.length === 0) errors.experience = 'At least one experience entry is required'
+
     // Files
     if (!resumeFile) errors.resume = 'Resume is required'
-
-    // Job Preferences
-    if (!formData.availability) errors.availability = 'Availability is required'
-    if (!formData.workMode) errors.workMode = 'Work mode is required'
 
     setFormErrors(errors)
     return Object.keys(errors).length === 0
@@ -202,6 +250,10 @@ const ApplicationForm = () => {
         education: Array.isArray(formData.education) 
           ? formData.education.map(edu => `${edu.degree} from ${edu.institution}`).join('\n')
           : formData.education,
+        projects: Array.isArray(formData.projects) 
+          ? formData.projects.map(proj => `${proj.name}: ${proj.description}`).join('\n')
+          : formData.projects,
+        hasExperience: formData.hasExperience,
         experience: Array.isArray(formData.experience)
           ? formData.experience.map(exp => `${exp.position} at ${exp.company}`).join('\n')
           : formData.experience,
@@ -285,19 +337,59 @@ const ApplicationForm = () => {
         )
       case 4:
         return (
-          <FileUploadForm
-            resumeFile={resumeFile}
-            coverLetterFile={coverLetterFile}
-            onResumeChange={setResumeFile}
-            onCoverLetterChange={setCoverLetterFile}
+          <ProjectsForm
+            projects={formData.projects}
+            onChange={(projects) => handleFormDataChange('projects', projects)}
             errors={formErrors}
           />
         )
       case 5:
         return (
-          <JobPreferencesForm
-            formData={formData}
-            onChange={handleFormDataChange}
+          <div className="space-y-6">
+            <div className="bg-white border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Work Experience</h3>
+              <div className="space-y-4">
+                <label className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    name="hasExperience"
+                    value="yes"
+                    checked={formData.hasExperience === true}
+                    onChange={() => handleFormDataChange('hasExperience', true)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                  />
+                  <span className="text-gray-700">Yes, I have work experience</span>
+                </label>
+                <label className="flex items-center space-x-3">
+                  <input
+                    type="radio"
+                    name="hasExperience"
+                    value="no"
+                    checked={formData.hasExperience === false}
+                    onChange={() => handleFormDataChange('hasExperience', false)}
+                    className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                  />
+                  <span className="text-gray-700">No, I'm a fresher</span>
+                </label>
+              </div>
+            </div>
+
+            {formData.hasExperience && (
+              <ExperienceForm
+                experience={formData.experience}
+                onChange={(experience) => handleFormDataChange('experience', experience)}
+                errors={formErrors}
+              />
+            )}
+          </div>
+        )
+      case 6:
+        return (
+          <FileUploadForm
+            resumeFile={resumeFile}
+            coverLetterFile={coverLetterFile}
+            onResumeChange={setResumeFile}
+            onCoverLetterChange={setCoverLetterFile}
             errors={formErrors}
           />
         )
@@ -335,12 +427,34 @@ const ApplicationForm = () => {
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-8">
             <div className="flex items-center justify-between">
               <div>
+                {jobInfo && (
+                  <div className="mb-4 p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                        <Briefcase className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-semibold text-white">{jobInfo.title}</h2>
+                        <div className="flex items-center gap-3 text-sm text-blue-100">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {jobInfo.location}
+                          </span>
+                          <span>•</span>
+                          <span>{jobInfo.type}</span>
+                          <span>•</span>
+                          <span>{jobInfo.department}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <h1 className="text-3xl font-bold text-white flex items-center gap-3">
                   <Briefcase className="w-8 h-8" />
                   Job Application
                 </h1>
                 <p className="text-blue-100 mt-2 text-lg">
-                  {existingApplication ? 'Update your application' : 'Complete your application in 5 simple steps'}
+                  {existingApplication ? 'Update your application' : 'Complete your application in 6 simple steps'}
                 </p>
                 {existingApplication && (
                   <div className="mt-3 text-sm text-blue-100">
@@ -376,7 +490,7 @@ const ApplicationForm = () => {
           {/* Progress Bar */}
           <div className="px-8 py-6 bg-blue-50 border-b">
             <div className="flex items-center justify-between max-w-4xl mx-auto">
-              {[1, 2, 3, 4, 5].map((step) => (
+              {[1, 2, 3, 4, 5, 6].map((step) => (
                 <div key={step} className="flex items-center flex-1">
                   <div
                     className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${

@@ -2,12 +2,14 @@ package com.veridia.hiring.controller;
 
 import com.veridia.hiring.model.User;
 import com.veridia.hiring.repository.UserRepository;
+import com.veridia.hiring.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,9 @@ public class HealthController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/health")
     public ResponseEntity<?> healthCheck() {
@@ -39,6 +44,31 @@ public class HealthController {
         response.put("message", "Test endpoint working");
         response.put("cors", "enabled");
         response.put("timestamp", LocalDateTime.now());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/test/email")
+    public ResponseEntity<?> testEmail(@RequestParam(required = false) String email) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            String testEmail = email != null ? email : "empsyncofficial@gmail.com";
+            
+            // Send test welcome email
+            emailService.sendWelcomeEmail(testEmail, "Test", "User");
+            
+            response.put("success", true);
+            response.put("message", "Test email sent successfully to: " + testEmail);
+            response.put("email", testEmail);
+            response.put("timestamp", LocalDateTime.now());
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Failed to send test email: " + e.getMessage());
+            response.put("error", e.getClass().getSimpleName());
+            response.put("timestamp", LocalDateTime.now());
+        }
         
         return ResponseEntity.ok(response);
     }

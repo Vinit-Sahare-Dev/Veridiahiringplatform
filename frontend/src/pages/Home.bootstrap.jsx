@@ -4,7 +4,6 @@ import { useAuth } from '../contexts/AuthContext'
 import { 
   Briefcase, 
   Users, 
-  ArrowRight, 
   Star,
   TrendingUp,
   Shield,
@@ -69,13 +68,6 @@ const Home = () => {
   }, [])
 
   // Data
-  const teamStats = [
-    { value: '500+', label: 'Team Members' },
-    { value: '25+', label: 'Countries' },
-    { value: '4.8★', label: 'Satisfaction' },
-    { value: '15+', label: 'Years Experience' }
-  ]
-
   const openPositions = [
     {
       title: 'Senior Frontend Developer',
@@ -172,14 +164,12 @@ const Home = () => {
                     className="btn-hero btn-primary-hero"
                   >
                     Explore Opportunities
-                    <ArrowRight className="w-4 h-4" />
                   </button>
                   <button 
                     onClick={() => scrollToSection('values')}
                     className="btn-hero btn-secondary-hero"
                   >
                     Learn About Veridia
-                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -230,22 +220,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="container-fluid">
-          <div className="row g-4">
-            {teamStats.map((stat, index) => (
-              <div key={index} className="col-lg-3 col-md-6">
-                <div className="stat-card">
-                  <span className="stat-value">{stat.value}</span>
-                  <span className="stat-label">{stat.label}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Open Positions Preview */}
       <section id="positions" className="positions-section">
         <div className="container-fluid">
@@ -283,7 +257,6 @@ const Home = () => {
                     className="position-apply-btn"
                   >
                     Apply Now
-                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -293,7 +266,6 @@ const Home = () => {
           <div className="text-center mt-5">
             <Link to="/careers" className="btn btn-primary btn-lg">
               View All Open Positions
-              <ArrowRight className="w-4 h-4 ms-2" />
             </Link>
           </div>
         </div>
@@ -386,11 +358,9 @@ const Home = () => {
           <div className="cta-actions">
             <Link to="/careers" className="cta-primary-btn">
               Explore Opportunities
-              <ArrowRight className="w-4 h-4" />
             </Link>
             <Link to="/register" className="cta-secondary-btn">
               Create Profile
-              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

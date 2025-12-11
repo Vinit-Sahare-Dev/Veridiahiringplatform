@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { LogOut, User, Briefcase, Shield, Home, Menu, X, ChevronDown } from 'lucide-react'
+import { LogOut, User, Briefcase, Shield, Home, Menu, X, ChevronDown, Bell } from 'lucide-react'
 import '../styles/Navbar.css'
 
 const Navbar = () => {
@@ -114,6 +114,22 @@ const Navbar = () => {
           <div className="hidden lg:flex items-center space-x-4 pr-4">
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
+                {/* Notification Button for Candidates */}
+                {isCandidate && (
+                  <button
+                    onClick={() => navigate('/candidate/notifications')}
+                    className={`relative p-2 rounded-lg transition-all duration-200 ${
+                      isActive('/candidate/notifications')
+                        ? 'text-primary-600 bg-primary-50'
+                        : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+                    }`}
+                    title="Notifications"
+                  >
+                    <Bell className="w-5 h-5" />
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                  </button>
+                )}
+                
                 <div className="flex items-center space-x-3 px-3 py-2 bg-secondary-50 rounded-lg">
                   <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
                     <User className="w-4 h-4 text-primary-600" />

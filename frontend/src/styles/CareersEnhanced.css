@@ -1,14 +1,17 @@
-/* Enhanced Careers Page Styles */
+/* Enhanced Careers Page - Professional Typography Enhancement */
 
 .careers-container {
-  min-height: 100vh;
-  background: #f8fafc;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  animation: fadeInUp 0.6s;
 }
 
 /* Hero Section */
+
 .careers-hero {
   background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-  padding: 1.5rem 0 1rem;
+  padding: 0 0 1rem;
   position: relative;
   overflow: hidden;
   height: 56.25vw;
@@ -35,9 +38,9 @@
 }
 
 .careers-hero-content {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 1rem 0;
   position: relative;
   z-index: 2;
 }
@@ -110,9 +113,9 @@
 }
 
 .careers-filters-content {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0;
 }
 
 .careers-filters-grid {
@@ -202,9 +205,9 @@
 
 /* Jobs Grid */
 .careers-jobs-section {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 3rem 0;
 }
 
 .careers-jobs-header {
@@ -231,14 +234,14 @@
 
 .careers-jobs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
 }
 
 .careers-job-card {
   background: white;
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1.5rem;
   border: 1px solid #e2e8f0;
   transition: all 0.3s ease;
   position: relative;
@@ -271,15 +274,15 @@
   display: flex;
   justify-content: space-between;
   align-items: start;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .careers-job-title {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: #1e293b;
   line-height: 1.3;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .careers-job-department {
@@ -318,34 +321,34 @@
 .careers-job-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .careers-job-meta-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.375rem;
   color: #64748b;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
 .careers-job-meta-item svg {
-  width: 1rem;
-  height: 1rem;
+  width: 0.875rem;
+  height: 0.875rem;
 }
 
 .careers-job-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 0.375rem;
+  margin-bottom: 1rem;
 }
 
 .careers-job-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
 }
 
@@ -366,21 +369,21 @@
 
 .careers-job-description {
   color: #64748b;
-  font-size: 0.875rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
 }
 
 .careers-job-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 1.5rem;
+  padding-top: 1rem;
   border-top: 1px solid #f1f5f9;
 }
 
 .careers-job-salary {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #059669;
 }
