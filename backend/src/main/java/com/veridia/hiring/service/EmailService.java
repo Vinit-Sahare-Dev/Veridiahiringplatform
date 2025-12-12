@@ -16,6 +16,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    
     @Value("${spring.mail.username}")
     private String fromEmail;
 
@@ -27,28 +28,29 @@ public class EmailService {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(fromEmail);
             message.setTo(toEmail);
-            message.setSubject("Welcome to Veridia Hiring Platform!");
+            message.setSubject("🎉 Welcome to Veridia Hiring Platform - Your Career Journey Starts Here!");
             
             String emailBody = String.format(
                 "Dear %s %s,\n\n" +
-                "Welcome to Veridia Hiring Platform! We're excited to have you join our community of talented professionals.\n\n" +
-                "Your account has been successfully created with the email: %s\n\n" +
-                "What you can do next:\n" +
-                "• Browse available job positions\n" +
-                "• Submit applications for roles that match your skills\n" +
-                "• Track your application status in real-time\n" +
-                "• Update your profile with your latest information\n\n" +
-                "Getting Started:\n" +
-                "1. Log in to your account using your email and password\n" +
-                "2. Complete your profile with your skills and experience\n" +
-                "3. Start exploring job opportunities\n\n" +
-                "Our team is dedicated to helping you find the perfect opportunity that matches your career goals.\n\n" +
-                "If you have any questions or need assistance, please don't hesitate to reach out to our support team.\n\n" +
+                "🎊 Welcome to Veridia Hiring Platform! We're absolutely thrilled to have you join our community of talented professionals.\n\n" +
+                "✅ Your account has been successfully created with the email: %s\n\n" +
+                "🚀 What you can do next:\n" +
+                "• 📋 Browse 500+ available job positions across industries\n" +
+                "• 📝 Submit applications for roles that match your skills\n" +
+                "• 📊 Track your application status in real-time\n" +
+                "• 👤 Update your profile with your latest information\n\n" +
+                "🎯 Getting Started:\n" +
+                "1. 🔐 Log in to your account using your email and password\n" +
+                "2. 📄 Complete your profile with your skills and experience\n" +
+                "3. 🔍 Start exploring job opportunities\n\n" +
+                "💡 Pro Tip: Complete profiles are 3x more likely to be viewed by employers!\n\n" +
+                "Our dedicated team is committed to helping you find the perfect opportunity that matches your career goals.\n\n" +
+                "📧 Need help? Reach out to our support team at empsyncofficial@gmail.com\n\n" +
                 "We wish you the best in your job search journey!\n\n" +
                 "Best regards,\n" +
                 "The Veridia Hiring Team\n\n" +
                 "---\n" +
-                "Veridia Hiring Platform\n" +
+                "🌐 Veridia Hiring Platform\n" +
                 "Connecting talent with opportunity",
                 firstName, lastName, toEmail
             );

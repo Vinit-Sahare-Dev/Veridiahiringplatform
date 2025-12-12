@@ -73,6 +73,38 @@ public class HealthController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/test/email/all")
+    public ResponseEntity<?> testAllEmails(@RequestParam(required = false) String email) {
+        Map<String, Object> response = new HashMap<>();
+        String testEmail = email != null ? email : "empsyncofficial@gmail.com";
+        
+        try {
+            // Test welcome email
+            emailService.sendWelcomeEmail(testEmail, "Test", "User");
+            
+            // Test application submission
+            emailService.sendApplicationSubmissionEmail(testEmail, "Test", "User", "Software Engineer");
+            
+            // Test status updates
+            emailService.sendStatusUpdateEmail(testEmail, "Test", "User", "SHORTLISTED", "Software Engineer");
+            emailService.sendStatusUpdateEmail(testEmail, "Test", "User", "ACCEPTED", "Software Engineer");
+            emailService.sendStatusUpdateEmail(testEmail, "Test", "User", "REJECTED", "Software Engineer");
+            
+            response.put("success", true);
+            response.put("message", "All test emails sent successfully to: " + testEmail);
+            response.put("emailsSent", 5);
+            response.put("timestamp", LocalDateTime.now());
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Failed to send test emails: " + e.getMessage());
+            response.put("error", e.getClass().getSimpleName());
+            response.put("timestamp", LocalDateTime.now());
+        }
+        
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/debug/admin")
     public ResponseEntity<?> debugAdmin() {
         Map<String, Object> response = new HashMap<>();

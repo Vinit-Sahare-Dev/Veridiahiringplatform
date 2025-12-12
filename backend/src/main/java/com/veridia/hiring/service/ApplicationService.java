@@ -54,8 +54,14 @@ public class ApplicationService {
             MultipartFile resume) {
         
         try {
+            System.out.println("=== Submitting Application ===");
+            System.out.println("Candidate: " + candidate.getEmail());
+            System.out.println("First Name: " + firstName);
+            System.out.println("Last Name: " + lastName);
+            
             // Check if candidate already has applications
             List<Application> existingApps = applicationRepository.findAllByCandidate(candidate);
+            System.out.println("Existing applications count: " + existingApps.size());
             
             // Create new application
             Application application = new Application(candidate, firstName, lastName, phone);
@@ -80,9 +86,14 @@ public class ApplicationService {
                 validateResumeFile(resume);
                 String resumeUrl = saveResume(resume, candidate.getEmail());
                 application.setResumeUrl(resumeUrl);
+                System.out.println("Resume saved to: " + resumeUrl);
             }
             
-            return applicationRepository.save(application);
+            Application savedApplication = applicationRepository.save(application);
+            System.out.println("Application saved with ID: " + savedApplication.getId());
+            System.out.println("=== Application Submitted Successfully ===");
+            
+            return savedApplication;
             
         } catch (Exception e) {
             System.err.println("Error submitting application: " + e.getMessage());

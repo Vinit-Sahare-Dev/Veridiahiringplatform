@@ -128,11 +128,54 @@ public class AuthController {
             System.err.println("Error Type: " + e.getClass().getName());
             System.err.println("Error Message: " + e.getMessage());
             e.printStackTrace();
-            
             return ResponseEntity.status(500).body(Map.of(
                 "error", "Failed to send test email",
                 "details", e.getMessage(),
                 "type", e.getClass().getSimpleName()
+            ));
+        }
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            
+            if (email == null || email.trim().isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Email is required"
+                ));
+            }
+            
+            // Check if user exists
+            User user = userService.getUserByEmail(email);
+            
+            // Generate reset token (simple implementation)
+            String resetToken = "RESET-" + System.currentTimeMillis() + "-" + email.hashCode();
+            
+            // Send password reset email
+            String[] names = user.getName().split(" ", 2);
+            String firstName = names.length > 0 ? names[0] : "User";
+            
+            // For now, send a simple email (we'll improve this later)
+            emailService.sendWelcomeEmail(email, firstName, ""); // Reuse welcome email for now
+            
+            System.out.println("Password reset requested for: " + email);
+            System.out.println("Reset token: " + resetToken);
+            
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Password reset link sent to your email",
+                "email", email
+            ));
+            
+        } catch (Exception e) {
+            // Always return success to prevent email enumeration attacks
+            System.err.println("Error in forgot password: " + e.getMessage());
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "If an account exists with this email, a reset link has been sent"
             ));
         }
     }

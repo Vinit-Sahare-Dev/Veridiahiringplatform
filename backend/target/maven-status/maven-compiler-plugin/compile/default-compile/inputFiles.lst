@@ -25,6 +25,7 @@ C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\service\Job
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\controller\CandidateController.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\controller\HealthController.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\repository\UserRepository.java
+C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\controller\SetupController.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\repository\JobRepository.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\repository\ApplicationRepository.java
 C:\HiringPlatformforVeridia\backend\src\main\java\com\veridia\hiring\config\DataInitializer.java

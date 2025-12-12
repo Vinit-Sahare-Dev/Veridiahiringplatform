@@ -12,6 +12,7 @@ import NotificationSystem from './components/NotificationSystem'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ForgotPassword from './pages/ForgotPassword'
 import Careers from './pages/Careers'
 import TestPage from './pages/TestPage'
 import AdminLogin from './pages/admin/Login'
@@ -47,6 +48,7 @@ function App() {
             <Route path="/careers" element={<Careers />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             

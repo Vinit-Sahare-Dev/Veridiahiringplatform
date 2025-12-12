@@ -49,21 +49,13 @@ public class ApplicationController {
     public ResponseEntity<?> submitApplication(
             @RequestPart("application") String applicationJson,
             @RequestPart(value = "resume", required = false) MultipartFile resume,
-            @RequestPart(value = "coverLetter", required = false) MultipartFile coverLetter,
             Authentication authentication) {
-        
-        System.out.println("=== Application Submission Started ===");
-        System.out.println("Authenticated user: " + authentication.getName());
-        System.out.println("Application JSON: " + applicationJson);
-        System.out.println("Resume file: " + (resume != null ? resume.getOriginalFilename() : "null"));
-        System.out.println("Cover letter: " + (coverLetter != null ? coverLetter.getOriginalFilename() : "null"));
-        
         try {
-            // Parse JSON string to ApplicationRequest
+            System.out.println("=== Application Submission Started ===");
+            
+            // Parse application JSON
             ApplicationRequest applicationRequest = objectMapper.readValue(applicationJson, ApplicationRequest.class);
-            System.out.println("Parsed application request successfully");
-            System.out.println("First Name: " + applicationRequest.getFirstName());
-            System.out.println("Last Name: " + applicationRequest.getLastName());
+            System.out.println("Application request parsed: " + applicationRequest.getFirstName() + " " + applicationRequest.getLastName());
             
             User candidate = userService.getUserByEmail(authentication.getName());
             System.out.println("Found candidate: " + candidate.getName() + " (" + candidate.getEmail() + ")");
@@ -225,13 +217,13 @@ public class ApplicationController {
                             appMap.put("jobLocation", job.getLocation());
                             appMap.put("jobType", job.getType());
                         } else {
-                            appMap.put("jobTitle", "Position Not Found");
-                            appMap.put("jobDepartment", "Unknown");
+                            appMap.put("jobTitle", "Position #" + app.getJobId());
+                            appMap.put("jobDepartment", "Department");
                         }
                     } catch (Exception e) {
                         System.err.println("Error fetching job details for jobId " + app.getJobId() + ": " + e.getMessage());
-                        appMap.put("jobTitle", "Position Not Found");
-                        appMap.put("jobDepartment", "Unknown");
+                        appMap.put("jobTitle", "Position #" + app.getJobId());
+                        appMap.put("jobDepartment", "Department");
                     }
                 } else {
                     appMap.put("jobTitle", "General Application");
@@ -278,9 +270,23 @@ public class ApplicationController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllApplications() {
         try {
+            System.out.println("=== Admin Applications Fetch Started ===");
             List<Application> applications = applicationService.getAllApplications();
+            System.out.println("Found " + applications.size() + " applications in database");
             
-            return ResponseEntity.ok(applications.stream().map(app -> {
+            if (applications.isEmpty()) {
+                System.out.println("No applications found in database");
+            } else {
+                System.out.println("Applications:");
+                applications.forEach(app -> {
+                    System.out.println("- ID: " + app.getId() + 
+                                     ", Candidate: " + app.getCandidate().getName() + 
+                                     ", Email: " + app.getCandidate().getEmail() +
+                                     ", Status: " + app.getStatus());
+                });
+            }
+            
+            List<Map<String, Object>> response = applications.stream().map(app -> {
                 Map<String, Object> appMap = new HashMap<>();
                 appMap.put("id", app.getId());
                 appMap.put("candidateName", app.getCandidate().getName());
@@ -314,24 +320,33 @@ public class ApplicationController {
                             appMap.put("jobDepartment", job.getDepartment());
                             appMap.put("jobLocation", job.getLocation());
                             appMap.put("jobType", job.getType());
+                            System.out.println("Found job: " + job.getTitle() + " for application " + app.getId());
                         } else {
-                            appMap.put("jobTitle", "Unknown Position");
-                            appMap.put("jobDepartment", "Unknown");
+                            appMap.put("jobTitle", "Position #" + app.getJobId());
+                            appMap.put("jobDepartment", "Department");
+                            System.out.println("Job not found for ID: " + app.getJobId());
                         }
                     } catch (Exception e) {
                         System.err.println("Error fetching job details for jobId " + app.getJobId() + ": " + e.getMessage());
-                        appMap.put("jobTitle", "Position Not Found");
-                        appMap.put("jobDepartment", "Unknown");
+                        appMap.put("jobTitle", "Position #" + app.getJobId());
+                        appMap.put("jobDepartment", "Department");
                     }
                 } else {
                     appMap.put("jobTitle", "General Application");
                     appMap.put("jobDepartment", "General");
+                    System.out.println("No jobId for application: " + app.getId());
                 }
                 
                 return appMap;
-            }).toList());
+            }).toList();
+            
+            System.out.println("=== Admin Applications Fetch Completed ===");
+            System.out.println("Total applications: " + applications.size());
+            return ResponseEntity.ok(response);
+            
         } catch (Exception e) {
-            System.err.println("Error fetching all applications: " + e.getMessage());
+            System.err.println("=== Admin Applications Fetch Failed ===");
+            System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(500).body(Map.of(
                 "success", false,
