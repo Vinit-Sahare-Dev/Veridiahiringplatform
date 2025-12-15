@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { applicationAPI } from '../../services/api'
+import { applicationAPI, jobAPI } from '../../services/api'
 import { Send, AlertCircle, CheckCircle, Briefcase, X, Sparkles, Trophy, Mail, Phone, MapPin } from 'lucide-react'
 import '../../styles/Applications.css'
 
@@ -59,35 +59,20 @@ const ApplicationForm = () => {
     if (!jobId) return
     
     try {
-      // Mock job data for now - in real app, fetch from API
-      const mockJobs = [
-        {
-          id: "1",
-          title: "Senior Frontend Developer",
-          department: "Engineering",
-          location: "San Francisco, CA",
-          type: "Full-time"
-        },
-        {
-          id: "2",
-          title: "Product Designer",
-          department: "Design",
-          location: "New York, NY",
-          type: "Full-time"
-        },
-        {
-          id: "3",
-          title: "Data Analyst",
-          department: "Analytics",
-          location: "Remote",
-          type: "Full-time"
-        }
-      ]
+      console.log(`Fetching job info for jobId: ${jobId}`)
+      const response = await jobAPI.getJobById(jobId)
       
-      const job = mockJobs.find(j => String(j.id) === String(jobId))
-      setJobInfo(job || null)
+      if (response.data) {
+        console.log('Job info received:', response.data)
+        setJobInfo(response.data)
+      } else {
+        console.warn('No job data received for jobId:', jobId)
+        setJobInfo(null)
+      }
     } catch (error) {
       console.error('Failed to fetch job info:', error)
+      // Fallback to null if API fails
+      setJobInfo(null)
     }
   }
 

@@ -1,30 +1,71 @@
-/* Applications Page Specific Styles */
+/* Applications Page Specific Styles - Mobile First Responsive Design */
 
-/* Prevent horizontal scrollbar */
+/* Base mobile-first styles */
 body, html {
   overflow-x: hidden;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 .careers-container, .dashboard-container {
   overflow-x: hidden;
   max-width: 100%;
+  width: 100%;
 }
 
-/* Specific fixes for dashboard containers */
-.max-w-7xl {
+/* Responsive containers */
+.max-w-ht {
   overflow-x: hidden;
+  width: 100%;
 }
 
-/* Fix for grid layouts that might overflow */
+/* Fix for grid layouts */
 .grid {
   overflow-x: hidden;
+  width: 100;
 }
 
-/* Fix for cards and containers */
+/*
+/* Fix for cards andiaux containers */
 .application-card, .profile-card, .dashboard-card {
   overflow-x: hidden;
   word-wrap: break-word;
   word-break: break-word;
+  width: 100%;
+}
+
+/* Mobile-first hero styles */
+.careers-hero {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  padding: 2rem 1rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .careers-hero {
+    padding: 2rem 1.5rem;
+    min-height: 45vh;
+  }
+}
+
+@media (min-width: 768px) {
+  .careers-hero {
+    padding: 3rem 2rem;
+    min-height: 60vh;
+  }
+}
+
+@media (min-width: 1024px) {
+  .careers-hero {
+    padding: 4rem 2rem;
+    min-height: 70vh;
+  }
 }
 
 @keyframes fade-in {
@@ -92,10 +133,24 @@ body, html {
   backdrop-filter: blur(10px);
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: clamp(11px, 1.2vw, 13px);
+  font-size: 0.75rem;
   font-weight: 500;
   margin-bottom: 12px;
   color: white;
+}
+
+@media (min-width: 480px) {
+  .careers-hero-badge {
+    font-size: 0.875rem;
+    padding: 8px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .careers-hero-badge {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
 }
 
 .careers-hero-title {
@@ -233,36 +288,53 @@ body, html {
 
 /* Status Badge Styles */
 .status-badge {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid;
 }
 
 .status-submitted {
-  @apply bg-blue-100 text-blue-800 border-blue-200;
+  background-color: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
 }
 
 .status-reviewed {
-  @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+  background-color: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
 }
 
 .status-shortlisted {
-  @apply bg-purple-100 text-purple-800 border-purple-200;
+  background-color: #f3e8ff;
+  color: #6b21a8;
+  border-color: #e9d5ff;
 }
 
 .status-selected {
-  @apply bg-green-100 text-green-800 border-green-200;
+  background-color: #d1fae5;
+  color: #065f46;
+  border-color: #6ee7b7;
 }
 
 .status-rejected {
-  @apply bg-red-100 text-red-800 border-red-200;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
 }
 
 /* Card Hover Effects */
 .application-card {
-  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  transition: all 0.3s ease;
 }
 
 .application-card:hover {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-4px);
 }
 
 /* Expandable Content */
@@ -279,45 +351,98 @@ body, html {
 
 /* Skills Tags */
 .skill-tag {
-  @apply inline-flex items-center px-2 py-1 rounded text-xs bg-primary-100 text-primary-800 border border-primary-200 transition-colors;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  background-color: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .skill-tag:hover {
-  @apply bg-primary-200 text-primary-900;
+  background-color: #bfdbfe;
+  color: #1e3a8a;
 }
 
 /* Action Buttons */
 .action-button {
-  @apply px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.action-button:focus {
+  ring: 2px;
+  ring-offset: 2px;
 }
 
 .action-button-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+  background-color: #2563eb;
+  color: white;
+}
+
+.action-button-primary:hover {
+  background-color: #1d4ed8;
 }
 
 .action-button-secondary {
-  @apply bg-secondary-200 text-secondary-800 hover:bg-secondary-300 focus:ring-secondary-500;
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.action-button-secondary:hover {
+  background-color: #d1d5db;
 }
 
 .action-button-success {
-  @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
+  background-color: #059669;
+  color: white;
+}
+
+.action-button-success:hover {
+  background-color: #047857;
 }
 
 .action-button-danger {
-  @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+  background-color: #dc2626;
+  color: white;
+}
+
+.action-button-danger:hover {
+  background-color: #b91c1c;
 }
 
 /* Stats Cards */
 .stats-card {
-  @apply p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-105;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: scale(1.05);
 }
 
 .stats-card .stats-icon {
-  @apply inline-flex items-center justify-center w-12 h-12 rounded-full mb-2 transition-transform duration-300;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
 }
 
 .stats-card:hover .stats-icon {
-  @apply scale-110;
+  transform: scale(1.1);
 }
 
 /* Enhanced Dashboard Badge Styling */
@@ -355,67 +480,507 @@ body, html {
 
 /* Filter Pills */
 .filter-pill {
-  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-secondary-100 text-secondary-800 border border-secondary-300 transition-all duration-200;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s ease;
 }
 
 .filter-pill.active {
-  @apply bg-primary-100 text-primary-800 border-primary-300;
+  background-color: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
 }
 
 .filter-pill:hover {
-  @apply bg-secondary-200 text-secondary-900;
+  background-color: #e5e7eb;
+  color: #111827;
 }
 
 /* Loading States */
 .loading-skeleton {
-  @apply bg-gradient-to-r from-secondary-200 to-secondary-300 rounded animate-pulse;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  border-radius: 0.375rem;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .loading-skeleton.text {
-  @apply h-4 w-3/4 mb-2;
+  height: 1rem;
+  width: 75%;
+  margin-bottom: 0.5rem;
 }
 
 .loading-skeleton.title {
-  @apply h-6 w-1/2 mb-4;
+  height: 1.5rem;
+  width: 50%;
+  margin-bottom: 1rem;
 }
 
 .loading-skeleton.card {
-  @apply h-32 w-full mb-4;
+  height: 8rem;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 /* Empty States */
 .empty-state {
-  @apply text-center py-12;
+  text-align: center;
+  padding: 3rem 0;
 }
 
 .empty-state-icon {
-  @apply inline-flex items-center justify-center w-16 h-16 bg-secondary-100 rounded-full mb-4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  background-color: #f3f4f6;
+  border-radius: 50%;
+  margin-bottom: 1rem;
 }
 
 .empty-state-title {
-  @apply text-lg font-medium text-secondary-900 mb-2;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.5rem;
 }
 
 .empty-state-description {
-  @apply text-secondary-600;
+  color: #6b7280;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .application-card {
-    @apply mx-2;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
   
   .stats-card {
-    @apply p-3;
+    padding: 0.75rem;
   }
   
   .stats-card .stats-icon {
-    @apply w-10 h-10;
+    width: 2.5rem;
+    height: 2.5rem;
   }
   
   .action-button {
-    @apply px-2 py-1 text-xs;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Enhanced Animations */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.8), 0 0 30px rgba(79, 70, 229, 0.4);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Enhanced Card Animations */
+.profile-card, .dashboard-card {
+  animation: slideInFromLeft 0.6s ease-out;
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-card:nth-child(even), .dashboard-card:nth-child(even) {
+  animation: slideInFromRight 0.6s ease-out;
+}
+
+.profile-card:hover, .dashboard-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced Hero Section */
+.careers-hero::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.dashboard-hero::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Enhanced Status Badges */
+.status-badge {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.status-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.status-badge:hover::before {
+  left: 100%;
+}
+
+.status-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Enhanced Dashboard Stats */
+.dashboard-stat {
+  animation: bounceIn 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.dashboard-stat:hover::before {
+  left: 100%;
+}
+
+.dashboard-stat:hover {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Enhanced Action Buttons */
+.action-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.action-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.action-button:hover::before {
+  left: 100%;
+}
+
+.action-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced Filter Pills */
+.filter-pill {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.filter-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.filter-pill:hover::before {
+  left: 100%;
+}
+
+.filter-pill:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Enhanced Loading Skeleton */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Enhanced Empty State */
+.empty-state-icon {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Enhanced Skill Tags */
+.skill-tag {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.skill-tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.skill-tag:hover::before {
+  left: 100%;
+}
+
+.skill-tag:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Enhanced Expandable Content */
+.expandable-content {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expandable-content.expanded {
+  animation: slideInFromLeft 0.5s ease-out;
+}
+
+/* Enhanced Hero Badge */
+.careers-hero-badge {
+  position: relative;
+  overflow: hidden;
+}
+
+.careers-hero-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.careers-hero-badge:hover::before {
+  left: 100%;
+}
+
+/* Enhanced Stats Cards */
+.stats-card {
+  animation: slideInFromLeft 0.6s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-card:nth-child(even) {
+  animation: slideInFromRight 0.6s ease-out;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.stats-card:hover::before {
+  left: 100%;
+}
+
+.stats-card:hover {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Enhanced Application Cards */
+.application-card {
+  animation: fadeInUp 0.6s ease-out;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.application-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.application-card:hover::before {
+  left: 100%;
+}
+
+.application-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Enhanced Focus Styles */
+.action-button:focus-visible {
+  animation: glow 1s ease-in-out infinite;
+}
+
+.filter-pill:focus-visible {
+  animation: glow 1s ease-in-out infinite;
+}
+
+/* Enhanced Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .application-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+  
+  .profile-card, .dashboard-card {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}
+
+/* Enhanced High Contrast Mode */
+@media (prefers-contrast: high) {
+  .status-badge {
+    @apply border-2;
+  }
+  
+  .application-card {
+    @apply border-2 border-secondary-300;
+  }
+  
+  .action-button {
+    @apply border-2;
+  }
+  
+  .filter-pill {
+    @apply border-2;
+  }
+}
+
+/* Enhanced Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .profile-card, .dashboard-card, .application-card, .stats-card {
+    animation: none;
+    transition: none;
+  }
+  
+  .careers-hero-badge, .dashboard-stat, .status-badge, .skill-tag, .filter-pill, .action-button {
+    animation: none;
+    transition: none;
+  }
+  
+  .careers-hero::after, .dashboard-hero::after {
+    animation: none;
+  }
+}
+
+/* Enhanced Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .profile-card, .dashboard-card, .application-card {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  
+  .loading-skeleton {
+    background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
   }
 }
 

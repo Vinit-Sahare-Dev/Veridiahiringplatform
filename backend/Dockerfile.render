@@ -1,0 +1,59 @@
+# Optimized Dockerfile for Render Deployment
+# Multi-stage build for smaller image size and better security
+
+# Build stage
+FROM maven:3.9-openjdk-17-slim as build
+
+# Set working directory
+WORKDIR /app
+
+# Copy pom.xml first for better Docker layer caching
+COPY pom.xml .
+
+# Download dependencies (cached layer)
+RUN mvn dependency:go-offline -B
+
+# Copy source code
+COPY src ./src
+
+# Build the application
+RUN mvn clean package -DskipTests -Dspring.profiles.active=production
+
+# Production stage
+FROM openjdk:17-jre-slim
+
+# Install curl for health checks and clean up
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean
+
+# Create non-root user for security
+RUN groupadd --system app && \
+    useradd --system --no-create-home --shell /bin/false app
+
+# Set working directory
+WORKDIR /app
+
+# Copy JAR file from build stage
+COPY --from=build /app/target/*.jar app.jar
+
+# Create necessary directories
+RUN mkdir -p /app/uploads /app/logs && \
+    chown -R app:app /app
+
+# Switch to non-root user
+USER app
+
+# Expose port (Render uses PORT environment variable)
+EXPOSE $PORT
+
+# Health check for Render
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:${PORT:-8080}/api/health || exit 1
+
+# Set JVM options optimized for Render
+ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+
+# Start the application
+CMD ["sh", "-c", "java $JAVA_OPTS -Dserver.port=${PORT:-8080} -jar app.jar"]

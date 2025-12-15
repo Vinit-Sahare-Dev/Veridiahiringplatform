@@ -1,0 +1,56 @@
+# Render Deployment Configuration
+services:
+  # Backend API Service
+  - type: web
+    name: veridia-backend
+    env: docker
+    repo: https://github.com/yourusername/HiringPlatformforVeridia
+    rootDir: backend
+    dockerfilePath: ./Dockerfile.render
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    healthCheckTimeout: 100
+    healthCheckInterval: 30
+    healthCheckGracePeriod: 60
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
+      - key: PORT
+        value: 8080
+      - key: DB_URL
+        fromDatabase:
+          name: veridia-db
+          property: connectionString
+      - key: DB_USERNAME
+        fromDatabase:
+          name: veridia-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: veridia-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRATION
+        value: 86400000
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://your-app.vercel.app,https://your-app-git-main-username.vercel.app
+      - key: MAIL_HOST
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: 587
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+
+  # PostgreSQL Database
+  - type: postgres
+    name: veridia-db
+    plan: free
+    region: oregon
+    ipAllowList: []
+    postgresMajorVersion: 14

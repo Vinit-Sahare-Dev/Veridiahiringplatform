@@ -1,0 +1,979 @@
+/* Comprehensive Responsive Design System */
+/* Ensures all components work perfectly on mobile and desktop */
+
+/* ========================================
+   MOBILE-FIRST RESPONSIVE BREAKPOINTS
+   ======================================== */
+
+/* Base Mobile Styles (320px and up) */
+@media (min-width: 320px) {
+  .container {
+    padding: 0 1rem;
+    max-width: 100%;
+  }
+  
+  .text-responsive-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-responsive-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .text-responsive-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  
+  .text-responsive-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-responsive-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-responsive-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .text-responsive-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-responsive-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  .text-responsive-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+  
+  .text-responsive-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+}
+
+/* Small Mobile (480px and up) */
+@media (min-width: 480px) {
+  .container {
+    padding: 0 1.5rem;
+  }
+  
+  .grid-mobile-sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .flex-mobile-sm {
+    flex-direction: row;
+  }
+  
+  .hidden-mobile-sm {
+    display: none;
+  }
+  
+  .show-mobile-sm {
+    display: block;
+  }
+}
+
+/* Tablet (768px and up) */
+
+@media Organic Content (continued)
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+    max-width: 768px;
+  }
+  
+  .container-md {
+    max-width: 768px;
+  }
+  
+  .text-responsive-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-responsive-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .text-responsive-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  
+ ipad Content (continued)
+  .text-responsive-lg {
+    font-size: 1.125rem;
+    line-height太
+    1坊
+  }
+ 
+  Organic Content (continued)
+  .text-responsive-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-responsive-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .text-responsive-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-responsive-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  .text-responsive-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+  
+  .text-responsive-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+  
+  .grid-tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid-tablet-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .flex-tablet {
+    flex-direction: row;
+  }
+  
+  .hidden-tablet {
+    display: none;
+  }
+  
+  .show-tablet {
+    display: block;
+  }
+  
+  /* Tablet Specific Component Styles */
+  .navbar-container {
+    padding: 0 2rem;
+  }
+  
+  .hero-title-tablet {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+  
+  .card-grid-tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .stats-grid-tablet {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* Desktop (1024px and up) */
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 2rem;
+    max-width: 1024px;
+  }
+  
+  .container-lg {
+    max-width: 1024px;
+  }
+  
+  .text-responsive-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-responsive-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .text-responsive-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  
+  .text-responsive-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-responsive-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-responsive-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .text-responsive-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-responsive-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  .text-responsive-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+  
+  .text-responsive-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+  
+  .grid-desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .grid-desktop-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .flex-desktop {
+    flex-direction: row;
+  }
+  
+  .hidden-desktop {
+    display: none;
+  }
+  
+  .show-desktop {
+    display: block;
+  }
+  
+  /* Desktop Specific Component Styles */
+  .navbar-container {
+    padding: 0 2rem;
+  }
+  
+  .hero-title-desktop {
+    font-size: 3rem;
+    line-height: 1.2;
+  }
+  
+  .card-grid-desktop {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  
+  .stats-grid-desktop {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Large Desktop (1280px and up) */
+@media (min-width: 1280px) {
+  .container {
+    padding: 0 2rem;
+    max-width: 1280px;
+  }
+  
+  .container-xl {
+    max-width: 1280px;
+  }
+  
+  .text-responsive-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-responsive-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .text-responsive-base {
+    font-size: 1rem;
+    line-height: 1.5rem;
+  }
+  
+  .text-responsive-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-responsive-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-responsive-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .text-responsive-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-responsive-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+  
+  .text-responsive-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+  
+  .text-responsive-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+  
+  .grid-large-desktop {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .flex-large-desktop {
+    flex-direction: row;
+  }
+  
+  .hidden-large-desktop {
+    display: none;
+  }
+  
+  .show-large-desktop {
+    display: block;
+  }
+  
+  /* Large Desktop Specific Component Styles */
+  .hero-title-large-desktop {
+    font-size: 3.5rem;
+    line-height: 1.2;
+  }
+  
+  .card-grid-large-desktop {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* ========================================
+   COMPONENT-SPECIFIC RESPONSIVE STYLES
+   ======================================== */
+
+/* Navbar Responsive */
+.navbar-responsive {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container-responsive {
+  width: 100%;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+@media (min-width: 768px) {
+  .navbar-container-responsive {
+    padding: 0 2rem;
+    height: 72px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar-container-responsive {
+    padding: 0 2rem;
+    height: 80px;
+  }
+}
+
+.navbar-brand-responsive {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .navbar-brand-responsive {
+    font-size: 1.5rem;
+  }
+}
+
+.navbar-nav-responsive {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .navbar-nav-responsive {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+  }
+}
+
+.navbar-mobile-toggle-responsive {
+  display: block;
+  background: none;
+  border: none;
+  color: #4b5563;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .navbar-mobile-toggle-responsive {
+    display: none;
+  }
+}
+
+/* Hero Section Responsive */
+.hero-responsive {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero-responsive {
+    min-height: 70vh;
+    padding: 3rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-responsive {
+    min-height: 80vh;
+    padding: 4rem 2rem;
+  }
+}
+
+.hero-title-responsive {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+@media (min-width: 480px) {
+  .hero-title-responsive {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-title-responsive {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title-responsive {
+    font-size: 3.5rem;
+  }
+}
+
+.hero-description-responsive {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .hero-description-responsive {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-description-responsive {
+    font-size: 1.25rem;
+  }
+}
+
+/* Card Grid Responsive */
+.card-grid-responsive {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+@media (min-width: 480px) {
+  .card-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .card-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .card-grid-responsive {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card-responsive {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card-responsive:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 768px) {
+  .card-responsive {
+    padding: 2rem;
+  }
+}
+
+/* Form Responsive */
+.form-responsive {
+  width: 100%;
+  max-width: 100%;
+  padding: 1rem;
+}
+
+@media (min-width: 480px) {
+  .form-responsive {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .form-responsive {
+    max-width: 600px;
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-responsive {
+    max-width: 800px;
+  }
+}
+
+.form-group-responsive {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+  .form-group-responsive {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.form-input-responsive {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+@media (min-width: 768px) {
+  .form-input-responsive {
+    padding: 1rem;
+    font-size: 1.125rem;
+  }
+}
+
+.form-input-responsive:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.form-button-responsive {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+@media (min-width: 768px) {
+  .form-button-responsive {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+  }
+}
+
+.form-button-responsive:hover {
+  background: #4338ca;
+  transform: translateY(-2px);
+}
+
+/* Stats Grid Responsive */
+.stats-grid-responsive {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+@media (min-width: 480px) {
+  .stats-grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .stats-grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stats-grid-responsive {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-card-responsive {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card-responsive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-value-responsive {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4f46e5;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .stat-value-responsive {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .stat-value-responsive {
+    font-size: 3rem;
+  }
+}
+
+.stat-label-responsive {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+@media (min-width: 768px) {
+  .stat-label-responsive {
+    font-size: 1rem;
+  }
+}
+
+/* Table Responsive */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+}
+
+@media (min-width: 768px) {
+  .table-responsive {
+    overflow-x: visible;
+  }
+  
+  .table-responsive table {
+    min-width: auto;
+  }
+}
+
+/* Modal Responsive */
+.modal-responsive {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.modal-content-responsive {
+  background: white;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+@media (min-width: 480px) {
+  .modal-content-responsive {
+    max-width: 480px;
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .modal-content-responsive {
+    max-width: 600px;
+    padding: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .modal-content-responsive {
+    max-width: 800px;
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES FOR RESPONSIVE DESIGN
+   ======================================== */
+
+/* Hide/Show utilities */
+.hidden-mobile {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+.hidden-tablet {
+  display: block;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hidden-tablet {
+    display: none !important;
+  }
+}
+
+.show-tablet {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .show-tablet {
+    display: block !important;
+  }
+}
+
+.hidden-desktop {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .hidden-desktop {
+    display: none !important;
+  }
+}
+
+.show-desktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .show-desktop {
+    display: block !important;
+  }
+}
+
+/* Text alignment utilities */
+.text-left-mobile {
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .text-left-mobile {
+    text-align: center;
+  }
+}
+
+.text-center-mobile {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .text-center-mobile {
+    text-align: left;
+  }
+}
+
+/* Flex direction utilities */
+.flex-col-mobile {
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .flex-col-mobile {
+    flex-direction: row;
+  }
+}
+
+.flex-row-mobile {
+  flex-direction: row;
+}
+
+@media (min-width: 768px) {
+  .flex-row-mobile {
+    flex-direction: column;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY AND PERFORMANCE
+   ======================================== */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card-responsive {
+    border: 2px solid #000;
+  }
+  
+  .form-input-responsive {
+    border: 2px solid #000;
+  }
+  
+  .form-button-responsive {
+    border: 2px solid #000;
+  }
+}
+
+/* Print styles */
+@media print {
+ {
+ anthropic Content (continued)
+  .navbar-responsive,
+  .hero-responsive,
+  .form-button-responsive {
+    display: none !important;
+  }
+  
+  .card-responsive {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .text-responsive-* {
+    color: #000 !important;
+  }
+}

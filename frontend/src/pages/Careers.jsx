@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { jobAPI, applicationAPI } from '../services/api'
 import { 
   Briefcase, 
   MapPin, 
@@ -43,199 +44,42 @@ const Careers = () => {
   const [sortBy, setSortBy] = useState('newest')
   const [visibleJobs, setVisibleJobs] = useState(9)
   const [user, setUser] = useState(null)
+  const [jobs, setJobs] = useState([])
+  const [jobsLoading, setJobsLoading] = useState(true)
   const navigate = useNavigate()
 
-  const jobs = useMemo(() => [
-    {
-      id: 1,
-      title: 'Senior Frontend Developer',
-      department: 'Engineering',
-      location: 'Bangalore / Remote',
-      type: 'Full-time',
-      experience: '5+ years',
-      salary: '8 LPA - 12 LPA',
-      category: 'engineering',
-      level: 'Senior',
-      description: 'Build amazing user interfaces and help shape the future of our platform. Work with cutting-edge technologies and collaborate with world-class engineers.',
-      requirements: ['React', 'TypeScript', 'Node.js', '5+ years experience'],
-      responsibilities: ['Develop responsive web applications', 'Collaborate with design team', 'Optimize application performance', 'Mentor junior developers'],
-      benefits: ['Stock options', 'Flexible work hours', 'Professional development budget', 'Health insurance'],
-      posted: '2 days ago',
-      postedDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      applicants: 45,
-      featured: true,
-      views: 1250,
-      matchScore: 95
-    },
-    {
-      id: 2,
-      title: 'Product Manager',
-      department: 'Product',
-      location: 'Hyderabad / Hybrid',
-      type: 'Full-time',
-      experience: '3-5 years',
-      salary: '6 LPA - 9 LPA',
-      category: 'product',
-      level: 'Mid-level',
-      description: 'Drive product strategy and work with cross-functional teams to deliver exceptional products that users love.',
-      requirements: ['Product strategy', 'Data analysis', 'Leadership', '3+ years experience'],
-      responsibilities: ['Define product roadmap', 'Conduct user research', 'Analyze market trends', 'Collaborate with engineering'],
-      benefits: ['Performance bonuses', 'Remote work options', 'Learning stipend', 'Gym membership'],
-      posted: '1 week ago',
-      postedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      applicants: 32,
-      featured: true,
-      views: 890,
-      matchScore: 88
-    },
-    {
-      id: 3,
-      title: 'Backend Engineer',
-      department: 'Engineering',
-      location: 'Pune',
-      type: 'Full-time',
-      experience: '3-5 years',
-      salary: '7 LPA - 10 LPA',
-      category: 'engineering',
-      level: 'Mid-level',
-      description: 'Design and implement scalable backend systems and APIs that power our platform.',
-      requirements: ['Java', 'Spring Boot', 'Microservices', '3+ years experience'],
-      responsibilities: ['Build RESTful APIs', 'Design database schemas', 'Implement security measures', 'Optimize system performance'],
-      benefits: ['Stock options', 'Flexible schedule', 'Tech conferences', 'Health benefits'],
-      posted: '3 days ago',
-      postedDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-      applicants: 28,
-      featured: false,
-      views: 650,
-      matchScore: 82
-    },
-    {
-      id: 4,
-      title: 'UX Designer',
-      department: 'Design',
-      location: 'Bangalore',
-      type: 'Full-time',
-      experience: '2-4 years',
-      salary: '5 LPA - 7 LPA',
-      category: 'design',
-      level: 'Mid-level',
-      description: 'Create beautiful and intuitive user experiences that delight our users.',
-      requirements: ['Figma', 'User research', 'Prototyping', '2+ years experience'],
-      responsibilities: ['Design user interfaces', 'Conduct usability tests', 'Create design systems', 'Collaborate with developers'],
-      benefits: ['Creative freedom', 'Design tools budget', 'Flexible hours', 'Wellness program'],
-      posted: '5 days ago',
-      postedDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      applicants: 19,
-      featured: false,
-      views: 420,
-      matchScore: 75
-    },
-    {
-      id: 5,
-      title: 'Data Scientist',
-      department: 'Data',
-      location: 'Remote / Pune',
-      type: 'Full-time',
-      experience: '4-6 years',
-      salary: '6 LPA - 8 LPA',
-      category: 'data',
-      level: 'Senior',
-      description: 'Apply machine learning and statistical analysis to solve complex business problems.',
-      requirements: ['Python', 'Machine Learning', 'Statistics', '4+ years experience'],
-      responsibilities: ['Build ML models', 'Analyze datasets', 'Present insights', 'Collaborate with stakeholders'],
-      benefits: ['Research budget', 'Conference attendance', 'Flexible work', 'Stock options'],
-      posted: '1 day ago',
-      postedDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-      applicants: 52,
-      featured: true,
-      views: 1580,
-      matchScore: 92
-    },
-    {
-      id: 6,
-      title: 'Marketing Manager',
-      department: 'Marketing',
-      location: 'Hyderabad',
-      type: 'Full-time',
-      experience: '3-5 years',
-      salary: '4 LPA - 6 LPA',
-      category: 'marketing',
-      level: 'Mid-level',
-      description: 'Lead marketing campaigns and drive brand growth in the competitive tech landscape.',
-      requirements: ['Digital marketing', 'Content strategy', 'Analytics', '3+ years experience'],
-      responsibilities: ['Develop marketing strategies', 'Manage campaigns', 'Analyze performance', 'Lead marketing team'],
-      benefits: ['Performance bonuses', 'Creative budget', 'Remote options', 'Professional development'],
-      posted: '1 week ago',
-      postedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      applicants: 24,
-      featured: false,
-      views: 380,
-      matchScore: 78
-    },
-    {
-      id: 7,
-      title: 'DevOps Engineer',
-      department: 'Engineering',
-      location: 'Bangalore',
-      type: 'Full-time',
-      experience: '4-6 years',
-      salary: '6 LPA - 8 LPA',
-      category: 'engineering',
-      level: 'Senior',
-      description: 'Build and maintain CI/CD pipelines and infrastructure for scalable applications.',
-      requirements: ['Docker', 'Kubernetes', 'AWS', '4+ years experience'],
-      responsibilities: ['Manage cloud infrastructure', 'Implement CI/CD', 'Monitor systems', 'Automate deployments'],
-      benefits: ['Cloud certifications', 'On-call compensation', 'Flexible schedule', 'Stock options'],
-      posted: '4 days ago',
-      postedDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-      applicants: 31,
-      featured: false,
-      views: 720,
-      matchScore: 85
-    },
-    {
-      id: 8,
-      title: 'Content Strategist',
-      department: 'Marketing',
-      location: 'Remote',
-      type: 'Full-time',
-      experience: '2-4 years',
-      salary: '3 LPA - 4 LPA',
-      category: 'marketing',
-      level: 'Mid-level',
-      description: 'Create compelling content strategies that engage and convert our target audience.',
-      requirements: ['Content writing', 'SEO', 'Analytics', '2+ years experience'],
-      responsibilities: ['Develop content calendar', 'Write blog posts', 'Optimize for SEO', 'Analyze content performance'],
-      benefits: ['Remote work', 'Creative freedom', 'Learning budget', 'Flexible hours'],
-      posted: '6 days ago',
-      postedDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
-      applicants: 15,
-      featured: false,
-      views: 290,
-      matchScore: 71
-    },
-    {
-      id: 9,
-      title: 'Full Stack Developer',
-      department: 'Engineering',
-      location: 'Bangalore / Hybrid',
-      type: 'Full-time',
-      experience: '3-5 years',
-      salary: '6 LPA - 9 LPA',
-      category: 'engineering',
-      level: 'Mid-level',
-      description: 'Work across the full stack to build features from database to user interface.',
-      requirements: ['React', 'Node.js', 'MongoDB', '3+ years experience'],
-      responsibilities: ['Develop full-stack features', 'Design APIs', 'Optimize performance', 'Collaborate with teams'],
-      benefits: ['Stock options', 'Flexible work', 'Learning budget', 'Health insurance'],
-      posted: '2 days ago',
-      postedDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      applicants: 38,
-      featured: false,
-      views: 980,
-      matchScore: 87
+  // Fetch jobs from API
+  const fetchJobs = async () => {
+    try {
+      setJobsLoading(true)
+      console.log('Fetching jobs from API...')
+      const response = await jobAPI.getAllJobs()
+      
+      if (response.data && Array.isArray(response.data)) {
+        console.log('Jobs received:', response.data)
+        // Add postedDate for sorting if not present
+        const jobsWithDates = response.data.map(job => ({
+          ...job,
+          postedDate: job.createdAt ? new Date(job.createdAt) : new Date(),
+          matchScore: Math.floor(Math.random() * 30) + 70 // Random match score for demo
+        }))
+        setJobs(jobsWithDates)
+      } else {
+        console.warn('No jobs data received')
+        setJobs([])
+      }
+    } catch (error) {
+      console.error('Failed to fetch jobs:', error)
+      setJobs([])
+    } finally {
+      setJobsLoading(false)
     }
-  ], [])
+  }
+
+  // Fetch jobs on component mount
+  useEffect(() => {
+    fetchJobs()
+  }, [])
 
   // Check authentication and fetch applied jobs
   useEffect(() => {
@@ -346,7 +190,9 @@ const Careers = () => {
     let filtered = jobs.filter(job => {
       const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           job.requirements.some(req => req.toLowerCase().includes(searchTerm.toLowerCase()))
+                           (Array.isArray(job.requirements) 
+                             ? job.requirements.some(req => req.toLowerCase().includes(searchTerm.toLowerCase()))
+                             : job.requirements.toLowerCase().includes(searchTerm.toLowerCase()))
       const matchesCategory = selectedCategory === 'all' || job.category === selectedCategory
       const matchesLocation = selectedLocation === 'all' || 
                              (selectedLocation === 'remote' && job.location.includes('Remote')) ||
@@ -355,10 +201,10 @@ const Careers = () => {
                              (selectedLocation === 'pune' && job.location.includes('Pune'))
       const matchesType = selectedType === 'all' || job.type.toLowerCase().includes(selectedType.replace('-', ' '))
       const matchesExperience = selectedExperience === 'all' || 
-                               (selectedExperience === 'entry' && job.level === 'Entry Level') ||
-                               (selectedExperience === 'mid' && job.level === 'Mid-level') ||
-                               (selectedExperience === 'senior' && job.level === 'Senior') ||
-                               (selectedExperience === 'lead' && job.level === 'Lead/Principal')
+                               (selectedExperience === 'entry' && job.experience === 'Entry Level') ||
+                               (selectedExperience === 'mid' && job.experience === 'Mid-level') ||
+                               (selectedExperience === 'senior' && job.experience === 'Senior') ||
+                               (selectedExperience === 'lead' && job.experience === 'Lead/Principal')
       
       return matchesSearch && matchesCategory && matchesLocation && matchesType && matchesExperience
     })
@@ -553,7 +399,14 @@ const Careers = () => {
           </div>
         </div>
         
-        {filteredJobs.length > 0 ? (
+        {jobsLoading ? (
+          <div className="careers-loading-state">
+            <div className="careers-loading-spinner">
+              <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <p className="careers-loading-text">Loading available positions...</p>
+          </div>
+        ) : filteredJobs.length > 0 ? (
           <>
             <div className="careers-jobs-grid">
               {filteredJobs.slice(0, visibleJobs).map((job) => (
