@@ -130,7 +130,56 @@ sequenceDiagram
 ---
 
 ⭐ *If you like this project, give it a star!*
-## Screenshots
+
+## 📸 Screenshots
+
+### 🏠 Home Page
+<img width="100%" alt="Home Page" src="screenshorts/Home.png" />
+
+### 🔐 Login & Register
+<img width="100%" alt="Login Register" src="screenshorts/LoginRegister.png" />
+
+### 💼 Careers Page
+<img width="100%" alt="Careers Page" src="screenshorts/CareersPage.png" />
+
+### 📋 Open Positions
+<img width="100%" alt="Open Positions" src="screenshorts/CareersPageOpenPositions.png" />
+
+### 📝 Job Application
+<img width="100%" alt="Job Application" src="screenshorts/JobApplication.png" />
+
+---
+
+### 👤 Candidate Dashboard
+<img width="100%" alt="Candidate Dashboard" src="screenshorts/CandicateDashboard.png" />
+
+### 👤 Candidate Profile
+<img width="100%" alt="Candidate Profile" src="screenshorts/CandidateProfile.png" />
+
+### 🔔 Candidate Notifications
+<img width="100%" alt="Candidate Notifications" src="screenshorts/CandidateNotification.png" />
+
+---
+
+### 🔑 Admin Login
+<img width="100%" alt="Admin Login" src="screenshorts/AdminLogin.png" />
+
+### 📊 Admin Dashboard
+<img width="100%" alt="Admin Dashboard" src="screenshorts/AdminDashboard.png" />
+
+### 📄 Admin Job Handling
+<img width="100%" alt="Admin Job Handle" src="screenshorts/AdminJobHandle.png" />
+
+### 📑 Admin Job Applications
+<img width="100%" alt="Admin Job Applications" src="screenshorts/AdminJobApplication.png" />
+
+### ✅ Application Status Management
+<img width="100%" alt="Application Status" src="screenshorts/AdminapplicationStatus.png" />
+
+---
+
+### 📧 Email Service
+<img width="100%" alt="Email Service" src="screenshorts/Emailservice.png" />
 
 
 
