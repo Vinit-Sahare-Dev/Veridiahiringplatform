@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.9-openjdk-17-slim as build
+FROM maven:3.9.6-eclipse-temurin-17-slim AS build
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Production stage
-FROM openjdk:17-jre-slim as production
+FROM openjdk:17-jre-slim-bullseye AS production
 
 # Install necessary packages and clean up
 RUN apt-get update && apt-get install -y \
