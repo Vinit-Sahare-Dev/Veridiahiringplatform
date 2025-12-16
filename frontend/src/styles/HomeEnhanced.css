@@ -632,7 +632,7 @@
 
 @media (max-width: 640px) {
   .hero-title {
-    font-size: clamp(32px, 8vw, 48px);
+    font-size: clamp(40px, 10vw, 60px);
     line-height: 1.1;
   }
   
@@ -819,7 +819,7 @@
 }
 
 .hero-title {
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(44px, 6vw, 72px);
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 24px;
@@ -1568,7 +1568,7 @@
 
 @media (max-width: 480px) {
   .hero-title {
-    font-size: clamp(28px, 7vw, 36px);
+    font-size: clamp(36px, 9vw, 48px);
     line-height: 1.1;
   }
   

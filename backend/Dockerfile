@@ -1,5 +1,5 @@
 # Build stage
-FROM maven:3.9.6-eclipse-temurin-17-slim AS build
+FROM maven:3.9-openjdk-17 AS build
 
 WORKDIR /app
 
@@ -17,15 +17,16 @@ RUN mvn clean package -DskipTests -Dmaven.test.skip=true -Dmaven.javadoc.skip=tr
     mvn clean package -DskipTests -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -X
 
 # Production stage
-FROM eclipse-temurin:17-jre-alpine AS production
+FROM openjdk:17-jdk-slim AS production
 
 # Install necessary packages and clean up
-RUN apk update && apk add --no-cache \
+RUN apt-get update && apt-get install -y \
     curl \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
 # Create application user for security
-RUN addgroup -g 1000 appuser && adduser -D -s /bin/sh -u 1000 -G appuser appuser
+RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 
