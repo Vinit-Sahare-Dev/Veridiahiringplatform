@@ -23,11 +23,11 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
-      - key: DATABASE_URL
+      - key: DB_URL
         value: ${veridia-mysql.DATABASE_URL}
-      - key: DATABASE_USERNAME
+      - key: DB_USERNAME
         value: ${veridia-mysql.USERNAME}
-      - key: DATABASE_PASSWORD
+      - key: DB_PASSWORD
         value: ${veridia-mysql.PASSWORD}
       - key: JWT_SECRET
         generateValue: true
