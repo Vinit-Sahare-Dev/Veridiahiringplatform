@@ -98,17 +98,18 @@ const Footer = () => {
               <li>
                 <a href="#guides" className="footer-link">
                   <ChevronRight className="w-3 h-3" />
-                  Interview Guides
+                  Career Guides
                 </a>
               </li>
               <li>
-                <a href="#salary" className="footer-link">
+                <a href="#faq" className="footer-link">
                   <ChevronRight className="w-3 h-3" />
-                  Salary Insights
+                  FAQ
                 </a>
               </li>
             </ul>
-          </div>
+            
+                      </div>
 
           {/* Support Column */}
           <div className="footer-column">
@@ -168,42 +169,17 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Trust Badges */}
-        <div className="trust-badges">
-          <div className="trust-badge">
-            <Users className="w-5 h-5" />
-            <span>50K+ Active Users</span>
-          </div>
-          <div className="trust-badge">
-            <Shield className="w-5 h-5" />
-            <span>Secure Platform</span>
-          </div>
-          <div className="trust-badge">
-            <Award className="w-5 h-5" />
-            <span>Award Winning</span>
-          </div>
-          <div className="trust-badge">
-            <Globe className="w-5 h-5" />
-            <span>Global Reach</span>
-          </div>
         </div>
-      </div>
 
       {/* Bottom Bar */}
       <div className="footer-bottom">
         <div className="footer-bottom-container">
           <div className="footer-bottom-content">
-            <div className="copyright">
-              <p>&copy; 2024 Veridia Technologies Inc. All rights reserved.</p>
+            <div className="copyright" style={{textAlign: 'center'}}>
+              <p>&copy; 2025 Veridia Technologies Inc. All rights reserved.</p>
               <p className="footer-tagline">
-                Built with <Heart className="w-4 h-4" /> for the future of work
+                Built with love by <a href="https://github.com/Vinit-Sahare-Dev" target="_blank" rel="noopener noreferrer" className="author-link">Vinit Sahare</a> for the future of work
               </p>
-            </div>
-            
-            <div className="footer-legal-links">
-              <a href="#cookies" className="legal-link">Cookie Policy</a>
-              <a href="#accessibility" className="legal-link">Accessibility</a>
-              <a href="#compliance" className="legal-link">Compliance</a>
             </div>
           </div>
         </div>

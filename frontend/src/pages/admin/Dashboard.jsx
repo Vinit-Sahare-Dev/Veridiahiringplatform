@@ -61,8 +61,10 @@ const AdminDashboard = () => {
 
   const fetchApplications = async () => {
     try {
+      setLoading(true)
       const response = await applicationAPI.getAllApplications()
       setApplications(response.data)
+      setFilteredApplications(response.data)
     } catch (error) {
       console.error('Failed to fetch applications:', error)
     } finally {
@@ -173,12 +175,12 @@ const AdminDashboard = () => {
   }
 
   const filterApplications = () => {
-    let filtered = applications
+    let filtered = applications || []
 
     if (searchTerm) {
       filtered = filtered.filter(app => 
-        app.candidateName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        app.candidateEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        app.candidateName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        app.candidateEmail?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (app.skills && app.skills.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (app.jobTitle && app.jobTitle.toLowerCase().includes(searchTerm.toLowerCase()))
       )
@@ -188,7 +190,7 @@ const AdminDashboard = () => {
       filtered = filtered.filter(app => app.status === statusFilter)
     }
 
-    if (jobFilter) {
+    if (jobFilter && jobFilter !== 'all') {
       filtered = filtered.filter(app => app.jobTitle === jobFilter)
     }
 

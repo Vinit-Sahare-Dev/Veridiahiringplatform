@@ -86,7 +86,7 @@ public class ApplicationController {
             try {
                 String jobTitle = "Position";
                 if (applicationRequest.getJobId() != null) {
-                    Job job = jobService.getJobById(applicationRequest.getJobId());
+                    Job job = jobService.getJobById(applicationRequest.getJobId() != null ? applicationRequest.getJobId() : 0L);
                     if (job != null) {
                         jobTitle = job.getTitle();
                     }
@@ -210,7 +210,7 @@ public class ApplicationController {
                 // Add job details if jobId exists
                 if (app.getJobId() != null) {
                     try {
-                        Job job = jobService.getJobById(app.getJobId());
+                        Job job = jobService.getJobById(app.getJobId() != null ? app.getJobId() : 0L);
                         if (job != null) {
                             appMap.put("jobTitle", job.getTitle());
                             appMap.put("jobDepartment", job.getDepartment());
@@ -314,7 +314,7 @@ public class ApplicationController {
                 // Add job details if jobId exists
                 if (app.getJobId() != null) {
                     try {
-                        Job job = jobService.getJobById(app.getJobId());
+                        Job job = jobService.getJobById(app.getJobId() != null ? app.getJobId() : 0L);
                         if (job != null) {
                             appMap.put("jobTitle", job.getTitle());
                             appMap.put("jobDepartment", job.getDepartment());
@@ -370,7 +370,7 @@ public class ApplicationController {
             try {
                 String jobTitle = "Position";
                 if (application.getJobId() != null) {
-                    Job job = jobService.getJobById(application.getJobId());
+                    Job job = jobService.getJobById(application.getJobId() != null ? application.getJobId() : 0L);
                     if (job != null) {
                         jobTitle = job.getTitle();
                     }

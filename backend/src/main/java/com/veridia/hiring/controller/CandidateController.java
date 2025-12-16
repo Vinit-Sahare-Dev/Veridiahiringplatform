@@ -83,7 +83,7 @@ public class CandidateController {
             String profilePhotoUrl = UPLOAD_DIR + filename;
             
             // Update user's profile photo in database
-            userService.updateProfilePhoto(user.getId(), profilePhotoUrl);
+            userService.updateProfilePhoto(user.getId() != null ? user.getId() : 0L, profilePhotoUrl);
             
             Map<String, Object> response = new HashMap<>();
             response.put("profilePhotoUrl", profilePhotoUrl);
@@ -109,7 +109,7 @@ public class CandidateController {
             
             // Update profile photo if provided
             if (profilePhoto != null && !profilePhoto.trim().isEmpty()) {
-                userService.updateProfilePhoto(updatedUser.getId(), profilePhoto);
+                userService.updateProfilePhoto(updatedUser.getId() != null ? updatedUser.getId() : 0L, profilePhoto);
                 updatedUser.setProfilePhoto(profilePhoto);
             }
             

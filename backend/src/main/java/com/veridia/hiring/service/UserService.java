@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User updateUser(Long id, String name, String email) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findById(id != null ? id : 0L)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         
         if (!user.getEmail().equals(email) && userRepository.existsByEmail(email)) {

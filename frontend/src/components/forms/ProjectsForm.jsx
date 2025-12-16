@@ -201,7 +201,11 @@ const ProjectsForm = ({ projects = [], onChange, errors = {} }) => {
                 type="month"
                 value={project.startDate || ''}
                 onChange={(e) => updateProject(index, 'startDate', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:hover:bg-blue-50"
+                min="2000-01"
+                max="2030-12"
+                pattern="[0-9]{4}-[0-9]{2}"
+                placeholder="YYYY-MM"
               />
             </div>
 
@@ -214,7 +218,11 @@ const ProjectsForm = ({ projects = [], onChange, errors = {} }) => {
                 value={project.endDate || ''}
                 onChange={(e) => updateProject(index, 'endDate', e.target.value)}
                 disabled={project.current}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:hover:bg-blue-50 disabled:[&::-webkit-calendar-picker-indicator]:cursor-not-allowed"
+                min="2000-01"
+                max="2030-12"
+                pattern="[0-9]{4}-[0-9]{2}"
+                placeholder="YYYY-MM"
               />
             </div>
 

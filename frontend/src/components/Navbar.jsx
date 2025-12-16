@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { LogOut, User, Briefcase, Shield, Home, Menu, X, ChevronDown, Bell } from 'lucide-react'
+import { LogOut, User, Briefcase, Shield, Home, Menu, X, ChevronDown, Bell, Info } from 'lucide-react'
 import '../styles/Navbar.css'
 
 const Navbar = () => {
@@ -51,6 +51,18 @@ const Navbar = () => {
             >
               <Home className="w-4 h-4 mr-2" />
               Home
+            </Link>
+            
+            <Link
+              to="/about"
+              className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                isActive('/about') 
+                  ? 'text-primary-600 bg-primary-50 shadow-sm' 
+                  : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+              }`}
+            >
+              <Info className="w-4 h-4 mr-2" />
+              About Us
             </Link>
             
             {/* Show Careers only for non-admin users */}
@@ -153,13 +165,13 @@ const Navbar = () => {
               <div className="flex items-center space-x-3">
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50 rounded-lg transition-all duration-200"
+                  className="px-4 py-2.5 text-sm font-medium text-secondary-600 border border-secondary-300 hover:text-secondary-900 hover:bg-secondary-50 rounded-lg transition-all duration-200"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="btn-primary text-sm px-4 py-2 shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                  className="px-4 py-2.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                 >
                   Register
                 </Link>
@@ -195,6 +207,19 @@ const Navbar = () => {
                 >
                   <Home className="w-4 h-4 mr-3" />
                   Home
+                </Link>
+                
+                <Link
+                  to="/about"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive('/about') 
+                      ? 'text-primary-600 bg-primary-50' 
+                      : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
+                  }`}
+                >
+                  <Info className="w-4 h-4 mr-3" />
+                  About Us
                 </Link>
                 
                 {/* Show Careers only for non-admin users */}
@@ -288,14 +313,14 @@ const Navbar = () => {
                     <Link
                       to="/login"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block w-full text-center px-4 py-2 text-sm font-medium text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50 rounded-lg transition-all duration-200"
+                      className="block w-full text-center px-4 py-2.5 text-sm font-medium text-secondary-600 border border-secondary-300 hover:text-secondary-900 hover:bg-secondary-50 rounded-lg transition-all duration-200"
                     >
                       Login
                     </Link>
                     <Link
                       to="/register"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="block w-full text-center btn-primary text-sm px-4 py-2"
+                      className="block w-full text-center px-4 py-2.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
                     >
                       Register
                     </Link>

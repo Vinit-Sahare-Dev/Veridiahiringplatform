@@ -1,25 +1,11 @@
 services:
-  # MySQL Database Service
-  - type: pserv
+  # MySQL Database Service (Render's managed database)
+  - type: ps
     name: veridia-mysql
-    env: docker
-    repo: https://github.com/Vinit-Sahare-Dev/Veridiahiringplatform.git
-    dockerContext: ./backend
-    dockerfilePath: ./backend/Dockerfile
+    databaseName: veridia_hiring
+    user: veridia
+    region: oregon
     plan: free
-    envVars:
-      - key: MYSQL_ROOT_PASSWORD
-        value: veridiaroot
-      - key: MYSQL_DATABASE
-        value: veridia_hiring
-      - key: MYSQL_USER
-        value: veridia
-      - key: MYSQL_PASSWORD
-        value: veridiapass
-    disks:
-      - name: mysql-data
-        mountPath: /var/lib/mysql
-        sizeGB: 10
 
   # Backend Spring Boot Service
   - type: web
@@ -37,22 +23,30 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
-      - key: DB_URL
-        value: jdbc:mysql://veridia-mysql:3306/veridia_hiring?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - key: DB_USERNAME
-        value: veridia
-      - key: DB_PASSWORD
-        value: veridiapass
+      - key: DATABASE_URL
+        value: ${veridia-mysql.DATABASE_URL}
+      - key: SPRING_DATASOURCE_URL
+        value: ${veridia-mysql.DATABASE_URL}
+      - key: SPRING_DATASOURCE_USERNAME
+        value: ${veridia-mysql.USERNAME}
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: ${veridia-mysql.PASSWORD}
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRATION
         value: "86400000"
-      - key: MAIL_HOST
+      - key: SPRING_MAIL_HOST
         value: smtp.gmail.com
-      - key: MAIL_PORT
+      - key: SPRING_MAIL_PORT
         value: "587"
+      - key: SPRING_MAIL_USERNAME
+        value: empsyncofficial@gmail.com
+      - key: SPRING_MAIL_PASSWORD
+        sync: false
+      - key: SPRING_MAIL_FROM
+        value: empsyncofficial@gmail.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://veridia-frontend.onrender.com
+        value: https://veridia-frontend.onrender.com,https://veridia-backend.onrender.com
     dependsOn:
       - veridia-mysql
 
@@ -66,7 +60,7 @@ services:
     publishPath: ./dist
     plan: free
     envVars:
-      - key: VITE_API_URL
+      - key: VITE_API_BASE_URL
         value: https://veridia-backend.onrender.com
     dependsOn:
       - veridia-backend

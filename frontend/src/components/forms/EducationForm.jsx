@@ -155,6 +155,8 @@ const EducationForm = ({ education, onChange, errors }) => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:hover:bg-blue-50"
                   min="2000-01"
                   max="2030-12"
+                  pattern="[0-9]{4}-[0-9]{2}"
+                  placeholder="YYYY-MM"
                   required
                 />
               </div>
@@ -170,6 +172,8 @@ const EducationForm = ({ education, onChange, errors }) => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:hover:bg-blue-50"
                   min="2000-01"
                   max="2030-12"
+                  pattern="[0-9]{4}-[0-9]{2}"
+                  placeholder="YYYY-MM"
                   required
                 />
               </div>

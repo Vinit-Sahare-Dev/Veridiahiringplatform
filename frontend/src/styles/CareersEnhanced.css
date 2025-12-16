@@ -1009,7 +1009,7 @@
   }
   
   .careers-jobs-section {
-    padding: 1.5rem 1rem;
+    padding: 0 1rem 1.5rem 1rem;
   }
   
   .careers-job-card {
@@ -1050,7 +1050,7 @@
 .careers-filters {
   background: white;
   border-bottom: 1px solid #e2e8f0;
-  padding: 2rem 0;
+  padding: 2rem 0 0 0;
   position: sticky;
   top: 4.5rem;
   z-index: 40;
@@ -1152,7 +1152,7 @@
 .careers-jobs-section {
   width: 100%;
   margin: 0 auto;
-  padding: 3rem 0;
+  padding: 0 0 3rem 0;
 }
 
 .careers-jobs-header {

@@ -162,7 +162,8 @@
   gap: 1rem;
   margin-bottom: 4rem;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
+  padding: 0 1rem;
 }
 
 .btn-primary {
@@ -641,24 +642,27 @@
   
   .hero-actions {
     flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 0 1rem;
   }
   
   .btn-primary {
-    font-size: clamp(13px, 3.5vw, 14px);
-    padding: 0.5rem 1rem;
-    min-height: 36px;
-    width: auto;
-    max-width: 160px;
+    font-size: clamp(14px, 4vw, 16px);
+    padding: 1rem 2rem;
+    min-height: 48px;
+    width: 100%;
+    justify-content: center;
+    border-radius: 0.75rem;
   }
   
   .btn-secondary {
-    font-size: clamp(12px, 3vw, 13px);
-    padding: 0.4rem 0.875rem;
-    min-height: 32px;
-    width: auto;
-    max-width: 140px;
+    font-size: clamp(14px, 4vw, 16px);
+    padding: 1rem 2rem;
+    min-height: 48px;
+    width: 100%;
+    justify-content: center;
+    border-radius: 0.75rem;
   }
   
   .hero-stats {
