@@ -7,6 +7,10 @@
   justify-content: center;
   overflow: hidden;
   background: linear-gradient(135deg, #4f46e5, #2563eb);
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%234f46e5" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,154.7C672,160,768,192,864,197.3C960,203,1056,181,1152,165.3C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .hero-section::before {
@@ -129,11 +133,12 @@
 
 /* Main Heading */
 .hero-title {
-  font-size: 48px;
-  font-weight: bold;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 900;
   color: #111827;
   margin-bottom: 24px;
   line-height: 1.1;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .hero-title-gradient {
@@ -149,12 +154,13 @@
 
 /* Subheading */
 .hero-subtitle {
-  font-size: 20px;
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
   color: #6b7280;
   margin-bottom: 32px;
   max-width: 768px;
   margin: 0 auto 32px;
   line-height: 1.6;
+  font-weight: 500;
 }
 
 /* Stats Bar */
@@ -337,11 +343,11 @@
   }
   
   .hero-title {
-    font-size: 64px;
+    font-size: clamp(3rem, 9vw, 6rem);
   }
   
   .hero-subtitle {
-    font-size: 24px;
+    font-size: clamp(1.25rem, 3.5vw, 1.75rem);
   }
   
   .hero-buttons {
@@ -356,6 +362,10 @@
   }
   
   .hero-title {
-    font-size: 80px;
+    font-size: clamp(3.5rem, 10vw, 7rem);
+  }
+  
+  .hero-subtitle {
+    font-size: clamp(1.375rem, 4vw, 2rem);
   }
 }
