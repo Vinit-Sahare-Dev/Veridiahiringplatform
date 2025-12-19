@@ -46,24 +46,9 @@ services:
       - key: SPRING_MAIL_FROM
         value: empsyncofficial@gmail.com
       - key: CORS_ALLOWED_ORIGINS
-        value: https://veridia-frontend.onrender.com
+        value: https://veridiahiringplatform-fayw.vercel.app
     dependsOn:
       - veridia-mysql
-
-  # Frontend React Service
-  - type: web
-    name: veridia-frontend
-    env: static
-    repo: https://github.com/Vinit-Sahare-Dev/Veridiahiringplatform.git
-    rootDir: ./frontend
-    buildCommand: npm run build
-    publishPath: ./dist
-    plan: free
-    envVars:
-      - key: VITE_API_BASE_URL
-        value: https://veridia-backend.onrender.com
-    dependsOn:
-      - veridia-backend
 
 # Global configuration
 version: "1"
