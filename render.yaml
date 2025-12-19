@@ -17,7 +17,7 @@ services:
     plan: free
     healthCheck:
       path: /api/health
-      initialDelaySeconds: 60
+      initialDelaySeconds: 90
       periodSeconds: 15
       timeoutSeconds: 10
     envVars:
@@ -26,11 +26,11 @@ services:
       - key: PORT
         value: 8081
       - key: DB_URL
-        value: jdbc:mysql://${veridia-mysql.HOSTNAME}:${veridia-mysql.PORT}/${veridia-mysql.DATABASE_NAME}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+        value: jdbc:mysql://${veridia-mysql.HOSTNAME}:${veridia-mysql.PORT}/${veridia-mysql.DATABASE_NAME}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&connectTimeout=30000&socketTimeout=30000
       - key: DB_USERNAME
-        value: root
+        value: ${veridia-mysql.USER}
       - key: DB_PASSWORD
-        value: newpassword
+        value: ${veridia-mysql.PASSWORD}
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_EXPIRATION
