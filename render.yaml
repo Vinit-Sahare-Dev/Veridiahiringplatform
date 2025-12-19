@@ -23,6 +23,8 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
+      - key: PORT
+        value: 8081
       - key: DB_URL
         value: jdbc:mysql://${veridia-mysql.HOSTNAME}:${veridia-mysql.PORT}/${veridia-mysql.DATABASE_NAME}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - key: DB_USERNAME
