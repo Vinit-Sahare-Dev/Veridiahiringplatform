@@ -270,25 +270,25 @@ const Dashboard = () => {
             Welcome to Your <span className="text-gradient">Dashboard</span>
           </h1>
           
-          <p className="careers-hero-description">
+          <p className="careers-hero-description text-center max-w-3xl mx-auto">
             Manage your job applications and track your career journey.
             Stay updated on your application status and next steps.
           </p>
           
-          <div className="careers-hero-stats">
-            <div className="careers-stat">
+          <div className="careers-hero-stats flex flex-col sm:flex-row gap-4 justify-center items-center text-center">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">{applications.length}</span>
               <span className="careers-stat-label">Applications</span>
             </div>
-            <div className="careers-stat">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">{applications.filter(app => app.status === 'ACCEPTED').length}</span>
               <span className="careers-stat-label">Accepted</span>
             </div>
-            <div className="careers-stat">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">{applications.filter(app => app.status === 'SHORTLISTED').length}</span>
               <span className="careers-stat-label">Shortlisted</span>
             </div>
-            <div className="careers-stat">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">{applications.filter(app => app.status === 'UNDER_REVIEW').length}</span>
               <span className="careers-stat-label">In Review</span>
             </div>
@@ -302,14 +302,14 @@ const Dashboard = () => {
         /* No Application Yet - Enhanced Design */
         <div className="space-y-8">
           {/* Quick Actions */}
-          <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-6 px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 sm:px-6">
             <Link
               to="/careers"
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1 flex flex-col items-center text-center"
             >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                  <Briefcase className="w-6 h-6 text-blue-600" />
+              <div className="flex flex-col items-center space-y-4">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                  <Briefcase className="w-8 h-8 text-blue-600" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">Browse Jobs</h3>
@@ -320,11 +320,11 @@ const Dashboard = () => {
             
             <Link
               to="/candidate/profile"
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1 flex flex-col items-center text-center"
             >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center group-hover:bg-green-200 transition-colors">
-                  <User className="w-6 h-6 text-green-600" />
+              <div className="flex flex-col items-center space-y-4">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                  <User className="w-8 h-8 text-green-600" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">Update Profile</h3>
@@ -335,11 +335,11 @@ const Dashboard = () => {
             
             <Link
               to="/candidate/notifications"
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-200 group hover:-translate-y-1 flex flex-col items-center text-center"
             >
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                  <Bell className="w-6 h-6 text-purple-600" />
+              <div className="flex flex-col items-center space-y-4">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                  <Bell className="w-8 h-8 text-purple-600" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">Notifications</h3>
@@ -579,12 +579,12 @@ const Dashboard = () => {
                         <span className="text-xs font-semibold text-gray-700">Skills</span>
                       </div>
                       <div className="flex flex-wrap gap-1">
-                        {app.skills.split(',').slice(0, 2).map((skill, index) => (
+                        {app.skills && app.skills.split(',').slice(0, 2).map((skill, index) => (
                           <span key={index} className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium border border-blue-200">
                             {skill.trim()}
                           </span>
                         ))}
-                        {app.skills.split(',').length > 2 && (
+                        {app.skills && app.skills.split(',').length > 2 && (
                           <span className="px-2 py-1 bg-gray-50 text-gray-600 rounded text-xs font-medium border border-gray-200">
                             +{app.skills.split(',').length - 2}
                           </span>
@@ -728,7 +728,7 @@ const Dashboard = () => {
                         <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                           <h4 className="font-bold text-gray-800 text-xl mb-4">Skills</h4>
                           <div className="flex flex-wrap gap-3">
-                            {selectedApplication.skills.split(',').map((skill, index) => (
+                            {selectedApplication.skills && selectedApplication.skills.split(',').map((skill, index) => (
                               <span key={index} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-bold border border-blue-200 shadow-sm">
                                 {skill.trim()}
                               </span>

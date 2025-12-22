@@ -78,7 +78,11 @@ const Careers = () => {
 
   // Fetch jobs on component mount
   useEffect(() => {
-    fetchJobs()
+    const timer = setTimeout(() => {
+      fetchJobs()
+    }, 100)
+    
+    return () => clearTimeout(timer)
   }, [])
 
   // Check authentication and fetch applied jobs
@@ -189,10 +193,10 @@ const Careers = () => {
   const filteredJobs = useMemo(() => {
     let filtered = jobs.filter(job => {
       const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (job.description && job.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
                            (Array.isArray(job.requirements) 
                              ? job.requirements.some(req => req.toLowerCase().includes(searchTerm.toLowerCase()))
-                             : job.requirements.toLowerCase().includes(searchTerm.toLowerCase()))
+                             : (job.requirements && job.requirements.toLowerCase().includes(searchTerm.toLowerCase())))
       const matchesCategory = selectedCategory === 'all' || job.category === selectedCategory
       const matchesLocation = selectedLocation === 'all' || 
                              (selectedLocation === 'remote' && job.location.includes('Remote')) ||
@@ -266,7 +270,7 @@ const Careers = () => {
     <div className="careers-container">
       {/* Hero Section */}
       <section className="careers-hero">
-        <div className="careers-hero-content">
+        <div className="careers-hero-content text-center">
           <div className="careers-hero-badge">
             <Sparkles className="w-4 h-4" />
             Now Hiring: Join Our Amazing Team
@@ -276,25 +280,25 @@ const Careers = () => {
             Build Your Career at <span className="text-gradient">Veridia</span>
           </h1>
           
-          <p className="careers-hero-description">
+          <p className="careers-hero-description text-center max-w-3xl mx-auto">
             Join our team of innovators, creators, and problem-solvers. 
             Together, we're building the future of hiring technology.
           </p>
           
-          <div className="careers-hero-stats">
-            <div className="careers-stat">
+          <div className="careers-hero-stats flex flex-col sm:flex-row gap-4 justify-center items-center text-center">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">200+</span>
               <span className="careers-stat-label">Employees</span>
             </div>
-            <div className="careers-stat">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">4.8★</span>
               <span className="careers-stat-label">Rating</span>
             </div>
-            <div className="careers-stat">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">10+</span>
               <span className="careers-stat-label">Countries</span>
             </div>
-            <div className="careers-stat">
+            <div className="careers-stat text-center">
               <span className="careers-stat-value">95%</span>
               <span className="careers-stat-label">Retention</span>
             </div>
