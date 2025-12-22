@@ -5,7 +5,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api'
 // Create axios instance
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 15000, // 15 second timeout
+  timeout: 15000, // 15 second timeout for faster responses
   withCredentials: true, // Important for CORS with credentials
 })
 
@@ -18,7 +18,6 @@ api.interceptors.request.use(
     }
     console.log(`[API] ${config.method.toUpperCase()} ${config.url}`)
     console.log('[API] Headers:', config.headers)
-    console.log('[API] Token exists:', !!token)
     return config
   },
   (error) => {
@@ -30,7 +29,7 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
-    console.log(`[API] Response from ${response.config.url}:`, response.status)
+    console.log(`[API] Response: ${response.status} ${response.config.url}`)
     return response
   },
   (error) => {
@@ -135,7 +134,7 @@ export const candidateAPI = {
 export const applicationAPI = {
   submitApplication: (formData) => {
     // FormData automatically sets Content-Type with boundary
-    return api.post('/application/submit', formData, {
+    return api.post('/api/application/submit', formData, {
       headers: {
         // Don't set Content-Type - let browser set it with boundary
       },

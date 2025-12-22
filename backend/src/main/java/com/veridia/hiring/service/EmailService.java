@@ -20,10 +20,24 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String fromEmail;
 
+    @Value("${spring.mail.password:}")
+    private String emailPassword;
+
+    @Value("${spring.mail.host:smtp.gmail.com}")
+    private String mailHost;
+
     // Welcome email for new user registration
     public void sendWelcomeEmail(String toEmail, String firstName, String lastName) {
         try {
+            // Check if email configuration is available
+            if (fromEmail == null || fromEmail.trim().isEmpty() || emailPassword == null || emailPassword.trim().isEmpty()) {
+                logger.warn("Email configuration missing. Skipping welcome email to: {}", toEmail);
+                logger.info("Email config - From: {}, Password configured: {}", fromEmail, emailPassword != null && !emailPassword.trim().isEmpty());
+                return; // Don't throw error, just skip email
+            }
+            
             logger.info("Sending welcome email to: {}", toEmail);
+            logger.info("Email configuration - From: {}, Host: {}", fromEmail, mailHost);
             
             SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(fromEmail);
@@ -68,6 +82,12 @@ public class EmailService {
     // Application submission confirmation email
     public void sendApplicationSubmissionEmail(String toEmail, String firstName, String lastName, String jobTitle) {
         try {
+            // Check if email configuration is available
+            if (fromEmail == null || fromEmail.trim().isEmpty() || emailPassword == null || emailPassword.trim().isEmpty()) {
+                logger.warn("Email configuration missing. Skipping application submission email to: {}", toEmail);
+                return; // Don't throw error, just skip email
+            }
+            
             logger.info("Sending application submission email to: {} for job: {}", toEmail, jobTitle);
             
             SimpleMailMessage message = new SimpleMailMessage();
@@ -118,6 +138,12 @@ public class EmailService {
     // Status update email with personalized content
     public void sendStatusUpdateEmail(String toEmail, String firstName, String lastName, String newStatus, String jobTitle) {
         try {
+            // Check if email configuration is available
+            if (fromEmail == null || fromEmail.trim().isEmpty() || emailPassword == null || emailPassword.trim().isEmpty()) {
+                logger.warn("Email configuration missing. Skipping status update email to: {}", toEmail);
+                return; // Don't throw error, just skip email
+            }
+            
             logger.info("Sending status update email to: {} with status: {}", toEmail, newStatus);
             
             SimpleMailMessage message = new SimpleMailMessage();

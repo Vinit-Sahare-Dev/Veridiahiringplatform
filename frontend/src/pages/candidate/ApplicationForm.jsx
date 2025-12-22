@@ -275,7 +275,7 @@ const ApplicationForm = () => {
       
       setTimeout(() => {
         navigate('/careers')
-      }, 3000)
+      }, 2000)
       
     } catch (error) {
       console.error('Submission error:', error)

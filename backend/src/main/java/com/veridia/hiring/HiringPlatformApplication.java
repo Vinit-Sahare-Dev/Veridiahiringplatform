@@ -4,8 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableJpaRepositories("com.veridia.hiring.repository")
 public class HiringPlatformApplication {
 
     public static void main(String[] args) {
@@ -15,10 +17,10 @@ public class HiringPlatformApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void onApplicationReady() {
         System.out.println("\n============================================");
-        System.out.println("✅ Backend Running Successfully!");
-        System.out.println("📌 Application: Veridia Hiring Platform");
-        System.out.println("🌐 Server Port: 8080");
-        System.out.println("🕒 Status: Ready to accept requests");
+        System.out.println("Backend Running Successfully!");
+        System.out.println("Application: Veridia Hiring Platform");
+        System.out.println(" Server Port: 8080");
+        System.out.println(" Status: Ready to accept requests");
         System.out.println("============================================\n");
     }
 }

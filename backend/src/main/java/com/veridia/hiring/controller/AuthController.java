@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -50,17 +51,25 @@ public class AuthController {
                 Role.CANDIDATE
             );
             
-            // Send welcome email
+            // Send welcome email asynchronously (non-blocking)
             try {
                 String[] names = registerRequest.getName().split(" ", 2);
                 String firstName = names.length > 0 ? names[0] : "User";
                 String lastName = names.length > 1 ? names[1] : "";
                 
-                emailService.sendWelcomeEmail(user.getEmail(), firstName, lastName);
-                System.out.println("Welcome email sent to: " + user.getEmail());
+                // Send email in background thread to avoid blocking registration
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        emailService.sendWelcomeEmail(user.getEmail(), firstName, lastName);
+                        System.out.println("Welcome email sent to: " + user.getEmail());
+                    } catch (Exception emailError) {
+                        System.err.println("Failed to send welcome email: " + emailError.getMessage());
+                        // Don't fail registration if email fails
+                    }
+                });
             } catch (Exception emailError) {
-                System.err.println("Failed to send welcome email: " + emailError.getMessage());
-                // Don't fail registration if email fails
+                System.err.println("Email service initialization failed: " + emailError.getMessage());
+                // Don't fail registration if email service fails
             }
             
             Map<String, Object> userData = new HashMap<>();

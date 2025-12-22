@@ -43,7 +43,7 @@ const Login = () => {
       if (result.success) {
         setSuccessMessage('Login successful! Redirecting...')
         setTimeout(() => {
-          navigate('/candidate/dashboard')
+          navigate('/careers')
         }, 1500)
       } else {
         setError(result.error || 'Login failed. Please try again.')

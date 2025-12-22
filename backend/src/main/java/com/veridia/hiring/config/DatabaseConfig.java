@@ -1,15 +1,12 @@
 package com.veridia.hiring.config;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@Import({
-    DataSourceAutoConfiguration.class,
-    // HibernateJpaAutoConfiguration.class - Disabled to prevent startup connection
-})
+@EnableJpaRepositories
+@EnableTransactionManagement
 public class DatabaseConfig {
     // Custom database configuration will be handled separately
 }
